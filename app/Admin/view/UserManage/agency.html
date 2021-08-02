@@ -1,0 +1,227 @@
+{extend name="common/public" /}
+
+{block name="title"}用户账户管理{/block}
+
+{block name="content"}
+<span class="layui-breadcrumb">
+<a><cite>首页</cite></a>
+<a><cite>用户管理</cite></a>
+<a href="javascript:void(0)">代理管理</a>
+</span>
+
+<div class="content-body">
+    <div class="layui-card">
+        <div class="layui-card-header">代理管理</div>
+        <div class="layui-card-body">
+            <!--搜索表单-->
+            <form class="layui-form" action="">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">用户名：</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="searchName" name="username" placeholder="请输入用户名"
+                                   class="layui-input"/>
+                        </div>
+                    </div>
+                    <a href="javascript:void(0)" class="layui-btn" onclick="reload()">搜索</a>
+                </div>
+            </form>
+            <!--            顶部工具栏-->
+            <script type='text/html' id="toolbar">
+                <a class="layui-btn layui-btn-sm" onclick="openAgencyDialog()">新增代理用户</a>
+            </script>
+            <!--表格-->
+            <table id="table" lay-filter="table"></table>
+            <!--            工具栏-->
+            <script type="text/html" id="tools">
+                <!--                <a class="layui-btn layui-btn-sm" onclick="openAgencyDialog('{{d.id}}')">新增下级</a>-->
+                <a class="layui-btn layui-btn-sm {{d.enable == 1? 'layui-btn-warm' : ''}}"
+                   onclick="enableAgency('{{d.id}}')"
+                   lay-event="edit">{{d.enable == 1? '禁用' : '启用'}}</a>
+                <a class="layui-btn layui-btn-danger layui-btn-sm" onclick="removeAgencyById('{{d.id}}')">删除</a>
+            </script>
+        </div>
+    </div>
+</div>
+
+{/block}
+
+{block name='bodyOut'}
+<style>
+    #info {
+        padding-right: 20px;
+        padding-top: 20px;
+    }
+</style>
+<!--    新增代理用户模态框-->
+<div id="info">
+    <form class="layui-form" lay-filter="agencyForm" style="padding: 15px">
+        <div class="layui-form-item">
+            <label class="layui-form-label">账号</label>
+            <div class="layui-input-block">
+                <input type="text" name="account" required lay-verify="required" placeholder="请输入账号"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">昵称</label>
+            <div class="layui-input-block">
+                <input type="text" name="nickname" required lay-verify="required" placeholder="请输入昵称"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">手机号</label>
+            <div class="layui-input-block">
+                <input type="text" name="phone" placeholder="请输入手机号" required lay-verify="phone" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-inline">
+                <input type="password" name="pwd" required lay-verify="required" placeholder="请输入密码"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">不能少于6位</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">确认密码</label>
+            <div class="layui-input-inline">
+                <input type="password" name="pwd" required lay-verify="required" placeholder="请确认密码"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">不能少于6位</div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button href="javascript:void(0)" class="layui-btn">立即提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    var tableInst = null;
+    var form, $, layer, table;
+    layui.use(['form', 'table', 'layer'], function () {
+        form = layui.form,
+            $ = layui.$,
+            layer = layui.layer,
+            table = layui.table;
+
+        tableInst = table.render({
+            elem: '#table',
+            id: "tableInst",
+            url: '/admin/UserManage/loadAgencies',
+            loading: true,
+            page: {
+                layout: ['prev', 'page', 'next', 'count', 'limit']//自定义分页布局
+                , limit: 10	//初始每页数量
+                , limits: [10, 15, 20]	//可选的每页数量
+                , groups: 10	//最多几个跳页按钮  1 2 3 4 5 6 这种跳页按钮
+                , first: false //不显示首页
+                , last: false //不显示尾页
+            },
+            toolbar: "#toolbar",
+            defaultToolbar: [],
+            cols: [[
+                {field: 'id', title: 'id'},
+                {field: 'account', title: '账号'},
+                {field: 'nickname', title: '昵称'},
+                {
+                    field: 'enable', title: '账户状态', templet: function (data) {
+                        return data.enable ? "已启用" : "已禁用";
+                    }
+                },
+                {field: 'agency_count', title: '下级代理数量'},
+                {fixed: 'right', title: '操作', toolbar: "#tools"}
+            ]]
+        })
+        //监听增加代理账户的表单
+        form.on('submit(agencyForm)', function (data) {
+            let params = {};
+            params = form.val('agencyForm');
+            params['enable'] = params['enable'] == 'on' ? 1 : 0;
+            addAgencyChild(params);
+            return false
+        })
+    })
+
+
+    var reload = () => {
+        tableInst.reload({
+            where: {
+                username: $('#searchName').val()
+            },
+            page: {
+                curr: 1
+            }
+        });
+    }
+
+    var openAgencyDialog = (id) => {
+        layer.open({
+            type: 1,
+            title: '添加代理',
+            area: ['560px', '430px'],
+            content: $('#info'),
+            shade: 0,
+            Boolean: true
+        });
+    }
+
+    var addAgencyChild = (params) => {
+        $.post('/admin/UserManage/addAgencyChild', params, function (res) {
+            if (res.code == 0) {
+                clearForm()
+                layer.msg(res.message)
+                layer.closeAll();
+            } else {
+                layer.msg(res.errors)
+            }
+            reload();
+        })
+    }
+    var clearForm = () => {
+        form.val('agencyForm', {
+            'account': '',
+            'name': '',
+            'nickname': '',
+            'pwd': '',
+            'coin_pwd': '',
+            'email': '',
+            'phone': '',
+            'QQ': '',
+            'enable': 'on'
+        });
+    }
+
+    var enableAgency = (id) => {
+        $.post('/admin/UserManage/enableAgency', {id}, function (res) {
+            if (res.code == 0) {
+                layer.msg(res.message)
+            } else {
+                layer.msg(res.errors)
+            }
+            reload();
+        })
+    }
+
+    var removeAgencyById = (id) => {
+        $.post('/admin/UserManage/removeAgencyById', {id}, function (res) {
+            if (res.code == 0) {
+                layer.msg(res.message)
+            } else {
+                layer.msg(res.errors)
+            }
+            reload();
+        })
+    }
+
+
+</script>
+
+{/block}

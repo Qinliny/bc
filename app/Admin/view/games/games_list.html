@@ -1,0 +1,259 @@
+{extend name="common/public" /}
+
+{block name="title"}彩种列表{/block}
+
+{block name="content"}
+
+<span class="layui-breadcrumb">
+    <a><cite>首页</cite></a>
+    <a><cite>彩种配置</cite></a>
+    <a href="/admin/games/gamesList">彩种列表</a>
+</span>
+
+<div class="content-body">
+    <div class="layui-card">
+        <div class="layui-card-header">
+<!--            <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" id="addGames">-->
+<!--                添加彩种-->
+<!--            </button>-->
+        </div>
+        <div class="layui-card-body">
+            <table class="layui-table">
+                <thead>
+                <tr>
+                    <th width="50">序号</th>
+                    <th>彩种名称</th>
+                    <th>单期最高</th>
+                    <th>开奖间隔</th>
+                    <th>禁止下注时间</th>
+                    <th>添加时间</th>
+                    <th width="100">状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                {foreach $list as $key => $val}
+                <tr>
+                    <td>{$key + 1}</td>
+                    <td>{$val.game_name}</td>
+                    <td>{$val.highest}</td>
+                    <td>{$val.interval} 分钟</td>
+                    <td>开奖前 {$val.forbid_time} 分钟</td>
+                    <td>{$val.create_time}</td>
+                    <td class="layui-form">
+                        {if condition="$val.status == 0"}
+                        <input type="checkbox" name="status" lay-filter="status" value="{$val.id}" lay-skin="switch" lay-text="开启|关闭" checked>
+                        {else/}
+                        <input type="checkbox" name="status" lay-filter="status" value="{$val.id}" lay-skin="switch" lay-text="开启|关闭">
+                        {/if}
+                    </td>
+                    <td>
+                        <a href="/admin/games/config?gameId={$val.id}" type="button" class="layui-btn layui-btn-sm">配置</a>
+                        <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" onclick="details({$val.id})">编辑</button>
+<!--                        <button type="button" class="layui-btn layui-btn-danger layui-btn-sm" onclick="del({$val.id})">删除</button>-->
+                    </td>
+                </tr>
+                {/foreach}
+                </tr>
+                </tbody>
+            </table>
+            <div id="page"></div>
+        </div>
+    </div>
+    
+    <div id="addBox" style="display: none">
+        <div class="add-body" style="padding: 15px">
+            <div class="layui-form">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">彩种名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" required  lay-verify="required" placeholder="请输入彩种名称" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">单期最高</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="highest" required lay-verify="required" placeholder="请输入单期最高可下注金额" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">开奖间隔</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="interval" required  lay-verify="required" placeholder="请输入开奖时间间隔，单位分钟" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">禁止下注时间</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="forbid_time" required  lay-verify="required" placeholder="请输入禁止下注时间，单位分钟" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="addGames">立即提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(['layer', 'form', 'laypage'], function(){
+        let $ = layui.$, layer = layui.layer, form = layui.form, laypage = layui.laypage;
+   
+        $('#addGames').on('click', function(){
+            var elements = $('#addBox').html();
+            layer.open({
+                title: "添加彩种",
+                type: 1,
+                skin: 'layui-layer-demo',
+                closeBtn: 1,
+                area: ['550px', '380px'],
+                anim: 2,
+                shadeClose: true,
+                content: elements
+            });
+        });
+        
+        form.on('submit(addGames)', function(data) {
+            let loading = layer.load(1, {shade: [0.3,'#000']});
+            $.post('/admin/games/addGame', data.field, function(resp){
+                if (resp.code != 0) {
+                    layer.close(loading);
+                    layer.msg(resp.errors, {icon: 5, shift: 6} );
+                    return false;
+                } else {
+                    layer.closeAll();
+                    layer.msg("添加成功！", {icon: 1, time: 1500, end: function () {
+                            window.location.href = '/admin/games/gamesList'
+                        }})
+                }
+            }).error(function(){
+                layer.closeAll();
+                layer.msg("服务器出现异常！", {icon: 5, shift: 6} );
+            })
+        });
+        
+        laypage.render({
+            elem: 'page'
+            ,count: {$count}
+            ,limit: {$limit}
+            ,curr: {$page}
+            ,jump: function(obj, first) {
+                if(!first){
+                    window.location.href = "/admin/games/gamesList?page=" + obj.curr + "&limit=" + obj.limit
+                }
+            }
+        });
+        
+        window.del = function(gameId) {
+            layer.confirm('是否确定删除？删除后数据将无法恢复，请谨慎操作！', {
+                btn: ['下定决心','三思后行'],
+                title: "重要提示",
+                icon: 5,
+                shift: 6
+            }, function(){
+                layer.load(1, {shade: [0.3,'#000']});
+                $.post('/admin/games/delGame', {gameId: gameId}, function(resp){
+                    layer.closeAll();
+                    if (resp.code != 0) {
+                        layer.msg(resp.errors, {icon: 5, shift: 6, time: 1500} );
+                        return false;
+                    } else {
+                        layer.msg("删除成功！", {icon: 1, time: 1500, end: function () {
+                                window.location.href = '/admin/games/gamesList'
+                            }})
+                    }
+                }).error(function(){
+                    layer.closeAll();
+                    layer.msg("服务器出现异常！", {icon: 5, shift: 6} );
+                });
+            }, function(){
+                layer.closeAll();
+            });
+        }
+        let game_id = null;
+        window.details = function(gameId) {
+            layer.load(1, {shade: [0.3,'#000']});
+            $.post('/admin/games/findGameInfo', {gameId: gameId}, function(resp){
+                layer.closeAll();
+                if (resp.code != 0) {
+                    layer.msg(resp.errors, {icon: 5, shift: 6} );
+                    return false;
+                } else {
+                    layer.closeAll();
+                    let elements = $('#addBox').html();
+                    layer.open({
+                        title: "编辑彩种信息",
+                        type: 1,
+                        skin: 'layui-layer-demo',
+                        closeBtn: 1,
+                        area: ['550px', '380px'],
+                        anim: 2,
+                        shadeClose: true,
+                        content: elements,
+                        success: function() {
+                            let obj = $('.layui-layer-content');
+                            obj.find("input[name='name']").val(resp.data.game_name)
+                            obj.find("input[name='name']").attr('disabled', true)
+                            obj.find("input[name='highest']").val(resp.data.highest)
+                            obj.find("input[name='interval']").val(resp.data.interval)
+                            obj.find("input[name='forbid_time']").val(resp.data.forbid_time)
+                            obj.find('.layui-btn').attr('lay-filter', 'editGame')
+                            game_id = gameId
+                        }
+                    });
+                }
+            }).error(function(){
+                layer.closeAll();
+                layer.msg("服务器出现异常！", {icon: 5, shift: 6} );
+            })
+        }
+
+        form.on('submit(editGame)', function(data) {
+            layer.load(1, {shade: [0.3,'#000']});
+            data.field.gameId = game_id
+            $.post('/admin/games/editGameInfo', data.field, function(resp){
+                layer.closeAll();
+                if (resp.code != 0) {
+                    layer.msg(resp.errors, {icon: 5, shift: 6} );
+                    return false;
+                } else {
+                    layer.msg("修改成功！", {icon: 1, time: 1500, end: function () {
+                            window.location.href = '/admin/games/gamesList'
+                        }})
+                }
+            }).error(function(){
+                layer.closeAll();
+                layer.msg("服务器出现异常！", {icon: 5, shift: 6} );
+            })
+        });
+
+        form.on('switch(status)', function(data){
+            let status = data.elem.checked === false ? 1 : 0
+            let id = data.value
+            layer.load(1, {shade: [0.3,'#000']});
+            $.post('/admin/games/editGameInfo', {gameId: id, status: status }, function(resp){
+                layer.closeAll()
+                if (resp.code != 0) {
+                    layer.msg(resp.errors, {icon: 5, shift: 6} );
+                    $(data.elem).prop('checked', !data.elem.checked)
+                    return false;
+                } else {
+                    layer.msg("修改成功！", {icon: 1, time: 1500})
+                }
+            }).error(function(){
+                layer.closeAll();
+                layer.msg("服务器出现异常！", {icon: 5, shift: 6} );
+                $(data.elem).prop('checked', !data.elem.checked)
+                form.render()
+            })
+        })
+    })
+</script>
+{/block}

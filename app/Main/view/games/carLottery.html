@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="__STATIC__/common/css/sixLottery.css">
+    <link rel="stylesheet" href="__STATIC__/layui/css/layui.css">
+    <link rel="stylesheet" href="__STATIC__/common/css/common.css">
+    <title>{$type}</title>
+</head>
+<body>
+<div class="main-box">
+    <div class="main-header">
+        <div class="header-logo">
+            <img src="__STATIC__/common/images/logo.png" alt="" style="height: 100%">
+        </div>
+    
+        {notempty name="lastLotteryInfo"}
+        <div class="six-lottery">
+            <div class="lottery-info">
+                <sapn>{$type}</sapn>
+                <p><span>{$lastLotteryInfo.periods}</span>期开奖</p>
+            </div>
+            <div class="lottery-result">
+                {foreach $lastLotteryInfo['result'] as $key => $val}
+                <div style="width: 30px;margin-left: 5px;">
+                    <span class="iconCar iconCarBg{$val.key}">{$val.key}</span>
+<!--                    <p style="margin-top: 3px">{$val.value}</p>-->
+                </div>
+                {/foreach}
+            </div>
+        </div>
+        {/notempty}
+    
+        {include file="common/header-menu" /}
+    </div>
+    
+    {include file="common/header-game" /}
+    
+    <div class="game-item">
+        <ul>
+            <li>
+                <span class="game-item-selected">两面盘</span>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="main-body">
+        {include file="common/main-body-side" /}
+        
+        <div class="main-body-content">
+            <div class="content-main">
+                <div class="content-item">
+                    <div class="content-item-header">
+                        <div class="content-item-header-left">
+                            {$type}  -  两面盘
+                        </div>
+                        <div class="content-item-header-right">
+                            {$lotteryInfo.periods} 期
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            距离封盘：<span class="layui-badge-rim" id="thisCloseTime"></span>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            距离开奖：<span class="layui-badge-rim" id="thisOpenTime"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="content-item-table layui-form">
+                        <table>
+                            <thead>
+                            <div class="trThead">
+                                冠、亚军和
+                            </div>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                {foreach $config['topOrTwoTotal'] as $key => $val}
+                                <td class="name">{$val.type}</td>
+                                <td class="odds">{$val.odds}</td>
+                                <td class="amount">
+                                    <input type="text" name="冠、亚总和-topOrTwoTotal-{$val.type}" placeholder="金额">
+                                </td>
+                                {/foreach}
+                            </tr>
+                            </tbody>
+                        </table>
+                        
+                        <div class="content-row">
+                            <div class="content-col-md2 content-item-table">
+                                <table>
+                                    <thead>
+                                    <div class="trThead">
+                                        冠军
+                                    </div>
+                                    </thead>
+                                    <tbody>
+                                    {foreach $config['champion'] as $key => $val}
+                                    <tr>
+                                        <td class="name">{$val.type}</td>
+                                        <td class="odds">{$val.odds}</td>
+                                        <td class="amount">
+                                            <input type="text" name="冠军-champion-{$val.type}" placeholder="金额">
+                                        </td>
+                                    </tr>
+                                    {/foreach}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="content-col-md2 content-item-table">
+                                <table>
+                                    <thead>
+                                    <div class="trThead">
+                                        亚军
+                                    </div>
+                                    </thead>
+                                    <tbody>
+                                    {foreach $config['secondPlace'] as $key => $val}
+                                    <tr>
+                                        <td class="name">{$val.type}</td>
+                                        <td class="odds">{$val.odds}</td>
+                                        <td class="amount">
+                                            <input type="text" name="亚军-secondPlace-{$val.type}" placeholder="金额">
+                                        </td>
+                                    </tr>
+                                    {/foreach}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="content-col-md2 content-item-table">
+                                <table>
+                                    <thead>
+                                    <div class="trThead">
+                                        第三名
+                                    </div>
+                                    </thead>
+                                    <tbody>
+                                    {foreach $config['third'] as $key => $val}
+                                    <tr>
+                                        <td class="name">{$val.type}</td>
+                                        <td class="odds">{$val.odds}</td>
+                                        <td class="amount">
+                                            <input type="text" name="第三名-third-{$val.type}" placeholder="金额">
+                                        </td>
+                                    </tr>
+                                    {/foreach}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="content-col-md2 content-item-table">
+                                <table>
+                                    <thead>
+                                    <div class="trThead">
+                                        第四名
+                                    </div>
+                                    </thead>
+                                    <tbody>
+                                    {foreach $config['fourth'] as $key => $val}
+                                    <tr>
+                                        <td class="name">{$val.type}</td>
+                                        <td class="odds">{$val.odds}</td>
+                                        <td class="amount">
+                                            <input type="text" name="第四名-fourth-{$val.type}" placeholder="金额">
+                                        </td>
+                                    </tr>
+                                    {/foreach}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="content-col-md2 content-item-table">
+                                <table>
+                                    <thead>
+                                    <div class="trThead">
+                                        第五名
+                                    </div>
+                                    </thead>
+                                    <tbody>
+                                    {foreach $config['fifth'] as $key => $val}
+                                    <tr>
+                                        <td class="name">{$val.type}</td>
+                                        <td class="odds">{$val.odds}</td>
+                                        <td class="amount">
+                                            <input type="text" name="第五名-fifth-{$val.type}" placeholder="金额">
+                                        </td>
+                                    </tr>
+                                    {/foreach}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+    
+                        <div class="content-row">
+                            <div class="content-col-md2 content-item-table">
+                                <table>
+                                    <thead>
+                                    <div class="trThead">
+                                        第六名
+                                    </div>
+                                    </thead>
+                                    <tbody>
+                                    {foreach $config['sixth'] as $key => $val}
+                                    <tr>
+                                        <td class="name">{$val.type}</td>
+                                        <td class="odds">{$val.odds}</td>
+                                        <td class="amount">
+                                            <input type="text" name="第六名-sixth-{$val.type}" placeholder="金额">
+                                        </td>
+                                    </tr>
+                                    {/foreach}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="content-col-md2 content-item-table">
+                                <table>
+                                    <thead>
+                                    <div class="trThead">
+                                        第七名
+                                    </div>
+                                    </thead>
+                                    <tbody>
+                                    {foreach $config['seventh'] as $key => $val}
+                                    <tr>
+                                        <td class="name">{$val.type}</td>
+                                        <td class="odds">{$val.odds}</td>
+                                        <td class="amount">
+                                            <input type="text" name="第七名-seventh-{$val.type}" placeholder="金额">
+                                        </td>
+                                    </tr>
+                                    {/foreach}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="content-col-md2 content-item-table">
+                                <table>
+                                    <thead>
+                                    <div class="trThead">
+                                        第八名
+                                    </div>
+                                    </thead>
+                                    <tbody>
+                                    {foreach $config['eighth'] as $key => $val}
+                                    <tr>
+                                        <td class="name">{$val.type}</td>
+                                        <td class="odds">{$val.odds}</td>
+                                        <td class="amount">
+                                            <input type="text" name="第八名-eighth-{$val.type}" placeholder="金额">
+                                        </td>
+                                    </tr>
+                                    {/foreach}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="content-col-md2 content-item-table">
+                                <table>
+                                    <thead>
+                                    <div class="trThead">
+                                        第九名
+                                    </div>
+                                    </thead>
+                                    <tbody>
+                                    {foreach $config['ninth'] as $key => $val}
+                                    <tr>
+                                        <td class="name">{$val.type}</td>
+                                        <td class="odds">{$val.odds}</td>
+                                        <td class="amount">
+                                            <input type="text" name="第九名-ninth-{$val.type}" placeholder="金额">
+                                        </td>
+                                    </tr>
+                                    {/foreach}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="content-col-md2 content-item-table">
+                                <table>
+                                    <thead>
+                                    <div class="trThead">
+                                        第十名
+                                    </div>
+                                    </thead>
+                                    <tbody>
+                                    {foreach $config['tenth'] as $key => $val}
+                                    <tr>
+                                        <td class="name">{$val.type}</td>
+                                        <td class="odds">{$val.odds}</td>
+                                        <td class="amount">
+                                            <input type="text" name="第十名-tenth-{$val.type}" placeholder="金额">
+                                        </td>
+                                    </tr>
+                                    {/foreach}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="layui-form-item" style="margin-top: 20px">
+                            <button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="affirmOrderBox" style="display: none">
+    <div style="padding: 15px">
+        <table class="layui-table">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>类型</th>
+                <th>明细</th>
+                <th>下注金额</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody class="affirmOrderTd">
+            </tbody>
+        </table>
+        <div class="footer-btn">
+            <button class="layui-btn submitData layui-btn-sm">确认提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">取消</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+<script src="__STATIC__/layui/layui.js"></script>
+<script>
+    let gameId = '{$gameInfo.id}';
+    let timeNumber = '{$lotteryInfo.id}'
+    let openTime = '{$lotteryInfo.lottery_time}'
+    let closeTime = '{$lotteryInfo.end_time}'
+    layui.use(['layer', 'form'], function(){
+        let $ = layui.$, layer = layui.layer, form = layui.form;
+
+        let submitData = [];
+
+        function countDown(time, isOpen = false) {
+            let nowTime = +new Date(); // 返回的是当前时间总的毫秒数
+            let inputTime = +new Date(time); // 返回的是用户输入时间总的毫秒数
+            let times = (inputTime - nowTime) / 1000; // times是剩余时间总的秒数
+            if (times < 0) {
+                if (isOpen) {
+                    location.reload();
+                    return "已开奖"
+                } else {
+                    return "已封盘"
+                }
+            }
+            let m = parseInt(times / 60); // 分
+            m = m < 10 ? '0' + m : m;
+            let s = parseInt(times % 60); // 当前的秒
+            s = s < 10 ? '0' + s : s;
+            return m + '分' + s + '秒';
+        }
+
+        // 设置距离开奖时间
+        setInterval(function() {
+            let thisOpenTime = countDown(openTime, true)
+            let thisCloseTime = countDown(closeTime)
+            $('#thisOpenTime').html(thisOpenTime);
+            $('#thisCloseTime').html(thisCloseTime);
+        }, 1000)
+
+        form.on('submit(*)', function(obj) {
+            let data = affirmOrder(obj.field)
+            if (data.length == 0) {
+                layer.msg("请下注后再提交！")
+                return false;
+            }
+            let elements = ""
+            $.each(data, function(index, value){
+                let number = parseInt(index) + 1
+                elements += "<tr>" +
+                    "<td>" + number + "</td>" +
+                    "<td>" + value.title + "</td>" +
+                    "<td>" + value.type + "</td>" +
+                    "<td>" + value.money + "</td>" +
+                    "<td><button number='"+index+"' class=\"layui-btn layui-btn-sm layui-btn-danger delDetail\">删除</button></td>" +
+                    "</tr>>"
+            })
+            openElement(elements);
+        })
+
+        function openElement(elements, type) {
+            let content = $('#affirmOrderBox').html();
+            layer.open({
+                title: "下注确认",
+                type: 1,
+                skin: 'layui-layer-demo',
+                closeBtn: 1,
+                anim: 2,
+                shadeClose: true,
+                area: ['600px', '400px'],
+                content: content,
+                success: function(){
+                    $('.layui-layer-content').find('.affirmOrderTd').append(elements)
+
+                    $('.layui-layer-content').find('.delDetail').on('click', function(){
+                        let thisIndex = $(this).attr("number");
+                        submitData.splice(thisIndex, 1);
+                        $(this).parents('tr').remove()
+                        if (submitData.length == 0) {
+                            layer.closeAll();
+                            return false;
+                        }
+                    })
+
+                    $('.layui-layer-content').find('.submitData').on('click', function() {
+                        layer.load(1, {shade: [0.3,'#000']});
+                        var param = {
+                            gameId: gameId,
+                            "type": type,
+                            param: submitData,
+                            'lotteryId': timeNumber
+                        }
+                        saveData(param);
+                    })
+                }
+            });
+        }
+
+        function affirmOrder(data) {
+            let submitParam = []
+            for (let item in data) {
+                if (data[item] != "") {
+                    let type = item.split("-")
+                    let param = {}
+                    param.lottery_type = type[1]
+                    param.title = type[0]
+                    param.type = type[2]
+                    param.money = data[item]
+                    submitParam.push(param)
+                }
+            }
+            submitData = submitParam
+            return submitParam
+        }
+
+        function saveData(param) {
+            layer.load(1, {shade: [0.3,'#000']});
+            $.post('/main/game/saveOrder',
+                param,
+                function(resp) {
+                    layer.closeAll();
+                    if (resp.code != 0) {
+                        layer.msg(resp.errors, {icon: 5, shift: 6, time: 1500} );
+                        return false;
+                    }
+                    layer.msg("下注成功，请留意开奖信息", {icon: 1, time: 1500, end: function(){
+                            window.location.reload();
+                        }});
+                }).error(function() {
+                layer.closeAll();
+                layer.msg("服务器出现异常！", {icon: 5, shift: 6} );
+            })
+        }
+    })
+</script>

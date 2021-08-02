@@ -1,0 +1,353 @@
+{
+    "numberConfig": {
+        "beginNumber": 1,
+        "endNumber": 49,
+        "odds": "42.30",
+        "return": "0.13",
+        "singleNoteMin": 1,
+        "singleNoteMax": 200000
+    },
+    "colorTypeConfig": [
+        {
+            "type": "红波",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "蓝波",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "绿波",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "红单",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "红双",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "红大",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "红小",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "蓝单",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "蓝双",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "蓝大",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "蓝小",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "绿单",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "绿双",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "绿大",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "绿小",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "红大单",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "红大双",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "红小单",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "红小双",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "蓝大单",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "蓝大双",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "蓝小单",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "蓝小双",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "绿大单",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "绿大双",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "绿小单",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "绿小双",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        }
+    ],
+    "chineseZodiacConfig": [
+        {
+            "type": "鼠",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "牛",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "虎",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "兔",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "龙",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "蛇",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "马",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "羊",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "猴",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "鸡",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "狗",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "猪",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        }
+    ],
+    "joinNumberConfig": [
+        {
+            "type": "三中二中二",
+            "odds": "20.00",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 1000,
+            "inputNumber": 3
+        },
+        {
+            "type": "三中二中三",
+            "odds": "100.00",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 1000,
+            "inputNumber": 3
+        },
+        {
+            "type": "三全中",
+            "odds": "670.00",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 1000,
+            "inputNumber": 3
+        },
+        {
+            "type": "二全中",
+            "odds": "60.00",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 1000,
+            "inputNumber": 2
+        },
+        {
+            "type": "二中特中特",
+            "odds": "25.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 1000,
+            "inputNumber": 2
+        },
+        {
+            "type": "二中特中二",
+            "odds": "50.00",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 1000,
+            "inputNumber": 2
+        },
+        {
+            "type": "特串",
+            "odds": "150.00",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 1000,
+            "inputNumber": 2
+        },
+        {
+            "type": "四全中",
+            "odds": "950.00",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 1000,
+            "inputNumber": 4
+        }
+    ]
+}

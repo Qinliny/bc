@@ -1,0 +1,125 @@
+{extend name="common/public" /}
+
+{block name="title"}
+普通投注
+{/block}
+
+{block name="content"}
+<span class="layui-breadcrumb">
+    <a><cite>首页</cite></a>
+    <a><cite>业务流水</cite></a>
+    <a><cite>普通投注</cite></a>
+</span>
+
+<div class="content-body">
+    <div class="layui-card">
+        <div class="layui-card-header">
+            用户投注列表
+        </div>
+        <div class="layui-card-body">
+            <div class="layui-form layui-row layui-col-space10">
+                <div class="layui-col-md2">
+                    <input type="text" name="orderNo" value="{$orderNo}" placeholder="编号" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-col-md2">
+                    <select name="game">
+                        <option value="">选择彩种</option>
+                        {foreach $gameList as $key => $val}
+                        <option value="{$val.id}" {if condition="$game == $val.id"}selected{/if}>{$val.game_name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+                <div class="layui-col-md1">
+                    <input type="text" name="account" value="{$account}" placeholder="用户账号" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-col-md2">
+                    <button type="button" class="layui-btn" id="search">
+                        搜索
+                        <i class="layui-icon layui-icon-search layui-font-12"></i>
+                    </button>
+                </div>
+            </div>
+            <table class="layui-table">
+                <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>彩种</th>
+                        <th>期数</th>
+                        <th>玩法</th>
+                        <th>用户账号</th>
+                        <th>下注内容</th>
+                        <th>下注金额</th>
+                        <th>下注时间</th>
+                        <th>是否开奖</th>
+                        <th>是否中奖</th>
+                        <th>中奖金额</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {foreach $list as $key => $val}
+                    <tr>
+                        <td>{$val.order_no}</td>
+                        <td>{$val.game_name}</td>
+                        <td>{$val.periods}</td>
+                        <td>{$val.content.key}</td>
+                        <td>{$val.account}</td>
+                        <td>{$val.content.value}</td>
+                        <td>{$val.money | sprintf="%1\$.2f", ###}</td>
+                        <td>{$val.create_time}</td>
+                        <td>
+                            {if condition="$val.is_lottery == 0"}
+                            <span class="layui-badge">未开奖</span>
+                            {elseif condition="$val.is_lottery == 1" /}
+                            <span class="layui-badge">开奖中</span>
+                            {else /}
+                            <span class="layui-badge layui-bg-blue">已开奖</span>
+                            {/if}
+                        </td>
+                        <td>
+                            {if condition="$val.is_win == 0"}
+                            <span class="layui-badge">未中奖</span>
+                            {else /}
+                            <span class="layui-badge layui-bg-blue">已中奖</span>
+                            {/if}
+                        </td>
+                        <td>
+                            {$val.win_amount | sprintf="%1\$.2f", ###}
+                        </td>
+                    </tr>
+                {/foreach}
+                </tbody>
+            </table>
+
+            <div id="page"></div>
+        </div>
+    </div>
+</div>
+
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(['layer', 'form', 'laypage'], function() {
+        let $ = layui.$, layer = layui.layer, form = layui.form, laypage = layui.laypage;
+
+        laypage.render({
+            elem: 'page'
+            ,count: {$count}
+            ,limit: {$limit}
+            ,curr: {$page}
+            ,jump: function(obj, first) {
+                if(!first){
+                    window.location.href = "/admin/bet?page=" + obj.curr + "&limit=" + obj.limit
+                }
+            }
+        });
+
+        $('#search').on('click', function(){
+            let orderNo = $('input[name="orderNo"]').val();
+            let account = $('input[name="account"]').val();
+            let game = $('select[name="game"]').val();
+            window.location.href = "/admin/bet?page=1&orderNo=" + orderNo + "&account=" + account + "&game=" + game
+        })
+    })
+</script>
+{/block}

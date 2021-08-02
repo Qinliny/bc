@@ -1,0 +1,157 @@
+[
+    {
+        "id": "10000",
+        "menuName": "业务流水",
+        "link": "javascript:void(0)",
+        "hide": false,
+        "children": [
+            {
+                "id": "10000-1",
+                "menuName": "提现管理",
+                "link": "/admin/Recharge/withdrawal",
+                "hide": true
+            },
+            {
+                "id": "10000-2",
+                "menuName": "充值管理",
+                "link": "/admin/Recharge/charge",
+                "hide": true
+            },
+            {
+                "id": "10000-3",
+                "menuName": "普通投注",
+                "link": "/admin/bet",
+                "hide": false
+            },
+            {
+                "id": "10000-4",
+                "menuName": "账变明细",
+                "link": "/admin/balanceLog",
+                "hide": false
+            },
+            {
+                "id": "10000-5",
+                "menuName": "六合彩统计",
+                "link": "javascript:void(0)",
+                "hide": true
+            }
+        ]
+    },
+    {
+        "id": "10001",
+        "menuName": "用户管理",
+        "link": "javascript:void(0)",
+        "hide": false,
+        "children": [
+            {
+                "id": "10001-1",
+                "menuName": "会员管理",
+                "link": "/admin/UserManage/users",
+                "hide": false
+            },
+            {
+                "id": "10001-2",
+                "menuName": "代理管理",
+                "link": "/admin/UserManage/agency",
+                "hide": false
+            },
+            {
+                "id": "10001-3",
+                "menuName": "账户认证管理",
+                "link": "/admin/UserManage/accountManage",
+                "hide": true
+            },
+            {
+                "id": "10001-4",
+                "menuName": "实名管理",
+                "link": "/admin/UserManage/userAuth",
+                "hide": true
+            },
+            {
+                "id": "10001-5",
+                "menuName": "登录日志",
+                "link": "javascript:void(0)",
+                "hide": true
+            }
+        ]
+    },
+    {
+        "id": "10002",
+        "menuName": "开奖数据",
+        "link": "/admin/Lottery/index",
+        "hide": false,
+        "children": []
+    },
+    {
+        "id": "10003",
+        "menuName": "数据统计",
+        "link": "javascript:void(0)",
+        "hide": true,
+        "children": [
+            {
+                "id": "10003-1",
+                "menuName": "统计概况",
+                "link": "javascript:void(0)",
+                "hide": false
+            },
+            {
+                "id": "10003-2",
+                "menuName": "统计报表",
+                "link": "javascript:void(0)",
+                "hide": false
+            },
+            {
+                "id": "10003-3",
+                "menuName": "开奖检测",
+                "link": "javascript:void(0)",
+                "hide": false
+            }
+        ]
+    },
+    {
+        "id": "10004",
+        "menuName": "充值配置",
+        "hide": true,
+        "link": "/admin/recharge/chargeConfig"
+    },
+    {
+        "id": "10005",
+        "menuName": "彩种配置",
+        "link": "javascript:void(0)",
+        "hide": false,
+        "children": [
+            {
+                "id": "10005-1",
+                "menuName": "彩种列表",
+                "link": "/admin/games/gamesList",
+                "hide": false
+            }
+        ]
+    },
+    {
+        "id": "10006",
+        "menuName": "系统设置",
+        "link": "javascript:void(0)",
+        "hide": false,
+        "children": [
+            {
+                "id": "10006-1",
+                "menuName": "系统设置",
+                "link": "javascript:void(0)",
+                "hide": true
+            },
+            {
+                "id": "10006-2",
+                "menuName": "管理员列表",
+                "link": "/admin/admins",
+                "hide": false
+            },
+            {
+                "id": "10006-3",
+                "menuName": "操作日志",
+                "link": "javascript:void(0)",
+                "hide": true
+            }
+        ]
+    }
+]

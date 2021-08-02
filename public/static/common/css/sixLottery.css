@@ -1,0 +1,456 @@
+* {
+    padding: 0;margin: 0;
+}
+ul, li {
+    list-style: none;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+.main-box {
+    width: 100%;
+    height: 100%;
+    background: #e6e6e6;
+}
+.main-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 67px;
+    background-image: url("/static/common/images/hader_bg.jpg");
+    background-repeat: no-repeat;
+    box-sizing: border-box;
+    padding: 0 15px;
+}
+
+.header-logo {
+    height: 60px;
+}
+
+.header-logo img {
+    display: block;
+    height: 100%;
+    border-radius: 5px;
+}
+
+.six-lottery {
+    display: flex;
+    margin-left: 20px;
+    font-size: 13px;
+    color: #ffffff;
+    text-align: center;
+    line-height: 22px;
+}
+
+.lottery-result {
+    display: flex;
+    align-items: center;
+    margin-left: 30px;
+}
+
+.header-menu {
+    height: 100%;
+}
+.header-menu ul {
+    position: absolute;
+    right: 300px;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.header-menu ul li {
+    margin-left: 10px;
+    font-size: 13px;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.header-menu ul li a {
+    color: #ffffff;
+}
+
+.main-header-game {
+    width: 100%;
+    height: 38px;
+    background: #6a1f2d;
+    box-sizing: border-box;
+    padding: 0 50px;
+}
+
+.main-header-game ul {
+    display: flex;
+    height: 100%;
+}
+
+.selected {
+    background: #d67a84;
+    color: #54131e!important;
+}
+
+.main-header-game ul > li {
+    height: 100%;
+    width: 127px;
+    text-align: center;
+    line-height: 38px;
+}
+
+.main-header-game ul > li > a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    font-size: 13px;
+    color: #ffffff;
+}
+
+.main-header-game ul > li:hover {
+    background: #d67a84;
+    color: #54131e!important;
+}
+
+.game-item {
+    width: 100%;
+    height: 36px;
+    background: #d87c86;
+    box-sizing: border-box;
+    padding: 0 210px;
+}
+
+.game-item-selected {
+    color: #54131e!important;
+    font-weight: bold;
+}
+
+.game-item ul {
+    display: flex;
+    height: 100%;
+    line-height: 36px;
+}
+
+.game-item ul li {
+    position: relative;
+    color: #ffffff;
+    font-size: 13px;
+    box-sizing: border-box;
+    padding: 0 15px;
+    cursor: pointer;
+}
+
+.game-item ul li::before {
+    position: absolute;
+    right: 0;
+    content: "|";
+}
+
+.game-item ul li:last-child::before{
+    content: "";
+}
+
+.main-body {
+    display: flex;
+    position: relative;
+    height: calc(100% - 141px);
+}
+
+.main-body-side {
+    width: 200px;
+    box-sizing: border-box;
+    padding: 4px;
+}
+
+.account {
+    width: 100%;
+}
+
+.account .account-header {
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    background: #d87c86;
+    font-size: 14px;
+    font-weight: bold;
+    color: #ffffff;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.account .account-body {
+    height: 77px;
+    background: #ffffff;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.account-body ul {
+    height: 100%;
+}
+
+.account-body ul > li {
+    display: flex;
+    align-items: center;
+    height: 33.333%;
+}
+
+.account-body ul > li > label {
+    display: block;
+    width: 45%;
+    font-size: 13px;
+    text-align: right;
+    color: #feadb5;
+}
+
+.account-body ul > li > span {
+    display: block;
+    width: 55%;
+    font-size: 13px;
+}
+
+.main-body-side .btn-list {
+    display: flex;
+    margin-top: 10px;
+}
+
+.btn-list > div {
+    width: 50%;
+    height: 34px;
+    line-height: 34px;
+    box-sizing: border-box;
+}
+
+.btn-list > div:nth-child(1) {
+    padding-right: 3px;
+}
+
+.btn-list > div:last-child {
+    padding-left: 3px;
+}
+
+.btn-list > div > a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: #ff8754;
+    text-align: center;
+    font-size: 13px;
+    color: #ffffff;
+    font-weight: bold;
+    border-radius: 3px;
+    text-decoration: none;
+}
+
+.btn-list > div > a:hover {
+    background: #ff5301;
+}
+
+.btn-block {
+    width: 100%;
+    height: 33px;
+    line-height: 33px;
+    text-align: center;
+    margin: 5px 0;
+    background: #d87c86;
+    font-size: 13px;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.btn-block a {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    color: #ffffff;
+}
+
+.main-body-content {
+    position: absolute;
+    left: 200px;
+    width: calc(100% - 200px);
+    height: 100%;
+    overflow: auto;
+    box-sizing: border-box;
+    padding: 10px;
+    background: #ffffff;
+}
+
+.content-main {
+    position: relative;
+    width: 1000px;
+}
+
+.content-main1 {
+    position: relative;
+}
+
+.content-main .content-item {
+    position: absolute;
+    display: none;
+    width: 100%;
+}
+
+.content-main .content-item:nth-child(1) {
+    display: block;
+}
+
+.content-item .content-item-header {
+    display: flex;
+    justify-content: space-between;
+    height: 35px;
+    line-height: 35px;
+    font-weight: bold;
+    font-size: 13px;
+    border-radius: 5px;
+    background-color: #B33B4E;
+    color: #fff;
+    box-sizing: border-box;
+    padding: 0 15px;
+}
+
+.content-item-table {
+    margin-top: 30px;
+    width: 100%;
+}
+
+.content-item-table > table {
+    width: 100%;
+    line-height: 24px;
+    background: #e8caca;
+}
+
+.content-item-table > table > thead {
+    line-height: 24px;
+}
+
+.content-item-table > table > thead > tr {
+    line-height: 24px;
+}
+
+.content-item-table > table > thead > tr > th {
+    line-height: 24px;
+    border: 1px solid #EAC0BF;
+    background: #e8caca;
+    color: #892122;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.content-item-table > table >tbody > tr > td {
+    height: 30px;
+    background: #fff;
+    border: 1px solid #daa4a3;
+    color: #892122;
+}
+
+tbody .number {
+    background-color: #f7ebeb;
+    width: 50px;
+    min-width: 40px;
+    font-weight: bold;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+tbody .odds {
+    width: 50px;
+    font-weight: bold;
+    text-align: center;
+}
+
+tbody .amount {
+    width: 65px;
+    box-sizing: border-box;
+    padding: 5px;
+}
+
+tbody .amount > input {
+    width: 95%;
+    height: 100%;
+}
+
+tbody .name {
+    background-color: #f7ebeb !important;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+}
+
+tbody .numberList {
+    display: flex;
+    align-items: center;
+}
+
+tbody .numbers {
+    text-align: center;
+}
+
+.layui-form-radio:hover *, .layui-form-radioed, .layui-form-radioed>i {
+    color: #1e9fff !important;
+}
+
+.layui-form-radio {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.layui-form-radio > i {
+    font-size: 16px !important;
+    color: #393d49 !important;
+}
+
+.trThead {
+    line-height: 30px;
+    border: 1px solid #EAC0BF;
+    background: #e8caca;
+    color: #892122;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.content-row {
+    display: flex;
+    margin-top: 15px;
+}
+
+.content-col-md2 {
+    width: 20%;
+    padding: 0 2px;
+    margin-top: 0px;
+}
+
+.blockquote {
+    background-image: url("/static/common/images/banner.jpg");
+    background-size: cover;
+    border-bottom: 1px solid #C5A6AC;
+}
+
+#thisCloseTime, #thisOpenTime{
+    padding: 2px 8px;
+    font-size: 13px;
+}
+
+.iconCar {
+    display: inline-block;
+    width: 28px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    border-radius: 2px;
+    font-weight: bold;
+    font-size: 15px;
+    color: #fff;
+}
+
+.iconCarBg1 { background-color: #e6de00 }
+.iconCarBg2 { background-color: #0092dd }
+.iconCarBg3 { background-color: #4b4b4b }
+.iconCarBg4 { background-color: #ff7600 }
+.iconCarBg5 { background-color: #17e2e5 }
+.iconCarBg6 { background-color: #5234ff }
+.iconCarBg7 { background-color: #bfbfbf }
+.iconCarBg8 { background-color: #ff2600 }
+.iconCarBg9 { background-color: #780b00 }
+.iconCarBg10 { background-color: #07bf00 }

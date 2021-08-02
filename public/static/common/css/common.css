@@ -1,0 +1,108 @@
+body {
+    background: #e0e0e0;
+}
+.content {
+    padding: 15px 15px 60px 15px;
+}
+.layui-layout-admin .layui-logo, .layui-layout-admin .layui-side, .layui-nav-tree{
+    width: 240px;
+}
+
+.layui-side-scroll {
+    width: 240px;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.layui-side-scroll .layui-card-header {
+    border-bottom: 1px solid #e2e2e2;
+}
+.layui-side-scroll .layui-card-body {
+    color: #000000;
+}
+
+.layui-body, .layui-layout-admin .layui-footer, .layui-layout-left{
+    left: 240px;
+}
+
+
+.content-body {
+    margin-top: 20px;
+}
+
+.layui-table td, .layui-table th {
+    text-align: center;
+}
+
+.layui-nav-tree .layui-nav-child a {
+    margin-left: 20px;
+}
+
+.side-scroll-btn {
+    display: flex;
+}
+
+.side-scroll-btn button {
+    width: 50%;
+}
+
+.numbers {
+    display: block;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    margin: 0 auto;
+    color: #ffffff;
+    border-radius: 50%;
+    font-weight: bold;
+    z-index: 99;
+}
+
+.redColor {
+    background: #f8223c;
+}
+
+.blueColor {
+    background: #0899ec;
+}
+
+.greenColor {
+    background: #21c066;
+}
+
+.footer-btn {
+    text-align: right;
+}
+
+.inputNumberList {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.inputNumberList .select-item {
+    margin: 0 10px;
+}
+
+.inputNumberList .select-item:first-child {
+    margin-left: 0;
+}
+
+.inputNumberList .select-item:last-child {
+    margin-right: 0;
+}
+
+.btn-list {
+    margin-top: 15px;
+}
+
+
+@media screen and (min-width: 992px) {
+    .layui-col-md2-5 {
+        float: left;
+        width: 20%;
+        position: relative;
+        display: block;
+        box-sizing: border-box;
+    }
+}

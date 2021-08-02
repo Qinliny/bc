@@ -1,0 +1,171 @@
+{extend name="common/public" /}
+
+{block name="title"}用户账户管理{/block}
+
+{block name="content"}
+<span class="layui-breadcrumb">
+<a><cite>首页</cite></a>
+<a><cite>用户管理</cite></a>
+<a href="javascript:void(0)">用户账户管理</a>
+</span>
+
+<div class="content-body">
+    <div class="layui-card">
+        <div class="layui-card-header">用户账户管理</div>
+        <div class="layui-card-body">
+            <!--搜索表单-->
+            <form class="layui-form" action="">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">用户名：</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="searchName" name="username" placeholder="请输入用户名"
+                                   class="layui-input"/>
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
+                        <label class="layui-form-label">账户类型</label>
+                        <div class="layui-input-inline">
+                            <select name="type" id="searchType">
+                                <option value=""></option>
+                                <option value="alipay">支付宝</option>
+                                <option value="wechat">微信</option>
+                                <option value="QQ">QQ</option>
+                                <option value="bank">银行卡</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">账户类型</label>
+                        <div class="layui-input-inline">
+                            <select name="allow" id="searchAllow">
+                                <option value=""></option>
+                                <option value="allow">通过</option>
+                                <option value="no">未通过</option>
+                            </select>
+                        </div>
+                    </div>
+                    <a href="javascript:void(0)" class="layui-btn" onclick="reload()">搜索</a>
+                </div>
+            </form>
+            <!--表格-->
+            <table id="table" lay-filter="table"></table>
+            <!--            工具栏-->
+            <script type="text/html" id="tools">
+                <a class="layui-btn layui-btn-sm" onclick="saveAllow('{{d.id}}','{{d.type}}')" lay-event="edit">{{d.is_allow == 0 ?
+                    "通过" : "取消"}}</a>
+                <a class="layui-btn layui-btn-danger layui-btn-sm" onclick="removeById('{{d.id}}')" lay-event="detail">删除</a>
+            </script>
+        </div>
+    </div>
+</div>
+
+
+{/block}
+
+{block name="js"}
+<script>
+    var tableInst = null;
+    var form, $, layer, table;
+    layui.use(['form', 'table', 'layer'], function () {
+        form = layui.form,
+            $ = layui.$,
+            layer = layui.layer,
+            table = layui.table;
+
+        tableInst = table.render({
+            elem: '#table',
+            height: 320,
+            id: "tableInst",
+            url: '/admin/UserManage/loadData',
+            loading: true,
+            page: {
+                layout: ['prev', 'page', 'next', 'count', 'limit']//自定义分页布局
+                , limit: 10	//初始每页数量
+                , limits: [10, 15, 20]	//可选的每页数量
+                , groups: 10	//最多几个跳页按钮  1 2 3 4 5 6 这种跳页按钮
+                , first: false //不显示首页
+                , last: false //不显示尾页
+            },
+            // data: tableList,
+            cols: [[
+                {field: 'id', title: 'id', width: 70},
+                {field: 'username', title: '用户名', width: 130},
+                {
+                    field: 'is_allow', title: '审核状态', width: 100, templet: function (data) {
+                        return data.is_allow == 0 ? "未通过" : "已通过"
+                    }
+                },
+                {field: 'add_time', title: '申请时间', width: 160},
+                {field: 'process_time', title: '处理时间', width: 160},
+                {
+                    field: 'type', title: '账户类型', width: 120, templet: function (data) {
+                        switch (data.type) {
+                            case 'bank':
+                                return "银行卡";
+                            case 'wechat':
+                                return "微信";
+                            case 'alipay' :
+                                return "支付宝";
+                            default:
+                                return '未知';
+                        }
+                    }
+                },
+                {
+                    field: 'qr_code', title: '二维码', width: 120, templet: function (data) {
+                        return "<img src='" + data.qr_code + "' width='30px' height='30px'/>";
+                    }
+                },
+                {field: 'account', title: '账号', width: 230},
+                {field: 'account_name', title: '持卡人姓名', width: 110},
+                {fixed: 'right', title: '操作', width: 160, toolbar: "#tools"}
+            ]]
+        })
+        //监听搜索表单
+        form.on('submit(search)', function (data) {
+            let params = data.field;
+            loadData(params);
+            return false;
+        })
+    })
+
+    var reload = () => {
+        tableInst.reload({
+            where: {
+                username: $('#searchName').val(),
+                type: $('#searchType').val(),
+                allow: $('#searchAllow').val()
+            },
+            page: {
+                curr: 1
+            }
+        });
+    }
+
+    var saveAllow = (id,type) => {
+        $.post('/admin/UserManage/saveAllow', {id,type}, function (res) {
+            if (res.code == 0) {
+                layer.msg(res.message)
+            } else {
+                layer.msg(res.errors)
+            }
+            reload();
+        })
+    }
+    var removeById = (id) => {
+        $.post('/admin/UserManage/removeById', {id}, function (res) {
+            if (res.code == 0) {
+                layer.msg(res.message)
+            } else {
+                layer.msg(res.errors)
+            }
+            reload();
+        })
+    }
+
+
+</script>
+
+{/block}

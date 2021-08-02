@@ -1,0 +1,332 @@
+{
+    "topOrTwoTotal": [
+        {
+            "type": "冠亚大",
+            "odds": "2.28",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "冠亚小",
+            "odds": "1.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "冠亚单",
+            "odds": "1.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "冠亚双",
+            "odds": "2.28",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        }
+    ],
+    "champion": [
+        {
+            "type": "大",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "小",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "单",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "双",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        }
+    ],
+    "secondPlace": [
+        {
+            "type": "大",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "小",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "单",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "双",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        }
+    ],
+    "third": [
+        {
+            "type": "大",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "小",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "单",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "双",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        }
+    ],
+    "fourth": [
+        {
+            "type": "大",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "小",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "单",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "双",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        }
+    ],
+    "fifth": [
+        {
+            "type": "大",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "小",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "单",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "双",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        }
+    ],
+    "sixth": [
+        {
+            "type": "大",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "小",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "单",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "双",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        }
+    ],
+    "seventh": [
+        {
+            "type": "大",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "小",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "单",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "双",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        }
+    ],
+    "eighth": [
+        {
+            "type": "大",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "小",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "单",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "双",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        }
+    ],
+    "ninth": [
+        {
+            "type": "大",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "小",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "单",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "双",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        }
+    ],
+    "tenth": [
+        {
+            "type": "大",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "小",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "单",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        },
+        {
+            "type": "双",
+            "odds": "1.99",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 100000
+        }
+    ]
+}

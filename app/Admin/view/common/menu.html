@@ -1,0 +1,29 @@
+<div class="layui-side layui-bg-black">
+    <div class="layui-side-scroll">
+        <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+        <ul class="layui-nav layui-nav-tree" lay-filter="test">
+            {foreach $menuList as $key => $value}
+            {if condition="$value.hide == false"}
+            {if condition="empty($value.children) == true"}
+            <li class="layui-nav-item">
+                <a href="{$value.link}">{$value.menuName}</a>
+            </li>
+            {else/}
+            <li class="layui-nav-item">
+                <a class="" href="javascript:;">{$value.menuName} </a>
+                <dl class="layui-nav-child">
+                    {foreach $value.children as $k => $child}
+                    {if condition="$child.hide == false"}
+                    <dd>
+                        <a href="{$child.link}">{$child.menuName}</a>
+                    </dd>
+                    {/if}
+                    {/foreach}
+                </dl>
+            </li>
+            {/if}
+            {/if}
+            {/foreach}
+        </ul>
+    </div>
+</div>

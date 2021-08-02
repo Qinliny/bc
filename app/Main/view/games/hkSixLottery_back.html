@@ -1,0 +1,394 @@
+{extend name="common/public" /}
+
+{block name="title"}
+{$gameInfo.game_name}
+{/block}
+
+{block name="content"}
+<style>
+    .layui-table td, .layui-table th, .layui-table-col-set, .layui-table-fixed-r, .layui-table-grid-down, .layui-table-header, .layui-table-page, .layui-table-tips-main, .layui-table-tool, .layui-table-total, .layui-table-view, .layui-table[lay-skin=line], .layui-table[lay-skin=row] {
+        border-color: #e2e2e2;
+    }
+</style>
+
+<div class="layui-panel" style="margin-bottom: 15px">
+    <div style="padding: 15px;display: flex;justify-content: space-between">
+        <div class="panel-item">
+            当前期数：第 <b>{$lotteryInfo.periods}</b> 期
+            <p>开奖时间：<b>{$lotteryInfo.lottery_time}</b></p>
+        </div>
+    </div>
+</div>
+
+<div class="layui-card">
+    <div class="layui-card-header">特码</div>
+    <div class="layui-card-body layui-form">
+        <div class="layui-row layui-col-space10">
+            {foreach $config['numberConfig'] as $key => $val}
+            <div class="layui-col-md3">
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th>特码</th>
+                        <th>赔率</th>
+                        <th>下注</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            {if condition="$val.color == 'red'"}
+                            <span class="numbers redColor">{$val.number}</span>
+                            {elseif $val.color == 'blue' /}
+                            <span class="numbers blueColor">{$val.number}</span>
+                            {else /}
+                            <span class="numbers greenColor">{$val.number}</span>
+                            {/if}
+                        </td>
+                        <td>{$val.odds}</td>
+                        <td>
+                            <input type="text" name="number-{$val.number}" placeholder="金额" autocomplete="off" class="layui-input">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            {/foreach}
+        </div>
+        <div class="layui-form-item" style="text-align: center; margin-top: 20px">
+            <button class="layui-btn" lay-submit lay-filter="numberSubmit">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</div>
+
+<div class="layui-card">
+    <div class="layui-card-header">色波</div>
+    <div class="layui-card-body layui-form">
+        <div class="layui-row layui-col-space10">
+            {foreach $config['colorTypeConfig'] as $key => $val}
+            <div class="layui-col-md3">
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th width="45">类型</th>
+                        <th width="30">赔率</th>
+                        <th>下注</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            {$val.type}
+                        </td>
+                        <td>{$val.odds}</td>
+                        <td>
+                            <input type="text" name="color-{$val.type}" placeholder="金额" autocomplete="off" class="layui-input">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            {/foreach}
+        </div>
+        <div class="layui-form-item" style="text-align: center; margin-top: 20px">
+            <button class="layui-btn" lay-submit lay-filter="colorSubmit">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</div>
+
+<div class="layui-card">
+    <div class="layui-card-header">特肖</div>
+    <div class="layui-card-body layui-form">
+        <div class="layui-row layui-col-space10">
+            {foreach $config['chineseZodiacConfig'] as $key => $val}
+            <div class="layui-col-md3">
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th width="45">生肖</th>
+                        <th width="30">赔率</th>
+                        <th>下注</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            {$val.type}
+                        </td>
+                        <td>{$val.odds}</td>
+                        <td>
+                            <input type="text" name="chineseZodiac-{$val.type}" placeholder="金额" autocomplete="off" class="layui-input">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            {/foreach}
+        </div>
+        <div class="layui-form-item" style="text-align: center; margin-top: 20px">
+            <button class="layui-btn" lay-submit lay-filter="chineseZodiacSubmit">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</div>
+
+<div class="layui-card">
+    <div class="layui-card-header">连码</div>
+    <div class="layui-card-body layui-form">
+        <div class="layui-row layui-col-space10">
+            {foreach $config['joinNumberConfig'] as $key => $val}
+            <div class="layui-col-md4">
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th width="80">类型</th>
+                        <th width="30">赔率</th>
+                        <th>下注</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            {$val.type}
+                        </td>
+                        <td>{$val.odds}</td>
+                        <td>
+                            <input type="text" name="joinNumber-{$val.type}" placeholder="金额" autocomplete="off" class="layui-input">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="inputNumberList">
+                    {for start="0" end="$val.inputNumber"}
+                    <div class="select-item">
+                        <select name="joinNumber-{$val.type}_{$i}">
+                            <option value="">请选择号码 {$i+1}</option>
+                            {foreach $config['numberConfig'] as $k => $v}
+                            <option value="{$v.number}">{$v.number}</option>
+                            {/foreach}
+                        </select>
+<!--                        <input type="text" name="joinNumber-{$val.type}_{$i}" placeholder="号码 {$i+1}" autocomplete="off" class="layui-input">-->
+                    </div>
+                    {/for}
+                </div>
+            </div>
+            {/foreach}
+        </div>
+        <div class="layui-form-item" style="text-align: center; margin-top: 20px">
+            <button class="layui-btn" lay-submit lay-filter="joinNumberSubmit">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</div>
+
+<div id="affirmOrderBox" style="display: none">
+    <div style="padding: 15px">
+        <table class="layui-table">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>类型</th>
+                <th>明细</th>
+                <th>下注金额</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody class="affirmOrderTd">
+            </tbody>
+        </table>
+        <div class="footer-btn">
+            <button class="layui-btn submitData layui-btn-sm">确认提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">取消</button>
+        </div>
+    </div>
+</div>
+
+{/block}
+
+{block name="js"}
+<script>
+    var gameId = '{$gameInfo.id}';
+    var timeNumber = '{$lotteryInfo.id}'
+    layui.use(['layer', 'form', 'element'], function(){
+        let $ = layui.$, layer = layui.layer, form = layui.form, element = layui.element;
+
+        let submitData = [];
+        
+        form.on('submit(numberSubmit)', function(obj) {
+            let data = affirmOrder(obj.field)
+            if (data.length == 0) {
+                layer.msg("请下注后再提交！")
+                return false;
+            }
+            let elements = ""
+            $.each(data, function(index, value){
+                let number = parseInt(index) + 1
+                elements += "<tr>" +
+                    "<td>" + number + "</td>" +
+                    "<td>特码</td>" +
+                    "<td>特码：" + value.type + "</td>" +
+                    "<td>" + value.money + "</td>" +
+                    "<td><button number='"+index+"' class=\"layui-btn layui-btn-sm layui-btn-danger delDetail\">删除</button></td>" +
+                        "</tr>>"
+            })
+            openElement(elements, "number");
+        })
+
+        form.on('submit(colorSubmit)', function(obj){
+            let data = affirmOrder(obj.field)
+            if (data.length == 0) {
+                layer.msg("请下注后再提交！")
+                return false;
+            }
+            let elements = ""
+            $.each(data, function(index, value){
+                let number = parseInt(index) + 1
+                elements += "<tr>" +
+                    "<td>" + number + "</td>" +
+                    "<td>波色</td>" +
+                    "<td>" + value.type + "</td>" +
+                    "<td>" + value.money + "</td>" +
+                    "<td><button number='"+index+"' class=\"layui-btn layui-btn-sm layui-btn-danger delDetail\">删除</button></td>" +
+                    "</tr>>"
+            })
+            openElement(elements, "colorNumber");
+        })
+
+        form.on('submit(chineseZodiacSubmit)', function(obj){
+            let data = affirmOrder(obj.field)
+            if (data.length == 0) {
+                layer.msg("请下注后再提交！")
+                return false;
+            }
+            let elements = ""
+            $.each(data, function(index, value){
+                let number = parseInt(index) + 1
+                elements += "<tr>" +
+                    "<td>" + number + "</td>" +
+                    "<td>生肖</td>" +
+                    "<td>" + value.type + "</td>" +
+                    "<td>" + value.money + "</td>" +
+                    "<td><button number='"+index+"' class=\"layui-btn layui-btn-sm layui-btn-danger delDetail\">删除</button></td>" +
+                    "</tr>>"
+            })
+            openElement(elements, "chineseZodiacNumber");
+        })
+
+        form.on('submit(joinNumberSubmit)', function(obj){
+            let data = affirmOrder(obj.field)
+            if (data.length == 0) {
+                layer.msg("请下注后再提交！")
+                return false;
+            }
+            let result = [];
+            for (let item in data) {
+                let param = {}
+                let numberList = [];
+                if (data[item].type.search("_") == -1) {
+                    param.type = data[item].type
+                    param.money = data[item].money
+                    data.splice(item, 1)
+                    for (let i in data) {
+                        if (data[i].type.search(param.type) != -1) {
+                            numberList.push(data[i].money)
+                        }
+                    }
+                    if (numberList.length == 0) {
+                        layer.msg("连码：" + param.type + " 请选择号码！", {icon: 5, shift: 6})
+                        return false;
+                    }
+                    param.value = numberList
+                    result.push(param)
+                }
+            }
+            submitData = result
+            let elements = ""
+            $.each(result, function(index, value){
+                let number = parseInt(index) + 1
+                elements += "<tr>" +
+                    "<td>" + number + "</td>" +
+                    "<td>特串</td>" +
+                    "<td>"  + value.type + "：" + value.value.join(",") + "</td>" +
+                    "<td>" + value.money + "</td>" +
+                    "<td><button number='"+index+"' class=\"layui-btn layui-btn-sm layui-btn-danger delDetail\">删除</button></td>" +
+                    "</tr>>"
+            })
+            openElement(elements, "joinNumber");
+        })
+
+        function openElement(elements, type) {
+            let content = $('#affirmOrderBox').html();
+            layer.open({
+                title: "下注确认",
+                type: 1,
+                skin: 'layui-layer-demo',
+                closeBtn: 1,
+                anim: 2,
+                shadeClose: true,
+                area: ['600px', '400px'],
+                content: content,
+                success: function(){
+                    $('.layui-layer-content').find('.affirmOrderTd').append(elements)
+
+                    $('.layui-layer-content').find('.delDetail').on('click', function(){
+                        let thisIndex = $(this).attr("number");
+                        submitData.splice(thisIndex, 1);
+                        $(this).parents('tr').remove()
+                        if (submitData.length == 0) {
+                            layer.closeAll();
+                            return false;
+                        }
+                    })
+
+                    $('.layui-layer-content').find('.submitData').on('click', function() {
+                        layer.load(1, {shade: [0.3,'#000']});
+                        var param = {
+                            gameId: gameId,
+                            "type": type,
+                            param: submitData,
+                            'lotteryId': timeNumber
+                        }
+                        saveData(param);
+                    })
+                }
+            });
+        }
+        
+        function affirmOrder(data) {
+            let submitParam = []
+            for (let item in data) {
+                if (data[item] != "") {
+                    let type = item.split("-")
+                    let param = {}
+                    param.type = type[1]
+                    param.money = data[item]
+                    submitParam.push(param)
+                }
+            }
+            submitData = submitParam
+            return submitParam
+        }
+
+        function saveData(param) {
+            layer.load(1, {shade: [0.3,'#000']});
+            $.post('/main/game/saveOrder',
+                param,
+                function(resp) {
+                    layer.closeAll();
+                    if (resp.code != 0) {
+                        layer.msg(resp.errors, {icon: 5, shift: 6, time: 1500} );
+                        return false;
+                    }
+                    layer.msg("下注成功，请留意开奖信息", {icon: 1, time: 1500, end: function(){
+                            window.location.reload();
+                        }});
+                }).error(function() {
+                layer.closeAll();
+                layer.msg("服务器出现异常！", {icon: 5, shift: 6} );
+            })
+        }
+    })
+</script>
+{/block}

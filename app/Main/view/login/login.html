@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <title>和联胜 - 登录</title>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <link rel="stylesheet" href="__STATIC__/login/css/style.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="__STATIC__/layui/css/layui.css">
+</head>
+
+<body>
+
+<section class="w3l-login">
+    <div class="overlay">
+        <div class="wrapper">
+            <div class="form-section">
+                <div class="login" style="text-align: center;margin-bottom: 15px">
+                    <img src="__STATIC__/login/images/logo.png" alt="" width="80%">
+                </div>
+                <div class="signin-form">
+                    <div class="form-input">
+                        <input type="text" name="username" placeholder="账号" autocomplete="off" autocomplete="off">
+                    </div>
+                    <div class="form-input">
+                        <input type="password" name="password" placeholder="密码" autocomplete="off">
+                    </div>
+                    <div class="form-input" style="display: flex">
+                        <input type="text" name="verify_code" placeholder="验证码" autocomplete="off" style="width: 60%">
+                        <div style="width: 40%">
+                            <img src="{:url('/admin/verify')}" alt="captcha"
+                                 onclick=this.src="/main/verify/"+Math.random()
+                                 style="width: 100%;height: 100%;cursor: pointer"
+                            />
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary theme-button mt-4">Log in</button>
+                    <div class="new-signup">
+                        <a href="javascript:void(0)" class="signuplink">忘记密码请联系管理员</a>
+                    </div>
+                </div>
+                <p class="signup">还没有账号? <a href="/main/register" class="signuplink">立即注册</a></p>
+            </div>
+        </div>
+    </div>
+    <div id='stars'></div>
+    <div id='stars2'></div>
+    <div id='stars3'></div>
+</section>
+</body>
+</html>
+<script src="__STATIC__/layui/layui.js"></script>
+<script>
+
+    function isEmpty(obj) {
+        if(typeof obj == "undefined" || obj == null || obj == ""){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    layui.use(['layer'], function(){
+        let $ = layui.$, layer = layui.layer;
+        $('.theme-button').on('click', function(){
+            let username = $('input[name="username"]').val();
+            let password = $('input[name="password"]').val();
+            let verifyCode = $('input[name="verify_code"]').val();
+            if (isEmpty(username)) { layer.msg("请输入账号！", {icon: 5, shift: 6} ); return false; }
+            if (isEmpty(password)) { layer.msg("请输入密码！", {icon: 5, shift: 6} ); return false; }
+            if (isEmpty(verifyCode)) { layer.msg("请输入验证码！", {icon: 5, shift: 6} ); return false; }
+            let param = {
+                account: username,
+                password: password,
+                verifyCode: verifyCode
+            }
+            layer.load(1, {shade: [0.3,'#000']});
+            $.post('/main/login/checkLogin', param, function(resp){
+                layer.closeAll();
+                if (resp.code && resp.code != 0) {
+                    layer.msg(resp.errors, {icon: 5, shift: 6} );
+                    return false;
+                }
+                window.location.href = "/"
+            }).error(function(){
+                layer.closeAll();
+                layer.msg("服务器出现异常！", {icon: 5, shift: 6} );
+            })
+        })
+    });
+</script>

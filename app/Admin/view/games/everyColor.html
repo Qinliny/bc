@@ -1,0 +1,496 @@
+{extend name="common/public" /}
+
+{block name="title"}
+{$title} - 配置
+{/block}
+
+{block name="content"}
+
+<span class="layui-breadcrumb">
+    <a><cite>首页</cite></a>
+    <a><cite>彩种配置</cite></a>
+    <a href="/admin/games/gamesList">彩种列表 </a>
+    <a><cite>{$title} - 配置</cite></a>
+</span>
+
+<div class="content-body">
+    <div class="layui-card">
+        <div class="layui-card-header">
+            {$title} - 配置
+        </div>
+        <div class="layui-card-body">
+            <div class="layui-collapse">
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">五球总和</h2>
+                    <div class="layui-colla-content layui-form">
+                        <table class="layui-table" lay-size="sm">
+                            <colgroup>
+                                <col width="150">
+                                <col width="250">
+                                <col width="200">
+                                <col>
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>类型</th>
+                                <th>赔率</th>
+                                <th>退水</th>
+                                <th>单注最低</th>
+                                <th>单注最高</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach $config['sumConfig'] as $key => $value}
+                            <input type="hidden" name="type-{$value.type}" value="{$value.type}">
+                            <tr class="layui-form">
+                                <td>{$value.type}</td>
+                                <td>
+                                    <input type="text" name="odds-{$value.type}" value="{$value.odds}" placeholder="请输入赔率" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="return-{$value.type}" value="{$value.return}" placeholder="请输入退水" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="singleNoteMin-{$value.type}" value="{$value.singleNoteMin}" placeholder="请输入单注最低" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="singleNoteMax-{$value.type}" value="{$value.singleNoteMax}" placeholder="请输入单注最高" autocomplete="off" class="layui-input">
+                                </td>
+                            </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                        <div class="layui-form-item" style="margin-top: 15px">
+                            <button class="layui-btn" lay-submit lay-filter="sumConfigSubmit">立即提交</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">第一球</h2>
+                    <div class="layui-colla-content layui-form">
+                        <table class="layui-table" lay-size="sm">
+                            <colgroup>
+                                <col width="150">
+                                <col width="250">
+                                <col width="200">
+                                <col>
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>类型</th>
+                                <th>赔率</th>
+                                <th>退水</th>
+                                <th>单注最低</th>
+                                <th>单注最高</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach $config['number1Config'] as $key => $value}
+                            <input type="hidden" name="type-{$value.type}" value="{$value.type}">
+                            <tr class="layui-form">
+                                <td>{$value.type}</td>
+                                <td>
+                                    <input type="text" name="odds-{$value.type}" value="{$value.odds}" placeholder="请输入赔率" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="return-{$value.type}" value="{$value.return}" placeholder="请输入退水" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="singleNoteMin-{$value.type}" value="{$value.singleNoteMin}" placeholder="请输入单注最低" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="singleNoteMax-{$value.type}" value="{$value.singleNoteMax}" placeholder="请输入单注最高" autocomplete="off" class="layui-input">
+                                </td>
+                            </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                        <div class="layui-form-item" style="margin-top: 15px">
+                            <button class="layui-btn" lay-submit lay-filter="number1ConfigSubmit">立即提交</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">第二球</h2>
+                    <div class="layui-colla-content layui-form">
+                        <table class="layui-table" lay-size="sm">
+                            <colgroup>
+                                <col width="150">
+                                <col width="250">
+                                <col width="200">
+                                <col>
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>类型</th>
+                                <th>赔率</th>
+                                <th>退水</th>
+                                <th>单注最低</th>
+                                <th>单注最高</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach $config['number2Config'] as $key => $value}
+                            <input type="hidden" name="type-{$value.type}" value="{$value.type}">
+                            <tr class="layui-form">
+                                <td>{$value.type}</td>
+                                <td>
+                                    <input type="text" name="odds-{$value.type}" value="{$value.odds}" placeholder="请输入赔率" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="return-{$value.type}" value="{$value.return}" placeholder="请输入退水" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="singleNoteMin-{$value.type}" value="{$value.singleNoteMin}" placeholder="请输入单注最低" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="singleNoteMax-{$value.type}" value="{$value.singleNoteMax}" placeholder="请输入单注最高" autocomplete="off" class="layui-input">
+                                </td>
+                            </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                        <div class="layui-form-item" style="margin-top: 15px">
+                            <button class="layui-btn" lay-submit lay-filter="number2ConfigSubmit">立即提交</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">第三球</h2>
+                    <div class="layui-colla-content layui-form">
+                        <table class="layui-table" lay-size="sm">
+                            <colgroup>
+                                <col width="150">
+                                <col width="250">
+                                <col width="200">
+                                <col>
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>类型</th>
+                                <th>赔率</th>
+                                <th>退水</th>
+                                <th>单注最低</th>
+                                <th>单注最高</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach $config['number3Config'] as $key => $value}
+                            <input type="hidden" name="type-{$value.type}" value="{$value.type}">
+                            <tr class="layui-form">
+                                <td>{$value.type}</td>
+                                <td>
+                                    <input type="text" name="odds-{$value.type}" value="{$value.odds}" placeholder="请输入赔率" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="return-{$value.type}" value="{$value.return}" placeholder="请输入退水" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="singleNoteMin-{$value.type}" value="{$value.singleNoteMin}" placeholder="请输入单注最低" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="singleNoteMax-{$value.type}" value="{$value.singleNoteMax}" placeholder="请输入单注最高" autocomplete="off" class="layui-input">
+                                </td>
+                            </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                        <div class="layui-form-item" style="margin-top: 15px">
+                            <button class="layui-btn" lay-submit lay-filter="number3ConfigSubmit">立即提交</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">第四球</h2>
+                    <div class="layui-colla-content layui-form">
+                        <table class="layui-table" lay-size="sm">
+                            <colgroup>
+                                <col width="150">
+                                <col width="250">
+                                <col width="200">
+                                <col>
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>类型</th>
+                                <th>赔率</th>
+                                <th>退水</th>
+                                <th>单注最低</th>
+                                <th>单注最高</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach $config['number4Config'] as $key => $value}
+                            <input type="hidden" name="type-{$value.type}" value="{$value.type}">
+                            <tr class="layui-form">
+                                <td>{$value.type}</td>
+                                <td>
+                                    <input type="text" name="odds-{$value.type}" value="{$value.odds}" placeholder="请输入赔率" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="return-{$value.type}" value="{$value.return}" placeholder="请输入退水" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="singleNoteMin-{$value.type}" value="{$value.singleNoteMin}" placeholder="请输入单注最低" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="singleNoteMax-{$value.type}" value="{$value.singleNoteMax}" placeholder="请输入单注最高" autocomplete="off" class="layui-input">
+                                </td>
+                            </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                        <div class="layui-form-item" style="margin-top: 15px">
+                            <button class="layui-btn" lay-submit lay-filter="number4ConfigSubmit">立即提交</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">第五球</h2>
+                    <div class="layui-colla-content layui-form">
+                        <table class="layui-table" lay-size="sm">
+                            <colgroup>
+                                <col width="150">
+                                <col width="250">
+                                <col width="200">
+                                <col>
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>类型</th>
+                                <th>赔率</th>
+                                <th>退水</th>
+                                <th>单注最低</th>
+                                <th>单注最高</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach $config['number5Config'] as $key => $value}
+                            <input type="hidden" name="type-{$value.type}" value="{$value.type}">
+                            <tr class="layui-form">
+                                <td>{$value.type}</td>
+                                <td>
+                                    <input type="text" name="odds-{$value.type}" value="{$value.odds}" placeholder="请输入赔率" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="return-{$value.type}" value="{$value.return}" placeholder="请输入退水" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="singleNoteMin-{$value.type}" value="{$value.singleNoteMin}" placeholder="请输入单注最低" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="singleNoteMax-{$value.type}" value="{$value.singleNoteMax}" placeholder="请输入单注最高" autocomplete="off" class="layui-input">
+                                </td>
+                            </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                        <div class="layui-form-item" style="margin-top: 15px">
+                            <button class="layui-btn" lay-submit lay-filter="sumConfigSubmit">立即提交</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">前三</h2>
+                    <div class="layui-colla-content layui-form">
+                        <table class="layui-table" lay-size="sm">
+                            <colgroup>
+                                <col width="150">
+                                <col width="250">
+                                <col width="200">
+                                <col>
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>类型</th>
+                                <th>赔率</th>
+                                <th>退水</th>
+                                <th>单注最低</th>
+                                <th>单注最高</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach $config['top1Config'] as $key => $value}
+                            <input type="hidden" name="type-{$value.type}" value="{$value.type}">
+                            <tr class="layui-form">
+                                <td>{$value.type}</td>
+                                <td>
+                                    <input type="text" name="odds-{$value.type}" value="{$value.odds}" placeholder="请输入赔率" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="return-{$value.type}" value="{$value.return}" placeholder="请输入退水" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="singleNoteMin-{$value.type}" value="{$value.singleNoteMin}" placeholder="请输入单注最低" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="singleNoteMax-{$value.type}" value="{$value.singleNoteMax}" placeholder="请输入单注最高" autocomplete="off" class="layui-input">
+                                </td>
+                            </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                        <div class="layui-form-item" style="margin-top: 15px">
+                            <button class="layui-btn" lay-submit lay-filter="top1ConfigSubmit">立即提交</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">中三</h2>
+                    <div class="layui-colla-content layui-form">
+                        <table class="layui-table" lay-size="sm">
+                            <colgroup>
+                                <col width="150">
+                                <col width="250">
+                                <col width="200">
+                                <col>
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>类型</th>
+                                <th>赔率</th>
+                                <th>退水</th>
+                                <th>单注最低</th>
+                                <th>单注最高</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach $config['top2Config'] as $key => $value}
+                            <input type="hidden" name="type-{$value.type}" value="{$value.type}">
+                            <tr class="layui-form">
+                                <td>{$value.type}</td>
+                                <td>
+                                    <input type="text" name="odds-{$value.type}" value="{$value.odds}" placeholder="请输入赔率" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="return-{$value.type}" value="{$value.return}" placeholder="请输入退水" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="singleNoteMin-{$value.type}" value="{$value.singleNoteMin}" placeholder="请输入单注最低" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="singleNoteMax-{$value.type}" value="{$value.singleNoteMax}" placeholder="请输入单注最高" autocomplete="off" class="layui-input">
+                                </td>
+                            </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                        <div class="layui-form-item" style="margin-top: 15px">
+                            <button class="layui-btn" lay-submit lay-filter="top2ConfigSubmit">立即提交</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">后三</h2>
+                    <div class="layui-colla-content layui-form">
+                        <table class="layui-table" lay-size="sm">
+                            <colgroup>
+                                <col width="150">
+                                <col width="250">
+                                <col width="200">
+                                <col>
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>类型</th>
+                                <th>赔率</th>
+                                <th>退水</th>
+                                <th>单注最低</th>
+                                <th>单注最高</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach $config['top3Config'] as $key => $value}
+                            <input type="hidden" name="type-{$value.type}" value="{$value.type}">
+                            <tr class="layui-form">
+                                <td>{$value.type}</td>
+                                <td>
+                                    <input type="text" name="odds-{$value.type}" value="{$value.odds}" placeholder="请输入赔率" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="return-{$value.type}" value="{$value.return}" placeholder="请输入退水" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="singleNoteMin-{$value.type}" value="{$value.singleNoteMin}" placeholder="请输入单注最低" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="singleNoteMax-{$value.type}" value="{$value.singleNoteMax}" placeholder="请输入单注最高" autocomplete="off" class="layui-input">
+                                </td>
+                            </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                        <div class="layui-form-item" style="margin-top: 15px">
+                            <button class="layui-btn" lay-submit lay-filter="top3ConfigSubmit">立即提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    var gameId = '{$gameId}';
+    var gameType = '{$title}'
+    layui.use(['layer', 'form', 'laypage', 'element'], function(){
+        let $ = layui.$, layer = layui.layer, form = layui.form, laypage = layui.laypage, element = layui.element;
+
+        function saveData(type, data) {
+            let loading = layer.load(1, {shade: [0.3,'#000']});
+            $.post('/admin/games/saveConfig',
+                {type: gameType, "typeItem": type, config: data, gameId: gameId},
+                function(resp) {
+                    layer.closeAll();
+                    if (resp.code != 0) {
+                        layer.msg(resp.errors, {icon: 5, shift: 6, time: 1500} );
+                        return false;
+                    } else {
+                        layer.msg("保存成功！", {icon: 1, time: 1500});
+                    }
+                }).error(function() {
+                layer.closeAll();
+                layer.msg("服务器出现异常！", {icon: 5, shift: 6} );
+            })
+        }
+
+        form.on('submit(sumConfigSubmit)', function(obj) {
+            saveData("sumConfig", obj.field)
+        })
+
+        form.on('submit(number1ConfigSubmit)', function(obj) {
+            saveData("number1Config", obj.field)
+        })
+
+        form.on('submit(number2ConfigSubmit)', function(obj) {
+            saveData("number2Config", obj.field)
+        })
+        
+        form.on('submit(number3ConfigSubmit)', function(obj) {
+            saveData("number3Config", obj.field)
+        })
+        
+        form.on('submit(number4ConfigSubmit)', function(obj) {
+            saveData("number4Config", obj.field)
+        })
+        
+        form.on('submit(number5ConfigSubmit)', function(obj) {
+            saveData("number5Config", obj.field)
+        })
+
+        form.on('submit(top1ConfigSubmit)', function(obj) {
+            saveData("top1Config", obj.field)
+        })
+
+        form.on('submit(top2ConfigSubmit)', function(obj) {
+            saveData("top2Config", obj.field)
+        })
+
+        form.on('submit(top3ConfigSubmit)', function(obj) {
+            saveData("top3Config", obj.field)
+        })
+    })
+</script>
+{/block}

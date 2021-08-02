@@ -1,0 +1,221 @@
+{extend name="common/public" /}
+
+{block name="title"}用户账户管理{/block}
+
+{block name="content"}
+<span class="layui-breadcrumb">
+<a><cite>首页</cite></a>
+<a><cite>业务流水</cite></a>
+<a href="javascript:void(0)">充值管理</a>
+</span>
+
+<div class="content-body">
+    <div class="layui-card">
+        <div class="layui-card-header">充值管理</div>
+        <div class="layui-card-body">
+            <!--搜索表单-->
+            <form class="layui-form" action="">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">用户名：</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="searchName" name="username" placeholder="请输入用户名"
+                                   class="layui-input"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">订单号：</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="searchOrder" name="order" placeholder="请输入订单号"
+                                   class="layui-input"/>
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
+                        <label class="layui-form-label">充值类型</label>
+                        <div class="layui-input-inline">
+                            <select name="type" id="searchType">
+                                <option value=""></option>
+                                <option value="alipay">支付宝</option>
+                                <option value="wechat">微信</option>
+                                <option value="QQ">QQ</option>
+                                <option value="bank">银行卡</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">订单状态</label>
+                        <div class="layui-input-inline">
+                            <select name="status" id="searchState">
+                                <option value=""></option>
+                                <option value="none">未审核</option>
+                                <option value="1">已审核</option>
+                                <option value="2">已作废</option>
+                                <option value="3">已取消</option>
+                            </select>
+                        </div>
+                    </div>
+                    <a href="javascript:void(0)" class="layui-btn" onclick="reload()">搜索</a>
+                </div>
+            </form>
+            <!--表格-->
+            <table id="table" lay-filter="table"></table>
+            <!--            工具栏-->
+            <script type="text/html" id="tools">
+                <a class="layui-btn layui-btn-sm {{d.status != 0 ? 'layui-btn-disabled' : ''}}" onclick="chargeRecord('{{d.id}}','{{d.status}}')" lay-event="edit">通过</a>
+                <a class="layui-btn layui-btn-warm layui-btn-sm {{d.status != 0 ? 'layui-btn-disabled' : ''}}" onclick="openLayer('{{d.id}}','{{d.status}}')"
+                   lay-event="detail">作废</a>
+                <a class="layui-btn layui-btn-danger layui-btn-sm" onclick="removeById('{{d.id}}')" lay-event="detail">删除</a>
+            </script>
+        </div>
+    </div>
+</div>
+
+
+{/block}
+
+{block name="js"}
+<script>
+    var tableInst = null;
+    var form, $, layer, table;
+    layui.use(['form', 'table', 'layer'], function () {
+        form = layui.form,
+            $ = layui.$,
+            layer = layui.layer,
+            table = layui.table;
+
+        tableInst = table.render({
+            elem: '#table',
+            height: 320,
+            id: "tableInst",
+            url: '/admin/Recharge/loadChargeRecord',
+            loading: true,
+            page: {
+                layout: ['prev', 'page', 'next', 'count', 'limit']//自定义分页布局
+                , limit: 10	//初始每页数量
+                , limits: [10, 15, 20]	//可选的每页数量
+                , groups: 10	//最多几个跳页按钮  1 2 3 4 5 6 这种跳页按钮
+                , first: false //不显示首页
+                , last: false //不显示尾页
+            },
+            // data: tableList,
+            cols: [[
+                {field: 'order_no', title: '订单号', width: 230},
+                {field: 'user_name', title: '用户名', width: 130},
+                {field: 'money', title: '金额', width: 110},
+                {
+                    field: 'account_type', title: '账户类型', width: 110, templet: function (data) {
+                        switch (data.account_type) {
+                            case 'bank':
+                                return "银行卡";
+                            case 'wechat':
+                                return "微信";
+                            case 'alipay' :
+                                return "支付宝";
+                            default:
+                                return '未知';
+                        }
+                    }
+                },
+                {field: 'add_time', title: '充值时间', width: 160},
+                {
+                    field: 'status', title: '状态', width: 130, templet: (data) => {
+                        switch (data.status) {
+                            case 0:
+                                return '未审核';
+                            case 1:
+                                return '已审核';
+                            case 2:
+                                return '已作废';
+                            case 3:
+                                return '已取消';
+                            default:
+                                return '未知';
+                        }
+                    }
+                },
+                {field: 'current_remain', title: '当前余额', width: 160},
+                {field: 'process_time', title: '处理时间', width: 160},
+                {field: 'cause', title: '原因', width: 160},
+                {fixed: 'right', title: '操作', width: 200, toolbar: "#tools"}
+            ]]
+        })
+        //监听搜索表单
+        form.on('submit(search)', function (data) {
+            let params = data.field;
+            loadData(params);
+            return false;
+        })
+    })
+
+    var reload = () => {
+        tableInst.reload({
+            where: {
+                username: $('#searchName').val(),
+                account_type: $('#searchType').val(),
+                status: $('#searchState').val(),
+                order: $('#searchOrder').val()
+            },
+            page: {
+                curr: 1
+            }
+        });
+    }
+
+    var chargeRecord = (id,status) => {
+        if(status != 0){
+            layer.msg("无法操作");
+            return false;
+        }
+        $.post('/admin/Recharge/chargeRecord', {id}, function (res) {
+            if (res.code == 0) {
+                layer.msg(res.message)
+            } else {
+                layer.msg(res.errors)
+            }
+            reload();
+        })
+    }
+    var invalidStatus = (id,cause) => {
+        $.post('/admin/Recharge/invalidStatus', {id,cause}, function (res) {
+            if (res.code == 0) {
+                layer.msg(res.message)
+            } else {
+                layer.msg(res.errors)
+            }
+            reload();
+        })
+    }
+
+    var openLayer = (id,status) => {
+        if(status != 0){
+            layer.msg("无法操作");
+            return false;
+        }
+        layer.open({
+            title:"请输入作废原因",
+            content:`<textarea id="cause" class="layui-textarea"></textarea>`,
+            btn:['确定','取消'],
+            yes:function (res) {
+                let cause = $('#cause').val();
+                invalidStatus(id,cause);
+                layer.closeAll();
+            }
+        })
+    }
+
+    var removeById = (id) => {
+        $.post('/admin/Recharge/removeById', {id}, function (res) {
+            if (res.code == 0) {
+                layer.msg(res.message)
+            } else {
+                layer.msg(res.errors)
+            }
+            reload();
+        })
+    }
+
+
+</script>
+
+{/block}

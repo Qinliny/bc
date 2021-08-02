@@ -1,0 +1,214 @@
+{extend name="common/public" /}
+
+{block name="title"}
+{$gameInfo.game_name}
+{/block}
+
+
+{block name="content"}
+<div class="layui-card">
+    <div class="layui-card-header" style="text-align: center;font-size: 16px;font-weight: 600">五球总和</div>
+    <div class="layui-card-body layui-form">
+        <div class="layui-row layui-col-space10">
+            {foreach $config['sumConfig'] as $key => $val}
+            <div class="layui-col-md3">
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th width="50">类型</th>
+                        <th width="50">赔率</th>
+                        <th>下注</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            {$val.type}
+                        </td>
+                        <td>{$val.odds}</td>
+                        <td>
+                            <input type="text" name="五球总和-sumConfig-{$val.type}" placeholder="金额" autocomplete="off" class="layui-input">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            {/foreach}
+        </div>
+        <div class="layui-form-item" style="text-align: center; margin-top: 20px">
+            <button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</div>
+
+<div class="layui-row layui-form">
+    {foreach $titleList as $key => $value}
+    <div class="layui-col-md2-5">
+        <div class="layui-card">
+            <div class="layui-card-header" style="text-align: center;font-size: 16px;font-weight: 600">{$value}</div>
+            <div class="layui-card-body">
+                <div class="layui-row layui-col-space10">
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th width="25">类型</th>
+                            <th width="25">赔率</th>
+                            <th>下注</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {foreach $config[$key] as $k => $val}
+                        <tr>
+                            <td>{$val.type}</td>
+                            <td>{$val.odds}</td>
+                            <td>
+                                <input type="text" name="{$value}-{$key}-{$val.type}" placeholder="金额" autocomplete="off" class="layui-input">
+                            </td>
+                        </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {/foreach}
+    <div class="layui-col-md12">
+        <div class="layui-panel">
+            <div class="layui-form-item" style="text-align: center; margin-top: 20px">
+                <button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="affirmOrderBox" style="display: none">
+    <div style="padding: 15px">
+        <table class="layui-table">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>类型</th>
+                <th>明细</th>
+                <th>下注金额</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody class="affirmOrderTd">
+            </tbody>
+        </table>
+        <div class="footer-btn">
+            <button class="layui-btn submitData">确认提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">取消</button>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    var gameId = '{$gameInfo.id}';
+    var timeNumber = '{$lotteryInfo.id}'
+    layui.use(['layer', 'form'], function(){
+        let $ = layui.$, layer = layui.layer, form = layui.form;
+
+        let submitData = [];
+
+        form.on('submit(*)', function(obj) {
+            let data = affirmOrder(obj.field)
+            if (data.length == 0) {
+                layer.msg("请下注后再提交！")
+                return false;
+            }
+            let elements = ""
+            $.each(data, function(index, value){
+                let number = parseInt(index) + 1
+                elements += "<tr>" +
+                    "<td>" + number + "</td>" +
+                    "<td>" + value.title + "</td>" +
+                    "<td>" + value.type + "</td>" +
+                    "<td>" + value.money + "</td>" +
+                    "<td><button number='"+index+"' class=\"layui-btn layui-btn-sm layui-btn-danger delDetail\">删除</button></td>" +
+                    "</tr>>"
+            })
+            openElement(elements);
+        })
+
+        function openElement(elements, type) {
+            let content = $('#affirmOrderBox').html();
+            layer.open({
+                title: "下注确认",
+                type: 1,
+                skin: 'layui-layer-demo',
+                closeBtn: 1,
+                anim: 2,
+                shadeClose: true,
+                area: ['600px', '400px'],
+                content: content,
+                success: function(){
+                    $('.layui-layer-content').find('.affirmOrderTd').append(elements)
+
+                    $('.layui-layer-content').find('.delDetail').on('click', function(){
+                        let thisIndex = $(this).attr("number");
+                        submitData.splice(thisIndex, 1);
+                        $(this).parents('tr').remove()
+                        if (submitData.length == 0) {
+                            layer.closeAll();
+                            return false;
+                        }
+                    })
+
+                    $('.layui-layer-content').find('.submitData').on('click', function() {
+                        layer.load(1, {shade: [0.3,'#000']});
+                        var param = {
+                            gameId: gameId,
+                            "type": type,
+                            param: submitData,
+                            'lotteryId': timeNumber
+                        }
+                        saveData(param);
+                    })
+                }
+            });
+        }
+
+        function affirmOrder(data) {
+            let submitParam = []
+            for (let item in data) {
+                if (data[item] != "") {
+                    let type = item.split("-")
+                    let param = {}
+                    param.lottery_type = type[1]
+                    param.title = type[0]
+                    param.type = type[2]
+                    param.money = data[item]
+                    submitParam.push(param)
+                }
+            }
+            submitData = submitParam
+            return submitParam
+        }
+
+        function saveData(param) {
+            layer.load(1, {shade: [0.3,'#000']});
+            $.post('/main/game/saveOrder',
+                param,
+                function(resp) {
+                    layer.closeAll();
+                    if (resp.code != 0) {
+                        layer.msg(resp.errors, {icon: 5, shift: 6, time: 1500} );
+                        return false;
+                    }
+                    layer.msg("下注成功，请留意开奖信息", {icon: 1, time: 1500, end: function(){
+                            window.location.reload();
+                        }});
+                }).error(function() {
+                layer.closeAll();
+                layer.msg("服务器出现异常！", {icon: 5, shift: 6} );
+            })
+        }
+    })
+</script>
+{/block}

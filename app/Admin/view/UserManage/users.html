@@ -1,0 +1,183 @@
+{extend name="common/public" /}
+
+{block name="title"}用户账户管理{/block}
+
+{block name="content"}
+<span class="layui-breadcrumb">
+<a><cite>首页</cite></a>
+<a><cite>用户管理</cite></a>
+<a href="javascript:void(0)">会员管理</a>
+</span>
+
+<div class="content-body">
+    <div class="layui-card">
+        <div class="layui-card-header">会员管理</div>
+        <div class="layui-card-body">
+            <!--搜索表单-->
+            <form class="layui-form" action="">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                    <label class="layui-form-label">用户名：</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="searchName" name="username" placeholder="请输入用户名"
+                                   class="layui-input" autocomplete="off"/>
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
+                        <label class="layui-form-label">是否禁用</label>
+                        <div class="layui-input-inline">
+                            <select name="enable" id="searchEnable">
+                                <option value=""></option>
+                                <option value="none">已禁用</option>
+                                <option value="1">未禁用</option>
+                            </select>
+                        </div>
+                    </div>
+                    <a href="javascript:void(0)" class="layui-btn" onclick="reload()">搜索</a>
+                </div>
+            </form>
+            <!--表格-->
+            <table id="table" lay-filter="table"></table>
+            <!--            工具栏-->
+            <script type="text/html" id="tools">
+                <a class="layui-btn layui-btn-sm" onclick="changeEnable('{{d.id}}')" lay-event="edit">{{d.enable == 0? "启用" : "禁用"}}</a>
+                <a class="layui-btn layui-btn-danger layui-btn-sm" onclick="removeUserById('{{d.id}}')" lay-event="detail">删除</a>
+                <a class="layui-btn layui-btn-primary layui-btn-sm" onclick="addBalance('{{d.id}}')" lay-event="addBalance">添加余额</a>
+            </script>
+        </div>
+    </div>
+</div>
+
+<dic id="addBalanceBox" style="display: none">
+    <div class="layui-form" style="padding: 15px">
+        <div class="layui-form-item">
+            <label class="layui-form-label">金额</label>
+            <div class="layui-input-block">
+                <input type="text" name="money" required  lay-verify="required" placeholder="请输入需要添加的余额" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="addBalance">立即提交</button>
+            </div>
+        </div>
+    </div>
+</dic>
+
+
+{/block}
+
+{block name="js"}
+<script>
+    var tableInst = null;
+    var form, $, layer, table;
+    layui.use(['form', 'table', 'layer'], function () {
+        form = layui.form, $ = layui.$, layer = layui.layer, table = layui.table;
+
+        tableInst = table.render({
+            elem: '#table',
+            id: "tableInst",
+            url: '/admin/UserManage/getUserList',
+            loading: true,
+            page: {
+                layout: ['prev', 'page', 'next', 'count', 'limit']//自定义分页布局
+                , limit: 10	//初始每页数量
+                , limits: [10, 15, 20]	//可选的每页数量
+                , groups: 10	//最多几个跳页按钮  1 2 3 4 5 6 这种跳页按钮
+                , first: false //不显示首页
+                , last: false //不显示尾页
+            },
+            cols: [[
+                {field: 'id', title: 'id'},
+                {field: 'account', title: '账号'},
+                {field: 'name', title: '真实姓名'},
+                {field: 'nickname', title: '昵称'},
+                {
+                    field: 'enable', title: '账户状态', templet: function (data) {
+                        return data.enable ? "已启用" : "已禁用";
+                    }
+                },
+                {field: 'phone', title: '手机号码'},
+                {field: 'coin', title: '当前余额'},
+                {field: 'email', title: '个人邮箱'},
+                {field: 'qq', title: '个人QQ'},
+                {fixed: 'right', title: '操作', width: 300, toolbar: "#tools"}
+            ]]
+        })
+        //监听搜索表单
+        form.on('submit(search)', function (data) {
+            let params = data.field;
+            loadData(params);
+            return false;
+        })
+    })
+
+    var reload = () => {
+        tableInst.reload({
+            where: {
+                username: $('#searchName').val(),
+                enable: $('#searchEnable').val()
+            },
+            page: {
+                curr: 1
+            }
+        });
+    }
+
+    var changeEnable = (id) => {
+        $.post('/admin/UserManage/changeEnable', {id}, function (res) {
+            if (res.code == 0) {
+                layer.msg(res.message)
+            } else {
+                layer.msg(res.errors)
+            }
+            reload();
+        })
+    }
+
+    var removeUserById = (id) => {
+        $.post('/admin/UserManage/removeUserById', {id}, function (res) {
+            if (res.code == 0) {
+                layer.msg(res.message)
+            } else {
+                layer.msg(res.errors)
+            }
+            reload();
+        })
+    }
+
+    var addBalance = (id) => {
+        var elementUi = $('#addBalanceBox').html();
+        layer.open({
+            title: "添加余额",
+            type: 1,
+            skin: 'layui-layer-demo',
+            closeBtn: 1,
+            anim: 2,
+            shadeClose: true,
+            area: ['400px', '200px'],
+            content: elementUi,
+            success: function() {
+                form.on('submit(addBalance)', function(obj) {
+                    if (!/^[0-9]*[1-9][0-9]*$/.test(obj.field.money)) {
+                        layer.msg("请输入正整数的余额", {icon: 5, shift: 6, time: 1000} );
+                        return false
+                    }
+                    obj.field.userId = id;
+                    $.post('/admin/UserManage/addBalance', obj.field, function (res) {
+                        if (res.code == 0) {
+                            layer.closeAll();
+                            layer.msg(res.message)
+                        } else {
+                            layer.msg(res.errors)
+                        }
+                        reload();
+                    })
+                })
+            }
+        });
+    }
+</script>
+
+{/block}

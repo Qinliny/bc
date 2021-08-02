@@ -1,0 +1,236 @@
+{extend name="common/public" /}
+
+{block name="title"}开奖数据{/block}
+
+{block name="content"}
+<span class="layui-breadcrumb">
+    <a><cite>首页</cite></a>
+    <a><cite>开奖数据</cite></a>
+</span>
+
+<div class="content-body">
+    <div class="layui-card">
+        <div class="layui-card-header">开奖数据</div>
+        <div class="layui-card-body">
+            <table class="layui-table">
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>彩种名称</th>
+                        <th>期数</th>
+                        <th>是否已开奖</th>
+                        <th>开奖时间</th>
+                        <th>禁止下注时间</th>
+                        <th>开奖结果</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {foreach $list as $key => $val}
+                    <tr>
+                        <td>{$key+1}</td>
+                        <td>{$val.game_name}</td>
+                        <td>第 {$val.periods}  期</td>
+                        <td>
+                            {if condition="$val.is_lottery == 0"}
+                            <span class="layui-badge layui-bg-green">未开奖</span>
+                            {/if}
+                            {if condition="$val.is_lottery == 1"}
+                            <span class="layui-badge layui-bg-blue">开奖中</span>
+                            {/if}
+                            {if condition="$val.is_lottery == 2"}
+                            <span class="layui-badge">已开奖</span>
+                            {/if}
+                        </td>
+                        <td>{$val.lottery_time}</td>
+                        <td>{$val.end_time}</td>
+                        <td>{$val.result}</td>
+                        <td>
+                            {if condition="$val.is_lottery != 2"}
+                            <button type="button"
+                                    class="layui-btn layui-btn-normal layui-btn layui-btn-sm settingLotteryResult"
+                                    gameType="{$val.game_name}"
+                                    gameId="{$val.game_id}"
+                                    lotteryId="{$val.id}">
+                                预设开奖
+                            </button>
+                            {/if}
+                        </td>
+                    </tr>
+                {/foreach}
+                </tbody>
+            </table>
+            <div id="page"></div>
+        </div>
+    </div>
+</div>
+
+<div id="sixLotteryOpenBox" style="display: none">
+    <div class="layui-form layui-row layui-col-space10" style="padding: 10px;box-sizing: border-box; margin: 0">
+        {for start="1" end="8"}
+        <div class="layui-col-md4">
+            <select name="number{$i}" required>
+                <option value="">第{$i}球</option>
+            </select>
+        </div>
+        {/for}
+        <div class="layui-col-md12">
+            <button class="layui-btn" lay-submit lay-filter="settingLotteryResult">立即提交</button>
+        </div>
+    </div>
+</div>
+
+<div id="carLotteryOpenBox" style="display: none">
+    <div class="layui-form layui-row layui-col-space10" style="padding: 10px;box-sizing: border-box; margin: 0">
+        {for start="1" end="11"}
+        <div class="layui-col-md4">
+            <select name="number{$i}" required>
+                <option value="">号码 {$i}</option>
+            </select>
+        </div>
+        {/for}
+        <div class="layui-col-md12">
+            <button class="layui-btn" lay-submit lay-filter="settingLotteryResult">立即提交</button>
+        </div>
+    </div>
+</div>
+
+<div id="everyColorLotteryOpenBox" style="display: none">
+    <div class="layui-form layui-row layui-col-space10" style="padding: 10px;box-sizing: border-box; margin: 0">
+        {for start="0" end="5"}
+        <div class="layui-col-md4">
+            <select name="number{$i}" required>
+                <option value="">号码 {$i}</option>
+            </select>
+        </div>
+        {/for}
+        <div class="layui-col-md12">
+            <button class="layui-btn" lay-submit lay-filter="settingLotteryResult">立即提交</button>
+        </div>
+    </div>
+</div>
+
+{/block}
+
+{block name="js"}
+<script>
+    let gameType, gameId, lotteryId;
+    layui.use(['layer', 'form', 'laypage'], function() {
+        let $ = layui.$, layer = layui.layer, form = layui.form, laypage = layui.laypage;
+
+        laypage.render({
+            elem: 'page'
+            ,count: {$count}
+            ,limit: {$limit}
+            ,curr: {$page}
+            ,jump: function(obj, first) {
+                if(!first){
+                    window.location.href = "/admin/Lottery/index?page=" + obj.curr + "&limit=" + obj.limit
+                }
+            }
+        });
+
+        $('.settingLotteryResult').on('click', function(){
+            let gameName = $(this).attr('gameType')
+            gameType =  gameName
+            gameId = $(this).attr('gameId')
+            lotteryId =  $(this).attr('lotteryId')
+            switch (gameName) {
+                case "香港六合彩":
+                case "澳门六合彩":
+                case "极速六合彩":
+                    let elementUi = $('#sixLotteryOpenBox').html();
+                    layer.open({
+                        title: gameName + " - 预设开奖",
+                        type: 1,
+                        skin: 'layui-layer-demo',
+                        closeBtn: 0,
+                        area: ['500px', '400px'],
+                        anim: 2,
+                        shadeClose: true,
+                        content: elementUi,
+                        success: function () {
+                            for(let i = 1;i <= 7; i++) {
+                                let numberName = "number" + i
+                                let options = ""
+                                for (let j = 1; j <= 49; j++) {
+                                    let itemNumber = j < 10 ? "0"+j : j
+                                    options += '<option value="'+itemNumber+'">'+itemNumber+'</option>'
+                                }
+                                $('.layui-layer-content').find('select[name="'+numberName+'"]').append(options)
+                            }
+                            form.render();
+                        }
+                    });
+                    break;
+                case "北京赛车":
+                case "幸运飞艇":
+                case "三分赛车":
+                    let carElementUi = $('#carLotteryOpenBox').html();
+                    layer.open({
+                        title: gameName + " - 预设开奖",
+                        type: 1,
+                        skin: 'layui-layer-demo',
+                        closeBtn: 0,
+                        area: ['500px', '400px'],
+                        anim: 2,
+                        shadeClose: true,
+                        content: carElementUi,
+                        success: function () {
+                            for(let i = 1;i <= 10; i++) {
+                                let numberName = "number" + i
+                                let options = ""
+                                for (let j = 1; j <= 10; j++) {
+                                    options += '<option value="'+j+'">'+j+'</option>'
+                                }
+                                $('.layui-layer-content').find('select[name="'+numberName+'"]').append(options)
+                            }
+                            form.render();
+                        }
+                    });
+                    break;
+                case "重庆时时彩":
+                    let everyColorElementUI = $('#everyColorLotteryOpenBox').html()
+                    layer.open({
+                        title: gameName + " - 预设开奖",
+                        type: 1,
+                        skin: 'layui-layer-demo',
+                        closeBtn: 0,
+                        area: ['500px', '400px'],
+                        anim: 2,
+                        shadeClose: true,
+                        content: everyColorElementUI,
+                        success: function () {
+                            for(let i = 0;i < 5; i++) {
+                                let numberName = "number" + i
+                                let options = ""
+                                for (let j = 0; j < 10; j++) {
+                                    options += '<option value="'+j+'">'+j+'</option>'
+                                }
+                                $('.layui-layer-content').find('select[name="'+numberName+'"]').append(options)
+                            }
+                            form.render();
+                        }
+                    });
+                    break;
+            }
+        })
+        
+        form.on('submit(settingLotteryResult)', function(obj) {
+            obj.field.gameId = gameId
+            obj.field.gameType = gameType
+            obj.field.lotteryId = lotteryId
+            let load = layer.load(1, {shade: [0.3,'#000']});
+            $.post('/admin/Lottery/settingLotteryResult', obj.field, function(resp) {
+                layer.close(load)
+                if (resp.code != 0) {
+                    layer.msg(resp.errors, {icon: 5, shift: 6} );
+                    return false
+                }
+                window.location.href = "/admin/Lottery/index"
+            })
+        })
+
+    })
+</script>
+{/block}

@@ -1,0 +1,65 @@
+{extend name="common/public" /}
+
+{block name="title"}管理员列表{/block}
+
+{block name="content"}
+
+<span class="layui-breadcrumb">
+    <a><cite>首页</cite></a>
+    <a><cite>系统设置</cite></a>
+    <a href="javascript:void(0)">管理员列表 </a>
+</span>
+
+<div class="content-body">
+    <div class="layui-card">
+        <div class="layui-card-header">管理员管理</div>
+        <div class="layui-card-body">
+            <table class="layui-table">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>管理员账号</th>
+                    <th>添加时间</th>
+                    <th>最后登录时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                {foreach $list as $key => $val}
+                <tr>
+                    <td>{$key+1}</td>
+                    <td>{$val.username}</td>
+                    <td>{$val.create_time}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {/foreach}
+                </tr>
+                </tbody>
+            </table>
+            <div id="page"></div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(['layer', 'form', 'laypage'], function() {
+        let $ = layui.$, layer = layui.layer, form = layui.form, laypage = layui.laypage;
+
+        laypage.render({
+            elem: 'page'
+            ,count: {$count}
+            ,limit: {$limit}
+            ,curr: {$page}
+            ,jump: function(obj, first) {
+                if(!first){
+                    window.location.href = "/admin/admins?page=" + obj.curr + "&limit=" + obj.limit
+                }
+            }
+        });
+    })
+</script>
+{/block}

@@ -1,0 +1,53 @@
+<div class="main-body-side">
+    <div class="account">
+        <div class="account-header">
+            账户信息
+        </div>
+        <div class="account-body">
+            <ul>
+                <li>
+                    <label>账号：</label>
+                    <span>
+                        {$userInfo.account}
+                    </span>
+                </li>
+                <li>
+                    <label>昵称：</label>
+                    <span>
+                        {$accountInfo.nickname}
+                    </span>
+                </li>
+                <li>
+                    <label>帐号余额：</label>
+                    <span>
+                        {$accountInfo.coin | sprintf="%1\$.2f", ###}
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="btn-list">
+        <div class="btn-recharge">
+            <a href="#">
+                在线充值
+            </a>
+        </div>
+        
+        <div class="btn-deposit">
+            <a href="#">
+                在线提款
+            </a>
+        </div>
+    </div>
+    
+    <div class="btn-block">
+        <a href="/main/personalCenter">个人中心</a>
+    </div>
+    
+    <div class="btn-block">
+        <a href="/main/myOrder">
+            ↑↓最新注单↑↓
+        </a>
+    </div>
+</div>

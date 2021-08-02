@@ -1,0 +1,97 @@
+{extend name="common/public" /}
+
+{block name="title"}账变明细{/block}
+
+{block name="content"}
+<span class="layui-breadcrumb">
+    <a><cite>首页</cite></a>
+    <a><cite>业务流水</cite></a>
+    <a><cite>账变明细</cite></a>
+</span>
+
+<div class="content-body">
+    <div class="layui-card">
+        <div class="layui-card-header">
+            用户账变明细列表
+        </div>
+        <div class="layui-card-body">
+            <div class="layui-form layui-row layui-col-space10">
+                <div class="layui-col-md2">
+                    <input type="text" name="account" value="{$account}" placeholder="用户账号" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-col-md2">
+                    <button type="button" class="layui-btn" id="search">
+                        搜索
+                        <i class="layui-icon layui-icon-search layui-font-12"></i>
+                    </button>
+                </div>
+            </div>
+            <table class="layui-table">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>用户账号</th>
+                    <th>变动金额</th>
+                    <th>原始余额</th>
+                    <th>余额</th>
+                    <th>变动时间</th>
+                    <th>备注</th>
+                </tr>
+                </thead>
+                <tbody>
+                {foreach $list as $key => $val}
+                <tr>
+                    <td>{$key + 1}</td>
+                    <td>{$val.account}</td>
+                    <td>
+                        {if condition="$val.is_increase == 1"}
+                        <span class="layui-badge layui-bg-blue">增加</span>
+                        {else/}
+                        <span class="layui-badge layui-badge">减少</span>
+                        {/if}
+                        {$val.money}
+                    </td>
+                    <td>{$val.balance}</td>
+                    <td>
+                        {if condition="$val.is_increase == 1"}
+                        {$val.balance + $val.money | sprintf="%1\$.2f", ###}
+                        {else/}
+                        {$val.balance - $val.money | sprintf="%1\$.2f", ###}
+                        {/if}
+                    </td>
+                    <td>{$val.create_time}</td>
+                    <td>{$val.remark}</td>
+                </tr>
+                {/foreach}
+                </tbody>
+            </table>
+            <div id="page"></div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(['layer', 'form', 'laypage'], function() {
+        let $ = layui.$, layer = layui.layer, form = layui.form, laypage = layui.laypage;
+
+        laypage.render({
+            elem: 'page'
+            ,count: {$count}
+            ,limit: {$limit}
+            ,curr: {$page}
+            ,jump: function(obj, first) {
+                if(!first){
+                    window.location.href = "/admin/balanceLog?page=" + obj.curr + "&limit=" + obj.limit
+                }
+            }
+        });
+
+        $('#search').on('click', function(){
+            let account = $('input[name="account"]').val();
+            window.location.href = "/admin/balanceLog?page=1&account=" + account
+        })
+    })
+</script>
+{/block}

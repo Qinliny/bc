@@ -1,0 +1,116 @@
+{extend name="common/public" /}
+
+{block name="title"}用户账户管理{/block}
+
+{block name="content"}
+<span class="layui-breadcrumb">
+<a><cite>首页</cite></a>
+<a><cite>下级管理</cite></a>
+<a href="javascript:void(0)">我的会员</a>
+</span>
+
+<div class="content-body">
+    <div class="layui-card">
+        <div class="layui-card-header">我的会员</div>
+        <div class="layui-card-body">
+            <!--搜索表单-->
+            <form class="layui-form" action="">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">用户名：</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="searchName" name="username" placeholder="请输入用户名"
+                                   class="layui-input"/>
+                        </div>
+                    </div>
+                    <a href="javascript:void(0)" class="layui-btn" onclick="reload()">搜索</a>
+                </div>
+            </form>
+            <!--表格-->
+            <table id="table" lay-filter="table"></table>
+            <!--            工具栏-->
+            <script type="text/html" id="tools">
+                <a class="layui-btn layui-btn-sm" lay-event="edit">修改信息</a>
+                <a class="layui-btn layui-btn-sm">转换代理</a>
+                <a class="layui-btn layui-btn-danger layui-btn-sm" onclick="removeAuthById('{{d.id}}')">删除</a>
+            </script>
+        </div>
+    </div>
+</div>
+
+
+{/block}
+
+{block name="js"}
+<script>
+    var tableInst = null;
+    var form, $, layer, table;
+    layui.use(['form', 'table', 'layer'], function () {
+        form = layui.form,
+            $ = layui.$,
+            layer = layui.layer,
+            table = layui.table;
+
+        tableInst = table.render({
+            elem: '#table',
+            height: 320,
+            id: "tableInst",
+            url: '/agent/Members/load',
+            loading: true,
+            page: {
+                layout: ['prev', 'page', 'next', 'count', 'limit']//自定义分页布局
+                , limit: 10	//初始每页数量
+                , limits: [10, 15, 20]	//可选的每页数量
+                , groups: 10	//最多几个跳页按钮  1 2 3 4 5 6 这种跳页按钮
+                , first: false //不显示首页
+                , last: false //不显示尾页
+            },
+            cols: [[
+                {field: 'id', title: 'id', width: 70},
+                {field: 'name', title: '账号', width: 130},
+                {field: 'true_name', title: '真实姓名', width: 100},
+                {field: 'id_card', title: '身份证号', width: 180},
+                {field: 'add_time', title: '申请时间', width: 160},
+                {
+                    field: 'status', title: '状态', width: 100, templet(data) {
+                        if (data.status == 0) {
+                            return '待审核';
+                        } else if (data.status == 1) {
+                            return '已通过';
+                        } else {
+                            return '已驳回';
+                        }
+                    }
+                },
+                {field: 'process_time', title: '处理时间', width: 160},
+                {fixed: 'right', title: '操作', width: 200, toolbar: "#tools"}
+            ]]
+        })
+    })
+
+    var reload = () => {
+        tableInst.reload({
+            where: {
+                username: $('#searchName').val()
+            },
+            page: {
+                curr: 1
+            }
+        });
+    }
+
+    var removeAuthById = (id) => {
+        $.post('/admin/UserManage/removeAuthById', {id}, function (res) {
+            if (res.code == 0) {
+                layer.msg(res.message)
+            } else {
+                layer.msg(res.errors)
+            }
+            reload();
+        })
+    }
+
+
+</script>
+
+{/block}

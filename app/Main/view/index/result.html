@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="__STATIC__/common/css/sixLottery.css">
+    <link rel="stylesheet" href="__STATIC__/layui/css/layui.css">
+    <link rel="stylesheet" href="__STATIC__/common/css/common.css">
+    <title>历史开奖结果</title>
+</head>
+<body>
+<div class="main-box">
+    <div class="main-header">
+        <div class="header-logo">
+            <img src="__STATIC__/common/images/logo.png" alt="" style="height: 100%">
+        </div>
+
+        {include file="common/header-menu" /}
+    </div>
+
+    {include file="common/header-game" /}
+
+    <div class="game-item">
+        <ul>
+            <li>
+
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-body">
+        {include file="common/main-body-side" /}
+
+        <div class="main-body-content" style="background-color: #eeeeee">
+            <div class="content-main1">
+                <blockquote class="layui-elem-quote blockquote">
+                    <h1>历史开奖结果</h1>
+                </blockquote>
+
+                <div class="layui-panel" style="padding: 5px">
+                    <div class="layui-form layui-row layui-col-space10">
+                        <div class="layui-col-md2">
+                            <select name="game" lay-filter="selectGame">
+                                <option value="">选择彩种筛选</option>
+                                {foreach $gameList as $key => $val}
+                                <option value="{$val.id}" {if condition="$gameId == $val.id"}selected{/if}>{$val.game_name}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="layui-col-md2">
+<!--                            <button type="button" class="layui-btn" id="search">-->
+<!--                                搜索-->
+<!--                                <i class="layui-icon layui-icon-search layui-font-12"></i>-->
+<!--                            </button>-->
+                        </div>
+                    </div>
+                    <table class="layui-table">
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>彩种名称</th>
+                                <th>期数</th>
+                                <th>是否已开奖</th>
+                                <th>开奖时间</th>
+                                <th>开奖结果</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {foreach $list as $key => $val}
+                        <tr>
+                            <td>{$key+1}</td>
+                            <td>{$val.game_name}</td>
+                            <td>第 {$val.periods}  期</td>
+                            <td>
+                                {if condition="$val.is_lottery == 0"}
+                                <span class="layui-badge layui-bg-green">未开奖</span>
+                                {/if}
+                                {if condition="$val.is_lottery == 1"}
+                                <span class="layui-badge layui-bg-blue">开奖中</span>
+                                {/if}
+                                {if condition="$val.is_lottery == 2"}
+                                <span class="layui-badge">已开奖</span>
+                                {/if}
+                            </td>
+                            <td>{$val.lottery_time}</td>
+                            <td>{$val.result}</td>
+                        </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+                    <div id="page"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+
+<script src="__STATIC__/layui/layui.js"></script>
+<script src="__STATIC__/admin/js/common.js"></script>
+<script>
+    layui.use(['layer', 'form', 'laypage'], function() {
+        let $ = layui.$, layer = layui.layer, form = layui.form, laypage = layui.laypage;
+
+        laypage.render({
+            elem: 'page'
+            ,count: {$count}
+            ,limit: {$limit}
+            ,curr: {$page}
+            ,jump: function(obj, first) {
+                if(!first){
+                    let gameId = $('select[name="game"]').val();
+                    window.location.href = "/main/result?page=" + obj.curr + "&limit=" + obj.limit + "&game_id="+gameId
+                }
+            }
+        });
+
+        form.on('select(selectGame)', function(obj){
+            window.location.href = "/main/result?page=1&game_id="+obj.value;
+        })
+    })
+</script>

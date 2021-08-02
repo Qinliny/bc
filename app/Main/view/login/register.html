@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <title>和联胜 - 用户注册</title>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <link rel="stylesheet" href="__STATIC__/login/css/style.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="__STATIC__/layui/css/layui.css">
+</head>
+
+<body>
+
+<section class="w3l-login">
+    <div class="overlay">
+        <div class="wrapper">
+            <div class="form-section">
+                <div class="login" style="text-align: center;margin-bottom: 15px">
+                    <img src="__STATIC__/login/images/logo.png" alt="" width="80%">
+                </div>
+                <div class="signin-form layui-form">
+                    <div class="form-input">
+                        <input type="text" name="nickname" lay-verify="nickname" placeholder="昵称"
+                               autocomplete="off"
+                               autocomplete="off">
+                    </div>
+                    <div class="form-input">
+                        <input type="text" name="account" lay-verify="username"
+                               placeholder="账号" autocomplete="off" autocomplete="off">
+                    </div>
+                    <div class="form-input">
+                        <input type="password" name="password" lay-verify="password"
+                               placeholder="密码" autocomplete="off">
+                    </div>
+                    <div class="form-input">
+                        <input type="password" name="confirm_password"
+                               lay-verify="confirm_password" placeholder="确认密码" autocomplete="off">
+                    </div>
+                    <button type="submit" class="btn btn-primary theme-button mt-4"
+                            lay-submit lay-filter="register">注 册</button>
+                </div>
+                <p class="signup">已有账号? <a href="/main/login" class="signuplink">前往登录</a></p>
+            </div>
+        </div>
+    </div>
+    <div id='stars'></div>
+    <div id='stars2'></div>
+    <div id='stars3'></div>
+</section>
+</body>
+</html>
+<script src="__STATIC__/layui/layui.js"></script>
+<script>
+
+    function isEmpty(obj) {
+        if(typeof obj == "undefined" || obj == null || obj == ""){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    layui.use(['layer', 'form'], function(){
+        let $ = layui.$, layer = layui.layer, form = layui.form;
+
+        form.verify({
+            nickname: function(value) {
+                if (isEmpty(value)) { return "请输入昵称"}
+            },
+            username: function (value) {
+                if (isEmpty(value)) { return "请输入账号"}
+                if (!/^[0-9a-z]*$/.test(value)) { return "账号只能由字母、数字组成，长度为6到18位" }
+                if (value.length > 18 || value.length < 6) {
+                    return "账号只能由字母、数字组成，长度为6到18位"
+                }
+            },
+            password: function(value) {
+                if (isEmpty(value)) { return "请输入密码"}
+                if (!/^[0-9a-z]*$/.test(value)) { return "密码只能由字母、数字组成，长度为6到18位" }
+                if (value.length > 18 || value.length < 6) {
+                    return "密码只能由字母、数字组成，长度为6到18位"
+                }
+            },
+            confirm_password: function(value) {
+                if (isEmpty(value)) { return "请再次输入确认密码"}
+                let password = $('input[name="password"]').val()
+                if (password != value) {
+                    return "两次输入的密码不一致，请重新输入"
+                }
+            }
+        });
+
+        form.on('submit(register)', function(obj){
+            layer.load(1, {shade: [0.3,'#000']});
+            $.post('/main/register/checkRegister', obj.field, function(resp){
+                layer.closeAll();
+                if (resp.code != 0) {
+                    layer.msg(resp.errors, {icon: 5, shift: 6} );
+                    return false;
+                } else {
+                    window.location.href = "/main/login"
+                }
+            }).error(function(){
+                layer.closeAll();
+                layer.msg("服务器出现异常！", {icon: 5, shift: 6} );
+            });
+        })
+    });
+</script>

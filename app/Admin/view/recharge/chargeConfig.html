@@ -1,0 +1,129 @@
+{extend name="common/public" /}
+
+{block name="title"}充值管理{/block}
+
+{block name="content"}
+<span class="layui-breadcrumb">
+<a><cite>首页</cite></a>
+<a href="javascript:void(0)">充值配置</a>
+</span>
+
+<div class="content-body">
+    <div class="layui-card">
+        <div class="layui-card-header">配置充值二维码</div>
+        <div class="layui-card-body">
+            <form class="layui-form" method="post" action="">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">支付宝收款码：</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="alipay" value="{$config.alipay_in}" class="layui-input layui-hide"/>
+                        <img src="{$config.alipay_in}" id="alipayImg" class="layui-hide" width="150px" height="150px"/>
+                        <button type="button" class="layui-btn" id="alipayUp">
+                            <i class="layui-icon">&#xe67c;</i>上传收款码
+                        </button>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">微信收款码：</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="wechat" value="{$config.wechat_in}" class="layui-input layui-hide"/>
+                        <img src="{$config.wechat_in}" id="wechatImg" class="layui-hide" width="150px" height="150px"/>
+                        <button type="button" class="layui-btn" id="wechatUp">
+                            <i class="layui-icon">&#xe67c;</i>上传收款码
+                        </button>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">QQ收款码：</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="QQ" value="{$config.QQ_in}" class="layui-input layui-hide"/>
+                        <img src="{$config.QQ_in}" id="QQImg" class="layui-hide" width="150px" height="150px"/>
+                        <button type="button" class="layui-btn" id="QQUp">
+                            <i class="layui-icon">&#xe67c;</i>上传收款码
+                        </button>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{/block}
+
+{block name="js"}
+<script>
+    let alipay_in = '{$config.alipay_in}';
+    let wechat_in = '{$config.wechat_in}';
+    let QQ_in = '{$config.QQ_in}';
+    layui.use(['upload', 'layer', 'form'], function () {
+        var upload = layui.upload,
+            $ = layui.$,
+            layer = layui.layer,
+            form = layui.form;
+        if (alipay_in != "") {
+            $('#alipayImg').removeClass('layui-hide')
+        }
+        if (wechat_in != "") {
+            $('#wechatImg').removeClass('layui-hide')
+        }
+        if (QQ_in != "") {
+            $('#QQImg').removeClass('layui-hide')
+        }
+
+        var alipayInst = upload.render({
+            elem: '#alipayUp',
+            url: '/admin/recharge/upload',
+            done: function (res) {
+                $('#alipayImg').attr('src', res.data).removeClass('layui-hide')
+                $('input[name=alipay]').val(res.data)
+                layer.msg(res.message)
+            },
+            error: function () {
+                //请求异常回调
+            }
+        });
+        var wechatInst = upload.render({
+            elem: '#wechatUp',
+            url: '/admin/recharge/upload',
+            done: function (res) {
+                $('#wechatImg').attr('src', res.data).removeClass('layui-hide')
+                $('input[name=wechat]').val(res.data)
+                layer.msg(res.message)
+            },
+            error: function () {
+                //请求异常回调
+            }
+        });
+        var QQInst = upload.render({
+            elem: '#QQUp',
+            url: '/admin/recharge/upload',
+            done: function (res) {
+                $('#QQImg').attr('src', res.data).removeClass('layui-hide')
+                $('input[name=QQ]').val(res.data)
+                layer.msg(res.message)
+            },
+            error: function () {
+                //请求异常回调
+            }
+        });
+
+        form.on('submit(formDemo)', function (data) {
+            console.log(data.field)
+            $.post('/admin/recharge/saveChargeConfig', data.field, (res) => {
+                layer.msg(res.message)
+                if (res.code == 0) {
+                    form.render()
+                }
+            })
+            return false;
+        });
+    });
+</script>
+{/block}
+
