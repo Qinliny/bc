@@ -130,7 +130,8 @@ function returnGameConfig($type, $config) {
         case "澳门六合彩":
         case "极速六合彩":
             $configTypeList = [
-                'numberConfig', 'colorTypeConfig', 'chineseZodiacConfig', 'joinNumberConfig'
+                'numberConfig', 'colorTypeConfig', 'chineseZodiacConfig', 'joinNumberConfig', "twoFaceConfig", "andShawConfig",
+                "headAndEndConfig"
             ];
             foreach ($configTypeList as $key => $value) {
                 // 没有的配置项进行默认补全
@@ -377,6 +378,32 @@ function getChineseZodiacNumberList($config, $type) {
 }
 
 /**
+ * 校验号码的大小单双
+ * @param $number   号码
+ * @param $type     类型
+ */
+function checkNumberType($number, $type) {
+    switch ($type) {
+        case "大":
+            $where = (int)$number >= 25;
+            break;
+        case "小":
+            $where = (int)$number <= 24;
+            break;
+        case "单":
+            $where = (int)$number % 2 != 0;
+            break;
+        case "双":
+            $where = (int)$number % 2 == 0;
+            break;
+        default:
+            $where = false;
+            break;
+    }
+    return $where;
+}
+
+/**
  * 六合彩特码开奖结果校验
  * @param $result   开奖结果
  * @param $item     当前购买的特码 ["key"=>"特码", "value"=>01]
@@ -587,6 +614,127 @@ function checkJoinNumber($result, $item, $config = null) {
             array_pop($result);
             $numberList = array_intersect($result, $userResult);
             return $numberList >= 2;
+        default:
+            return false;
+    }
+}
+
+/**
+ * 校验两面
+ * @param $result
+ * @param $item ["key"=>"两面", "value"=>"特大"]
+ * @param null $config
+ */
+function checkTowFace($result, $item, $config = null) {
+    $itemResult = json_decode($item, true);
+    // 特码
+    $lotteryResults = end($result);
+    switch ($itemResult['value']){
+        case "特单":
+            return checkNumberType($lotteryResults, "单");
+            break;
+        case "特双":
+            return checkNumberType($lotteryResults, "双");
+            break;
+        case "特大":
+            return checkNumberType($lotteryResults, "大");
+            break;
+        case "特小":
+            return checkNumberType($lotteryResults, "小");
+            break;
+        case "特合单":
+            // 获取号码的个位数和十位数
+            $number1 = substr($lotteryResults, 0, 1);
+            $number2 = substr($lotteryResults, 1, 1);
+            return ($number1+$number2) % 2 != 0;
+            break;
+        case "特合双":
+            $number1 = substr($lotteryResults, 0, 1);
+            $number2 = substr($lotteryResults, 1, 1);
+            return ($number1+$number2) % 2 == 0;
+            break;
+        case "特合大":
+            $number1 = substr($lotteryResults, 0, 1);
+            $number2 = substr($lotteryResults, 1, 1);
+            return ($number1+$number2) >= 7 || ($number1+$number2) <= 12;
+            break;
+        case "特合小":
+            $number1 = substr($lotteryResults, 0, 1);
+            $number2 = substr($lotteryResults, 1, 1);
+            return ($number1+$number2) >= 1 || ($number1+$number2) <= 6;
+            break;
+        case "特家禽":
+            // 家禽的的生肖为牛、马、羊、鸡、狗
+            $list = ["牛", "马", "羊", "鸡", "狗", "猪"];
+            $numberList = [];
+            foreach ($list as $key => $value) {
+                $number = getChineseZodiacNumberList($config, $value);
+                array_merge($numberList, $number);
+            }
+            return in_array($lotteryResults, $numberList);
+            break;
+        case "特野兽":
+            // 野兽的的生肖为牛、马、羊、鸡、狗
+            $list = ["鼠", "虎", "龙", "蛇", "兔", "猴"];
+            $numberList = [];
+            foreach ($list as $key => $value) {
+                $number = getChineseZodiacNumberList($config, $value);
+                array_merge($numberList, $number);
+            }
+            return in_array($lotteryResults, $numberList);
+            break;
+        case "特小尾":
+            $number2 = substr($lotteryResults, 1, 1);
+            return (int)$number2 >= 0 || (int)$number2 <= 4;
+            break;
+        case "特大尾":
+            $number2 = substr($lotteryResults, 1, 1);
+            return (int)$number2 >= 5 || (int)$number2 <= 9;
+            break;
+        case "总和单":
+            $numberSum = 0;
+            foreach ($result as $key => $value) {
+                $numberSum += (int)$value;
+            }
+            return $numberSum % 2 != 0;
+            break;
+        case "总和双":
+            $numberSum = 0;
+            foreach ($result as $key => $value) {
+                $numberSum += (int)$value;
+            }
+            return $numberSum % 2 == 0;
+            break;
+        case "总和大":
+            $numberSum = 0;
+            foreach ($result as $key => $value) {
+                $numberSum += (int)$value;
+            }
+            return $numberSum >= 175;
+            break;
+        case "总和小":
+            $numberSum = 0;
+            foreach ($result as $key => $value) {
+                $numberSum += (int)$value;
+            }
+            return $numberSum <= 174;
+            break;
+        case "特大单":
+            $numberList = ["25","27","29","31", "33", "35", "37", "39", "41", "43", "45", "47", "49"];
+            return in_array($lotteryResults, $numberList);
+            break;
+        case "特大双":
+            $numberList = ["26", "28", "30", "32", "34", "36", "38", "40", "42", "44", "46", "48"];
+            return in_array($lotteryResults, $numberList);
+            break;
+        case "特小单":
+            $numberList = ["01", "03", "05", "07", "09", "11", "13", "15", "17", "19", "21", "23"];
+            return in_array($lotteryResults, $numberList);
+            break;
+        case "特小双":
+            $numberList = ["02", "04", "06", "08", "10", "12", "14", "16", "18", "20", "22", "24"];
+            return in_array($lotteryResults, $numberList);
+            break;
         default:
             return false;
     }

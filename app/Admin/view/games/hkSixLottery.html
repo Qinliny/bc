@@ -218,6 +218,141 @@
                         </div>
                     </div>
                 </div>
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">两面配置</h2>
+                    <div class="layui-colla-content layui-form">
+                        <table class="layui-table" lay-size="sm">
+                            <colgroup>
+                                <col width="150">
+                                <col width="250">
+                                <col width="200">
+                                <col>
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>类型</th>
+                                <th>赔率</th>
+                                <th>退水</th>
+                                <th>单注最低</th>
+                                <th>单注最高</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach $config['twoFaceConfig'] as $key => $value}
+                            <input type="hidden" name="type-{$value.type}" value="{$value.type}">
+                            <tr>
+                                <td>{$value.type}</td>
+                                <td>
+                                    <input type="text" name="odds-{$value.type}" value="{$value.odds}" placeholder="请输入赔率" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="return-{$value.type}" value="{$value.return}" placeholder="请输入退水" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="singleNoteMin-{$value.type}" value="{$value.singleNoteMin}" placeholder="请输入单注最低" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="singleNoteMax-{$value.type}" value="{$value.singleNoteMax}" placeholder="请输入单注最高" autocomplete="off" class="layui-input">
+                                </td>
+                            </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                        <div class="layui-form-item" style="margin-top: 15px">
+                            <button class="layui-btn" lay-submit lay-filter="twoFaceConfigSubmit">立即提交</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">合肖配置</h2>
+                    <div class="layui-colla-content layui-form">
+                        <table class="layui-table" lay-size="sm">
+                            <colgroup>
+                                <col width="150">
+                                <col width="250">
+                                <col width="200">
+                                <col>
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>类型</th>
+                                <th>赔率</th>
+                                <th>退水</th>
+                                <th>单注最低</th>
+                                <th>单注最高</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach $config['andShawConfig'] as $key => $value}
+                            <input type="hidden" name="type-{$value.type}" value="{$value.type}">
+                            <tr>
+                                <td>{$value.type}</td>
+                                <td>
+                                    <input type="text" name="odds-{$value.type}" value="{$value.odds}" placeholder="请输入赔率" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="return-{$value.type}" value="{$value.return}" placeholder="请输入退水" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="singleNoteMin-{$value.type}" value="{$value.singleNoteMin}" placeholder="请输入单注最低" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="singleNoteMax-{$value.type}" value="{$value.singleNoteMax}" placeholder="请输入单注最高" autocomplete="off" class="layui-input">
+                                </td>
+                            </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                        <div class="layui-form-item" style="margin-top: 15px">
+                            <button class="layui-btn" lay-submit lay-filter="andShawConfigSubmit">立即提交</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">特头尾配置</h2>
+                    <div class="layui-colla-content layui-form">
+                        <table class="layui-table" lay-size="sm">
+                            <colgroup>
+                                <col width="150">
+                                <col width="250">
+                                <col width="200">
+                                <col>
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>类型</th>
+                                <th>赔率</th>
+                                <th>退水</th>
+                                <th>单注最低</th>
+                                <th>单注最高</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach $config['headAndEndConfig'] as $key => $value}
+                            <input type="hidden" name="type-{$value.type}" value="{$value.type}">
+                            <tr>
+                                <td>{$value.type}</td>
+                                <td>
+                                    <input type="text" name="odds-{$value.type}" value="{$value.odds}" placeholder="请输入赔率" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="return-{$value.type}" value="{$value.return}" placeholder="请输入退水" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="singleNoteMin-{$value.type}" value="{$value.singleNoteMin}" placeholder="请输入单注最低" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="singleNoteMax-{$value.type}" value="{$value.singleNoteMax}" placeholder="请输入单注最高" autocomplete="off" class="layui-input">
+                                </td>
+                            </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                        <div class="layui-form-item" style="margin-top: 15px">
+                            <button class="layui-btn" lay-submit lay-filter="headAndEndConfigSubmit">立即提交</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -263,6 +398,18 @@
 
         form.on('submit(joinNumberConfigSubmit)', function(obj) {
             saveData("joinNumberConfig", obj.field)
+        })
+
+        form.on('submit(twoFaceConfigSubmit)', function(obj) {
+            saveData("twoFaceConfig", obj.field)
+        })
+
+        form.on('submit(andShawConfigSubmit)', function(obj) {
+            saveData("andShawConfig", obj.field)
+        })
+
+        form.on('submit(headAndEndConfigSubmit)', function(obj) {
+            saveData("headAndEndConfig", obj.field)
         })
     })
 </script>

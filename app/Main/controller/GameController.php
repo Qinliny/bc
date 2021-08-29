@@ -85,6 +85,8 @@ class GameController extends BaseController
         $colorNumber = array_chunk($config['colorTypeConfig'],3);
         // 特肖
         $chineseZodiac = array_chunk($config['chineseZodiacConfig'],  2);
+        // 两面
+        $twoFace = array_chunk($config['twoFaceConfig'],  2);
 
         // 获取当前游戏开盘的期数
         $lotteryInfo = LotteryDb::getLotteryInfoByGameId($gameInfo['id']);
@@ -95,7 +97,7 @@ class GameController extends BaseController
         }
         return view('games/hkSixLottery', ['numberList'=>$numberList, 'gameInfo'=>$gameInfo,
             'config'=>$config, 'colorNumber'=>$colorNumber, 'chineseZodiac'=>$chineseZodiac,
-            'lotteryInfo'=>$lotteryInfo, 'type'=>$type, 'lastLotteryInfo'=>$lastLotteryInfo]);
+            'lotteryInfo'=>$lotteryInfo, 'type'=>$type, 'lastLotteryInfo'=>$lastLotteryInfo,'twoFace'=>$twoFace]);
     }
 
     // 北京赛车等下注页面
@@ -195,16 +197,23 @@ class GameController extends BaseController
             case "香港六合彩":
             case "澳门六合彩":
             case "极速六合彩":
-                if ($param['type'] == "number") {
-                    $this->saveNumberOrder($param, $gameInfo);
-                } else if ($param['type'] == "colorNumber") {
-                    $this->saveColorNumberOrder($param, $gameInfo);
-                } else if ($param['type'] == "chineseZodiacNumber") {
-                    $this->saveChineseZodiacNumberOrder($param, $gameInfo);
-                } else if ($param['type'] == "joinNumber") {
-                    $this->saveJoinNumberOrder($param, $gameInfo);
-                } else {
-                    failedAjax(__LINE__,"下注失败");
+                switch ($param['type']) {
+                    case "number":
+                        $this->saveNumberOrder($param, $gameInfo);
+                        break;
+                    case "colorNumber":
+                        $this->saveColorNumberOrder($param, $gameInfo);
+                        break;
+                    case "chineseZodiacNumber":
+                        $this->saveChineseZodiacNumberOrder($param, $gameInfo);
+                        break;
+                    case "joinNumber":
+                        $this->saveJoinNumberOrder($param, $gameInfo);
+                        break;
+                    case "twoFace":
+                        $this->saveTwoFaceOrder($param, $gameInfo);
+                    default:
+                        failedAjax(__LINE__,"下注失败");
                 }
                 break;
             case "北京赛车":
@@ -455,6 +464,57 @@ class GameController extends BaseController
                         'config_type'   =>  "joinNumberConfig",
                         'clear_method'  =>  "checkJoinNumber",          // 结算的方法名
                         'content'       =>  json_encode(['key'=>$value['type'], 'value'=>implode(',', $value['value'])]), // 下注的具体内容
+                        'money'         =>  $value['money'],            // 金额
+                        'lottery_id'    =>  $param['lotteryId'],        // 期数ID
+                        'create_time'   =>  thisTime()                  // 下单时间
+                    ];
+                }
+            }
+        }
+
+        // 判断用户余额是否足够扣除
+        $userInfo = UserDb::findUserInfoById($this->userId);
+        if ($userInfo['coin'] < $moneySum) {
+            failedAjax(__LINE__, "下注失败，余额不足以扣除本次下注金额!");
+        }
+
+        // 获取本期当前用户下注总金额
+        $thisLotteryMoneySum = OrderDb::getUserOrderMoneySum($this->userId, $gameInfo['id'], $param['lotteryId']);
+        if ($thisLotteryMoneySum + $moneySum > $gameInfo['highest']) {
+            failedAjax(__LINE__, "下注失败，下注金额已超过本期限定!");
+        }
+        $result = OrderDb::createOrder($rows, true);
+        if ($result === false) {
+            failedAjax(__LINE__, "下注失败！");
+        }
+        successAjax("下注成功！");
+    }
+
+    private function saveTwoFaceOrder($param, $gameInfo) {
+        // 获取游戏配置
+        $config = returnGameConfig($gameInfo['game_name'], $gameInfo['config']);
+        $rows = [];
+        // 校验期数限制
+        $this->checkLotteryTime($param['lotteryId'], $gameInfo['id']);
+        $moneySum = 0;
+        foreach ($param['param'] as $key => $value) {
+            foreach ($config['twoFaceConfig'] as $k => $config) {
+                if ($value['type'] == $config['type']) {
+                    if ($value['money'] > $config['singleNoteMax']) {
+                        failedAjax(__LINE__, "两面 ".$value['type']."下注金额超过限定的".$config['singleNoteMax']."，请重新下注！");
+                    }
+
+                    // 本次下注总金额
+                    $moneySum += $value['money'];
+
+                    $rows[] = [
+                        // 订单编号
+                        'order_no'      =>  createOrderNo(),            // 订单编号
+                        'user_id'       =>  $this->userId,              // 用户ID
+                        'game_id'       =>  $gameInfo['id'],            // 游戏ID
+                        'config_type'   =>  "twoFaceConfig",            // 配置项名称
+                        'clear_method'  =>  "checkTowFace",             // 结算的方法名
+                        'content'       =>  json_encode(['key'=>"两面", 'value'=>$value['type']]), // 下注的具体内容
                         'money'         =>  $value['money'],            // 金额
                         'lottery_id'    =>  $param['lotteryId'],        // 期数ID
                         'create_time'   =>  thisTime()                  // 下单时间

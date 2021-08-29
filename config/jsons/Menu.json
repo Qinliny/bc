@@ -151,6 +151,12 @@
                 "menuName": "操作日志",
                 "link": "javascript:void(0)",
                 "hide": true
+            },
+            {
+                "id": "10006-4",
+                "menuName": "公告管理",
+                "link": "javascript:void(0)",
+                "hide": false
             }
         ]
     }

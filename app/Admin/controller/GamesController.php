@@ -136,6 +136,15 @@ class GamesController extends BaseController
             case "joinNumberConfig":
                 $oldConfigInfo['joinNumberConfig'] = $data;
                 break;
+            case "twoFaceConfig":
+                $oldConfigInfo['twoFaceConfig'] = $data;
+                break;
+            case "andShawConfig":
+                $oldConfigInfo['andShawConfig'] = $data;
+                break;
+            case "headAndEndConfig":
+                $oldConfigInfo['headAndEndConfig'] = $data;
+                break;
             // 北京赛车、幸运飞艇、三分赛车配置
             case "topOrTwoTotalConfig":
                 $oldConfigInfo['topOrTwoTotal'] = $data;

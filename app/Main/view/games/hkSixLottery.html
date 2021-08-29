@@ -73,6 +73,15 @@
                 <li>
                     <span>连码</span>
                 </li>
+                <li>
+                    <span>两面</span>
+                </li>
+                <li>
+                    <span>合肖</span>
+                </li>
+                <li>
+                    <span>特头尾</span>
+                </li>
             </ul>
         </div>
         <div class="main-body">
@@ -83,9 +92,6 @@
                         <div class="content-item-header">
                             <div class="content-item-header-left">
                                 {$type}  -  特码
-<!--                                <span style="margin-left: 20px">-->
-<!--                                    当前彩种输赢：0.00-->
-<!--                                </span>-->
                             </div>
                             <div class="content-item-header-right">
                                 {$lotteryInfo.periods} 期
@@ -403,6 +409,58 @@
                             </div>
                         </div>
                     </div>
+    
+                    <div class="content-item">
+                        <div class="content-item-header">
+                            <div class="content-item-header-left">
+                                {$type}  -  两面
+                            </div>
+                            <div class="content-item-header-right">
+                                {$lotteryInfo.periods} 期
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                距离封盘：<span class="layui-badge-rim thisCloseTime"></span>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                距离开奖：<span class="layui-badge-rim thisOpenTime"></span>
+                            </div>
+                        </div>
+    
+                        <div class="layui-form">
+                            <div class="content-item-table">
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 10%">两面</th>
+                                        <th>赔率</th>
+                                        <th>金额</th>
+                                        <th style="width: 10%">两面</th>
+                                        <th>赔率</th>
+                                        <th>金额</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {foreach $twoFace as $key => $val}
+                                    {if condition="$key != 0"}
+                                    <tr>
+                                        {foreach $val as $k => $v}
+                                        <td class="name">{$v.type}</td>
+                                        <td class="odds">{$v.odds}</td>
+                                        <td class="amount">
+                                            <input type="text" name="color-{$v.type}" placeholder="金额">
+                                        </td>
+                                        {/foreach}
+                                    </tr>
+                                    {/if}
+                                    {/foreach}
+                                    </tbody>
+                                </table>
+        
+                            </div>
+        
+                            <div class="layui-form-item" style="margin-top: 20px">
+                                <button class="layui-btn" lay-submit lay-filter="twoFaceSubmit">立即提交</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -456,7 +514,7 @@
             let times = (inputTime - nowTime) / 1000; // times是剩余时间总的秒数
             if (times < 0) {
                 if (isOpen) {
-                    location.reload();
+                    // location.reload();
                     return "已开奖"
                 } else {
                     return "已封盘"
@@ -689,5 +747,24 @@
             openElement(elements, "joinNumber");
         })
 
+        form.on('submit(twoFaceSubmit)', function(obj){
+            let data = affirmOrder(obj.field)
+            if (data.length == 0) {
+                layer.msg("请下注后再提交！")
+                return false;
+            }
+            let elements = ""
+            $.each(data, function(index, value){
+                let number = parseInt(index) + 1
+                elements += "<tr>" +
+                    "<td>" + number + "</td>" +
+                    "<td>两面</td>" +
+                    "<td>" + value.type + "</td>" +
+                    "<td>" + value.money + "</td>" +
+                    "<td><button number='"+index+"' class=\"layui-btn layui-btn-sm layui-btn-danger delDetail\">删除</button></td>" +
+                    "</tr>>"
+            })
+            openElement(elements, "twoFace");
+        })
     });
 </script>

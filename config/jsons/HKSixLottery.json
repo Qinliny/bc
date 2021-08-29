@@ -349,5 +349,325 @@
             "singleNoteMax": 1000,
             "inputNumber": 4
         }
+    ],
+    "twoFaceConfig": [
+        {
+            "type": "特单",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "特双",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "特大",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "特小",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "特合单",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "特合双",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "特合大",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "特合小",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "特家禽",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "特野兽",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "特小尾",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "特大尾",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "总和单",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "总和双",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "总和大",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "总和小",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "特大单",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "特大双",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "特小单",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "特小双",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        }
+    ],
+    "andShawConfig": [
+        {
+            "type": "二肖",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "三肖",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "四肖",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "五肖",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "六肖",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "七肖",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },{
+            "type": "八肖",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "九肖",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "十肖",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "十一肖",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        }
+    ],
+    "headAndEndConfig": [
+        {
+            "type": "0头",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "1头",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "2头",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "3头",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "4头",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "0尾",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "1尾",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "2尾",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "3尾",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "4尾",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "5尾",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "6尾",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "7尾",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "8尾",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "9尾",
+            "odds": "11.50",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        }
     ]
 }
