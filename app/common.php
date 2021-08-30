@@ -741,6 +741,28 @@ function checkTowFace($result, $item, $config = null) {
 }
 
 /**
+ * 校验合肖
+ * @param $result
+ * @param $item ["key"=>"二肖", "value"=>"鼠,虎"]
+ * @param null $config
+ */
+function checkAndShaw($result, $item, $config = null) {
+    $itemResult = json_decode($item, true);
+    // 特码
+    $lotteryResults = end($result);
+    // 解析生肖
+    $sxList = implode(',', $item);
+    $numberList = [];
+    foreach ($sxList as $key => $value) {
+        foreach ($sxList as $key => $value) {
+            $number = getChineseZodiacNumberList($config, $value);
+            array_merge($numberList, $number);
+        }
+    }
+    return in_array($lotteryResults, $numberList);
+}
+
+/**
  * 北京赛车、幸运飞艇、三分赛车开奖校验
  * @param $result [1,2,3,4,5,6,7,8,9,10]
  * @param $item ["key"=>"topOrTwoTotal", "冠亚大"]

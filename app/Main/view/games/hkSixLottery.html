@@ -461,6 +461,73 @@
                             </div>
                         </div>
                     </div>
+    
+                    <div class="content-item">
+                        <div class="content-item-header">
+                            <div class="content-item-header-left">
+                                {$type}  -  合肖
+                            </div>
+                            <div class="content-item-header-right">
+                                {$lotteryInfo.periods} 期
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                距离封盘：<span class="layui-badge-rim thisCloseTime"></span>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                距离开奖：<span class="layui-badge-rim thisOpenTime"></span>
+                            </div>
+                        </div>
+                        <div class="layui-form">
+                            <div class="content-item-table">
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 10%">生肖</th>
+                                        <th>号码</th>
+                                        <th>勾选</th>
+                                        <th style="width: 10%">生肖</th>
+                                        <th>号码</th>
+                                        <th>勾选</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {foreach $chineseZodiac as $key => $val}
+                                    <tr>
+                                        {foreach $val as $k => $v}
+                                        <td class="name">{$v.type}</td>
+                                        <td class="numberList">
+                                            {foreach $config['numberConfig'] as $ke => $number}
+                                            {if condition="$number.chineseZodiac == $v.type"}
+                                            {if condition="$number.color == 'blue'"}
+                                            <span class="numbers blueColor">{$number.number}</span>
+                                            {/if}
+                                            {if condition="$number.color == 'red'"}
+                                            <span class="numbers redColor">{$number.number}</span>
+                                            {/if}
+                                            {if condition="$number.color == 'green'"}
+                                            <span class="numbers greenColor">{$number.number}</span>
+                                            {/if}
+                                            {/if}
+                                            {/foreach}
+                                        </td>
+                                        <td class="odds">
+                                            <input type="checkbox"  name="numbers" value="{$v.type}" lay-filter="andShaw" lay-skin="primary">
+                                        </td>
+                                        {/foreach}
+                                    </tr>
+                                    {/foreach}
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="layui-form">
+                                <div class="layui-form-item" style="margin-top: 20px">
+                                    <input type="text" name="money" required lay-verify="required" placeholder="请输入下注金额" autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-form-item" style="margin-top: 20px">
+                                    <button class="layui-btn" lay-submit lay-filter="andShawSubmit">立即提交</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -514,7 +581,7 @@
             let times = (inputTime - nowTime) / 1000; // times是剩余时间总的秒数
             if (times < 0) {
                 if (isOpen) {
-                    // location.reload();
+                    location.reload();
                     return "已开奖"
                 } else {
                     return "已封盘"
@@ -765,6 +832,43 @@
                     "</tr>>"
             })
             openElement(elements, "twoFace");
+        })
+        
+        let andShaw = []
+        form.on('checkbox(andShaw)', function(obj) {
+            if(andShaw.length > 11) {
+                // 获取赔率
+                $(this).attr('checked', false)
+                form.render();
+                layer.msg("已超过最大项目数")
+                return false;
+            }
+            andShaw.push(obj.value)
+        })
+        
+        form.on('submit(andShawSubmit)', function(obj) {
+            if (andShaw.length < 1) {
+                layer.msg("请选择多个生肖")
+                return false;
+            }
+
+            let porject = {
+                "2": "二肖", "3": "三肖", "4":"四肖", "5":"五肖", "6":"六肖", "7": "七肖", "8": "八肖", "9": "九肖", "10": "十肖", "11": "十一肖"
+            }
+            let elements = "<tr>" +
+                "<td>" + 1 + "</td>" +
+                "<td>合肖</td>" +
+                "<td>"+ porject[andShaw.length] + ":" + andShaw.join(",") +"</td>" +
+                "<td>" + obj.field.money + "</td>" +
+                "<td><button number='1' class=\"layui-btn layui-btn-sm layui-btn-danger delDetail\">删除</button></td>" +
+                "</tr>>"
+            let param = {
+                type: porject[andShaw.length],
+                detail: andShaw.join(','),
+                money: obj.field.money
+            }
+            submitData.push(param)
+            openElement(elements, "andShaw");
         })
     });
 </script>

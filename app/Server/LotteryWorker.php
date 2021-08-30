@@ -290,7 +290,10 @@ class LotteryWorker extends Server
                     // 中奖金额结算
                     foreach ($config[$orderInfo['config_type']] as $key => $conf) {
                         // 连码需要做特殊处理
-                        $type = $orderInfo['config_type'] == 'joinNumberConfig' ? $buyResult['key'] : $buyResult['value'];
+                        $teshu = [
+                            'andShawConfig', 'joinNumberConfig'
+                        ];
+                        $type = in_array($orderInfo['config_type'], $teshu) ? $buyResult['key'] : $buyResult['value'];
                         if (isset($conf['type']) && $type == $conf['type']) {
                             $sumMoney = $conf['odds'] * $orderInfo['money'];
                             break;
@@ -318,7 +321,7 @@ class LotteryWorker extends Server
                     OrderDb::updateOrderInfoById($orderInfo['id'], ['status'=>1]);
                 }
             } catch (Exception $e) {
-                Log::error("校验用户是否中奖错误异常：", $e);
+                Log::error("校验用户是否中奖错误异常：".$e->getMessage());
             }
         }
     }
