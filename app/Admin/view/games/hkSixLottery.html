@@ -353,6 +353,157 @@
                         </div>
                     </div>
                 </div>
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">正码配置</h2>
+                    <div class="layui-colla-content layui-form">
+                        <table class="layui-table" lay-size="sm">
+                            <colgroup>
+                                <col width="150">
+                                <col width="250">
+                                <col width="200">
+                                <col>
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>正码</th>
+                                <th>赔率</th>
+                                <th>退水</th>
+                                <th>单注最低</th>
+                                <th>单注最高</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach $config['orthoCodeConfig'] as $key => $value}
+                            <input type="hidden" name="number-{$value.number}" value="{$value.number}">
+                            <tr>
+                                <td>{$value.number}</td>
+                                <td>
+                                    <input type="text" name="odds-{$value.number}" value="{$value.odds}" placeholder="请输入赔率" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="return-{$value.number}" value="{$value.return}" placeholder="请输入退水" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="singleNoteMin-{$value.number}" value="{$value.singleNoteMin}" placeholder="请输入单注最低" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="singleNoteMax-{$value.number}" value="{$value.singleNoteMax}" placeholder="请输入单注最高" autocomplete="off" class="layui-input">
+                                </td>
+                            </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                        <div class="layui-form-item" style="margin-top: 15px">
+                            <button class="layui-btn" lay-submit lay-filter="orthoCodeConfigSubmit">立即提交</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">正码特配置</h2>
+                    <div class="layui-colla-content layui-form">
+                        
+                        <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                            <ul class="layui-tab-title">
+                                {for start="1" end="7"}
+                                {if condition="$i == 1"}
+                                <li class="layui-this">正码 {$i}</li>
+                                {else/}
+                                <li>正码 {$i}</li>
+                                {/if}
+                                {/for}
+                            </ul>
+                            <div class="layui-tab-content">
+                                {foreach $config["orthoTemaConfig"] as $k => $item}
+                                {if condition="$k == 'orthoTema1'"}
+                                <div class="layui-tab-item layui-show">
+                                    <table class="layui-table" lay-size="sm">
+                                        <colgroup>
+                                            <col width="150">
+                                            <col width="250">
+                                            <col width="200">
+                                            <col>
+                                        </colgroup>
+                                        <thead>
+                                        <tr>
+                                            <th>正码</th>
+                                            <th>赔率</th>
+                                            <th>退水</th>
+                                            <th>单注最低</th>
+                                            <th>单注最高</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {foreach $item as $key => $value}
+                                        <input type="hidden" name="{$k}[][{$value.number}][number]" value="{$value.number}">
+                                        <tr>
+                                            <td>{$value.number}</td>
+                                            <td>
+                                                <input type="text" name="{$k}[][{$value.number}][odds]" value="{$value.odds}" placeholder="请输入赔率" autocomplete="off" class="layui-input">
+                                            </td>
+                                            <td>
+                                                <input type="text" name="{$k}[][{$value.number}][return]" value="{$value.return}" placeholder="请输入退水" autocomplete="off" class="layui-input">
+                                            </td>
+                                            <td>
+                                                <input type="text" name="{$k}[][{$value.number}][singleNoteMin]" value="{$value.singleNoteMin}" placeholder="请输入单注最低" autocomplete="off" class="layui-input">
+                                            </td>
+                                            <td>
+                                                <input type="text" name="{$k}[][{$value.number}][singleNoteMax]" value="{$value.singleNoteMax}" placeholder="请输入单注最高" autocomplete="off" class="layui-input">
+                                            </td>
+                                        </tr>
+                                        {/foreach}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {else/}
+                                <div class="layui-tab-item">
+                                    <table class="layui-table" lay-size="sm">
+                                        <colgroup>
+                                            <col width="150">
+                                            <col width="250">
+                                            <col width="200">
+                                            <col>
+                                        </colgroup>
+                                        <thead>
+                                        <tr>
+                                            <th>正码</th>
+                                            <th>赔率</th>
+                                            <th>退水</th>
+                                            <th>单注最低</th>
+                                            <th>单注最高</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {foreach $item as $key => $value}
+                                        <input type="hidden" name="{$k}[][{$value.number}][number]" value="{$value.number}">
+                                        <tr>
+                                            <td>{$value.number}</td>
+                                            <td>
+                                                <input type="text" name="{$k}[][{$value.number}][odds]" value="{$value.odds}" placeholder="请输入赔率" autocomplete="off" class="layui-input">
+                                            </td>
+                                            <td>
+                                                <input type="text" name="{$k}[][{$value.number}][return]" value="{$value.return}" placeholder="请输入退水" autocomplete="off" class="layui-input">
+                                            </td>
+                                            <td>
+                                                <input type="text" name="{$k}[][{$value.number}][singleNoteMin]" value="{$value.singleNoteMin}" placeholder="请输入单注最低" autocomplete="off" class="layui-input">
+                                            </td>
+                                            <td>
+                                                <input type="text" name="{$k}[][{$value.number}][singleNoteMax]" value="{$value.singleNoteMax}" placeholder="请输入单注最高" autocomplete="off" class="layui-input">
+                                            </td>
+                                        </tr>
+                                        {/foreach}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {/if}
+                                {/foreach}
+                            </div>
+                        </div>
+                        
+                        <div class="layui-form-item" style="margin-top: 15px">
+                            <button class="layui-btn" lay-submit lay-filter="orthoTemaConfigSubmit">立即提交</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -410,6 +561,14 @@
 
         form.on('submit(headAndEndConfigSubmit)', function(obj) {
             saveData("headAndEndConfig", obj.field)
+        })
+        
+        form.on('submit(orthoCodeConfigSubmit)', function(obj) {
+            saveData("orthoCodeConfig", obj.field)
+        })
+
+        form.on('submit(orthoTemaConfigSubmit)', function(obj) {
+            saveData("orthoTemaConfig", obj.field)
         })
     })
 </script>

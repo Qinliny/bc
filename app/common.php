@@ -131,14 +131,16 @@ function returnGameConfig($type, $config) {
         case "极速六合彩":
             $configTypeList = [
                 'numberConfig', 'colorTypeConfig', 'chineseZodiacConfig', 'joinNumberConfig', "twoFaceConfig", "andShawConfig",
-                "headAndEndConfig"
+                "headAndEndConfig", "orthoCodeConfig", "orthoTemaConfig"
             ];
             foreach ($configTypeList as $key => $value) {
                 // 没有的配置项进行默认补全
                 if (!isset($config[$value])) {
                     // 特码需要做特殊处理
-                    if ($value == 'numberConfig') {
+                    if ($value == 'numberConfig' || $value == 'orthoCodeConfig') {
                         $config[$value] = getDefaultNumberConfig($defaultConfig);
+                    } elseif ($value == 'orthoTemaConfig') {
+                        $config[$value] = getDefaultNumberOrthoTemaConfig($defaultConfig);
                     } else {
                         $config[$value] = $defaultConfig[$value];
                     }
@@ -227,6 +229,29 @@ function getDefaultNumberConfig($defaultConfig) {
             "singleNoteMax" =>  $defaultConfig['numberConfig']['singleNoteMax'], // 单注最高
         ];
     }
+    return $numberConfig;
+}
+
+function getDefaultNumberOrthoTemaConfig($defaultConfig) {
+    $numberConfig = [];
+    for ($j = 1; $j < 7; $j++) {
+        $list = [];
+        // 特码配置
+        for ($i = $defaultConfig['numberConfig']['beginNumber']; $i <= $defaultConfig['numberConfig']['endNumber']; $i++) {
+            $number = $i < 10 ? "0".$i : $i;
+            $list[] = [
+                "number"        =>  $number,                                         // 号码
+                "color"         =>  "",                                              // 颜色：red、blue、green
+                "chineseZodiac" =>  "",                                              // 生肖
+                "odds"          =>  $defaultConfig['numberConfig']['odds'],          // 赔率
+                "return"        =>  $defaultConfig['numberConfig']['return'],        // 退水
+                "singleNoteMin" =>  $defaultConfig['numberConfig']['singleNoteMin'], // 单注最低
+                "singleNoteMax" =>  $defaultConfig['numberConfig']['singleNoteMax'], // 单注最高
+            ];
+        }
+        $numberConfig["orthoTema{$j}"] = $list;
+    }
+
     return $numberConfig;
 }
 
@@ -742,7 +767,7 @@ function checkTowFace($result, $item, $config = null) {
 
 /**
  * 校验合肖
- * @param $result
+ * @param $result   开奖结果
  * @param $item ["key"=>"二肖", "value"=>"鼠,虎"]
  * @param null $config
  */
@@ -760,6 +785,54 @@ function checkAndShaw($result, $item, $config = null) {
         }
     }
     return in_array($lotteryResults, $numberList);
+}
+
+/**
+ * 校验特头尾
+ * @param $result   开奖结果
+ * @param $item     ["key"=>"特头尾", "value"=>"0头"]
+ * @param null $config
+ */
+function checkHeadAndEnd($result, $item, $config = null) {
+    $itemResult = json_decode($item, true);
+    // 特码
+    $lotteryResults = end($result);
+    $number1 = substr($lotteryResults, 0, 1);
+    $number2 = substr($lotteryResults, 1, 1);
+    switch ($itemResult['value']) {
+        case "0头":
+            return $number1 == "0";
+        case "1头":
+            return $number1 == "1";
+        case "2头":
+            return $number1 == "2";
+        case "3头":
+            return $number1 == "3";
+        case "4头":
+            return $number1 == "4";
+        case "0尾":
+            return $number2 == "0";
+        case "1尾":
+            return $number2 == "1";
+        case "2尾":
+            return $number2 == "2";
+        case "3尾":
+            return $number2 == "3";
+        case "4尾":
+            return $number2 == "4";
+        case "5尾":
+            return $number2 == "5";
+        case "6尾":
+            return $number2 == "6";
+        case "7尾":
+            return $number2 == "7";
+        case "8尾":
+            return $number2 == "8";
+        case "9尾":
+            return $number2 == "9";
+        default:
+            return false;
+    }
 }
 
 /**

@@ -72,7 +72,6 @@ class GamesController extends BaseController
             abort(500, "当前彩种不存在，请联系开发者");
         // 获取配置
         $config = returnGameConfig($gameInfo['game_name'], $gameInfo['config']);
-
         // 获取对应的视图
         $configs = Config::get("game.gameList");
         $viewName = "";
@@ -82,7 +81,6 @@ class GamesController extends BaseController
                 break;
             }
         }
-
         View::assign([
             'title'             =>  $gameInfo['game_name'],
             'config'            =>  $config,
@@ -121,7 +119,16 @@ class GamesController extends BaseController
             $isNew = false;
             $oldConfigInfo = json_decode($configInfo['config'], true);
         }
-        $data = explodeData($config);
+        if ($type == "orthoTemaConfig") {
+            $data = [];
+            $i = 1;
+            foreach ($config as $key => $value) {
+                $data["orthoTema{$i}"] = $value;
+                $i++;
+            }
+        } else {
+            $data = explodeData($config);
+        }
         switch ($type) {
             // 六合彩配置等
             case "numberConfig":
@@ -144,6 +151,12 @@ class GamesController extends BaseController
                 break;
             case "headAndEndConfig":
                 $oldConfigInfo['headAndEndConfig'] = $data;
+                break;
+            case "orthoCodeConfig":
+                $oldConfigInfo['orthoCodeConfig'] = $data;
+                break;
+            case "orthoTemaConfig":
+                $oldConfigInfo['orthoTemaConfig'] = $data;
                 break;
             // 北京赛车、幸运飞艇、三分赛车配置
             case "topOrTwoTotalConfig":

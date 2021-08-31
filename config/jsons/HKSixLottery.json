@@ -669,5 +669,21 @@
             "singleNoteMin": 1,
             "singleNoteMax": 200000
         }
-    ]
+    ],
+    "orthoCodeConfig": {
+        "beginNumber": 1,
+        "endNumber": 49,
+        "odds": "7.16",
+        "return": "0.13",
+        "singleNoteMin": 1,
+        "singleNoteMax": 200000
+    },
+    "orthoTemaConfig": {
+        "beginNumber": 1,
+        "endNumber": 49,
+        "odds": "7.16",
+        "return": "0.13",
+        "singleNoteMin": 1,
+        "singleNoteMax": 200000
+    }
 }

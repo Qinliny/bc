@@ -87,6 +87,8 @@ class GameController extends BaseController
         $chineseZodiac = array_chunk($config['chineseZodiacConfig'],  2);
         // 两面
         $twoFace = array_chunk($config['twoFaceConfig'],  2);
+        // 特头尾
+        $headAndEnd = array_chunk($config['headAndEndConfig'],  3);
 
         // 获取当前游戏开盘的期数
         $lotteryInfo = LotteryDb::getLotteryInfoByGameId($gameInfo['id']);
@@ -95,9 +97,11 @@ class GameController extends BaseController
         if (!empty($lastLotteryInfo)) {
             $lastLotteryInfo['result'] = json_decode($lastLotteryInfo['result'],  true);
         }
+
         return view('games/hkSixLottery', ['numberList'=>$numberList, 'gameInfo'=>$gameInfo,
             'config'=>$config, 'colorNumber'=>$colorNumber, 'chineseZodiac'=>$chineseZodiac,
-            'lotteryInfo'=>$lotteryInfo, 'type'=>$type, 'lastLotteryInfo'=>$lastLotteryInfo,'twoFace'=>$twoFace]);
+            'lotteryInfo'=>$lotteryInfo, 'type'=>$type, 'lastLotteryInfo'=>$lastLotteryInfo,'twoFace'=>$twoFace,
+            'headAndEnd'=>$headAndEnd]);
     }
 
     // 北京赛车等下注页面
@@ -215,6 +219,9 @@ class GameController extends BaseController
                         break;
                     case "andShaw":
                         $this->saveAndShawOrder($param, $gameInfo);
+                        break;
+                    case "headAndEndSubmit":
+                        $this->saveheadAndEndOrder($param, $gameInfo);
                         break;
                     default:
                         failedAjax(__LINE__,"下注失败");
@@ -577,6 +584,56 @@ class GameController extends BaseController
                     ];
                 }
             }
+        }
+
+        // 判断用户余额是否足够扣除
+        $userInfo = UserDb::findUserInfoById($this->userId);
+        if ($userInfo['coin'] < $moneySum) {
+            failedAjax(__LINE__, "下注失败，余额不足以扣除本次下注金额!");
+        }
+
+        // 获取本期当前用户下注总金额
+        $thisLotteryMoneySum = OrderDb::getUserOrderMoneySum($this->userId, $gameInfo['id'], $param['lotteryId']);
+        if ($thisLotteryMoneySum + $moneySum > $gameInfo['highest']) {
+            failedAjax(__LINE__, "下注失败，下注金额已超过本期限定!");
+        }
+        $result = OrderDb::createOrder($rows, true);
+        if ($result === false) {
+            failedAjax(__LINE__, "下注失败！");
+        }
+        successAjax("下注成功！");
+    }
+
+    private function saveheadAndEndOrder($param, $gameInfo) {
+        // 获取游戏配置
+        $config = returnGameConfig($gameInfo['game_name'], $gameInfo['config']);
+        $rows = [];
+        // 校验期数限制
+        $this->checkLotteryTime($param['lotteryId'], $gameInfo['id']);
+        $moneySum = 0;
+        foreach ($param['param'] as $key => $value) {
+            // 判断当前下注金额是否达到上限
+            foreach ($config['chineseZodiacConfig'] as $k => $conf) {
+                if ($conf['type'] == $value['type']) {
+                    if ($value['money'] > $conf['singleNoteMax']) {
+                        failedAjax(__LINE__, "特头尾 ".$value['type']."下注金额超过限定的".$conf['singleNoteMax']."，请重新下注！");
+                    }
+                }
+            }
+            // 本次下注总金额
+            $moneySum += $value['money'];
+            $rows[] = [
+                // 订单编号
+                'order_no'      =>  createOrderNo(),            // 订单编号
+                'user_id'       =>  $this->userId,              // 用户ID
+                'game_id'       =>  $gameInfo['id'],            // 游戏ID
+                'config_type'   =>  "headAndEndConfig",
+                'clear_method'  =>  "checkHeadAndEnd", // 结算的方法名
+                'content'       =>  json_encode(['key'=>'特头尾', 'value'=>$value['type']]), // 下注的具体内容
+                'money'         =>  $value['money'],            // 金额
+                'lottery_id'    =>  $param['lotteryId'],        // 期数ID
+                'create_time'   =>  thisTime()                  // 下单时间
+            ];
         }
 
         // 判断用户余额是否足够扣除
