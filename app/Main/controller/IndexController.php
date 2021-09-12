@@ -129,4 +129,13 @@ class IndexController extends BaseController
         return view('index/historyReport', ['list'=>$list['items'], 'count'=>$list['total'],
             'page'=>$page, 'limit'=>$limit, 'type'=>"历史报表"]);
     }
+
+    public function gameRule() {
+        $type = request()->get('type');
+        $gameName = request()->get('game_name');
+        $gamesList = GamesDb::getGameList(1, 100);
+        $gameName = !empty($gameName) ? $gameName : $gamesList->items()[0]['game_name'];
+        return view('index/gameRule', ['type'=>'游戏规则', 'list'=>$gamesList->items(), 'gameName'=>$gameName,
+            'gameType'=>$type]);
+    }
 }

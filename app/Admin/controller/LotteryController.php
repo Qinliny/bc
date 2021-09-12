@@ -39,7 +39,7 @@ class LotteryController extends BaseController
         }
 
         // 判断游戏是否存在
-        $gameInfo = GamesDb::getGameInfoById($param['gameId']);
+        $gameInfo = GamesDb::findGameInfoById($param['gameId']);
         if ($gameInfo === false || empty($gameInfo)) {
             failedAjax(__LINE__, "当前彩种不存在！");
         }

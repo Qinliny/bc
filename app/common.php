@@ -126,12 +126,10 @@ function returnGameConfig($type, $config) {
     // 获取默认配置
     $defaultConfig = getDefaultGameConfig($type);
     switch ($type) {
-        case "香港六合彩":
-        case "澳门六合彩":
-        case "极速六合彩":
+        case "六合彩":
             $configTypeList = [
                 'numberConfig', 'colorTypeConfig', 'chineseZodiacConfig', 'joinNumberConfig', "twoFaceConfig", "andShawConfig",
-                "headAndEndConfig", "orthoCodeConfig", "orthoTemaConfig"
+                "headAndEndConfig", "orthoCodeConfig", "orthoTemaConfig", "orthoCode1And6Config", "selectNotWinConfig"
             ];
             foreach ($configTypeList as $key => $value) {
                 // 没有的配置项进行默认补全
@@ -141,15 +139,17 @@ function returnGameConfig($type, $config) {
                         $config[$value] = getDefaultNumberConfig($defaultConfig);
                     } elseif ($value == 'orthoTemaConfig') {
                         $config[$value] = getDefaultNumberOrthoTemaConfig($defaultConfig);
+                    } else if ($value == 'orthoCode1And6Config') {
+                        for ($i = 1; $i <= 6; $i++) {
+                            $config[$value]["orthoTema{$i}"] = $defaultConfig[$value];
+                        }
                     } else {
                         $config[$value] = $defaultConfig[$value];
                     }
                 }
             }
             break;
-        case "北京赛车":
-        case "幸运飞艇":
-        case "三分赛车":
+        case "赛车":
             $configTypeList = [
                 'topOrTwoTotal', 'champion', 'secondPlace', 'third', 'fourth', 'fifth', 'sixth', 'seventh',
                 'eighth', 'ninth', 'tenth'
@@ -161,7 +161,7 @@ function returnGameConfig($type, $config) {
                 }
             }
             break;
-        case "重庆时时彩":
+        case "时时彩":
             $configTypeList = [
                 'sumConfig', 'number1Config', 'number2Config', 'number3Config', 'number4Config', 'number5Config',
                 'top1Config', 'top2Config', 'top3Config'
@@ -833,6 +833,119 @@ function checkHeadAndEnd($result, $item, $config = null) {
         default:
             return false;
     }
+}
+
+/**
+ * 校验正码
+ * @param $result       开奖结果
+ * @param $item         ["key"=>"正码", "value"=>"21"]
+ * @param null $config
+ */
+function checkOrthoCode($result, $item, $config = null) {
+    $itemResult = json_decode($item, true);
+    array_pop($result); // 去除最后一个，最后一个是特码
+    return in_array($itemResult['value'], $result);
+}
+
+/**
+ * 校验正码1-6
+ * @param $result   开奖结果
+ * @param $item     ["key"=>"正码1-6", "value"=>"单码", "conf"=>"orthoTema1"]
+ * @param null $config
+ */
+function checkOrthoCode1And6($result, $item, $config = null) {
+    $itemResult = json_decode($item, true);
+    array_pop($result); // 去除最后一个，最后一个是特码
+    $confTab = ["orthoTema1", "orthoTema2", "orthoTema3", "orthoTema4", "orthoTema5", "orthoTema6"];
+
+    foreach ($confTab as $key => $val) {
+        if ($val == $itemResult["conf"]) {
+            switch ($itemResult['value']) {
+                case "单码":
+                    return (int)$result[$key] % 2 != 0;
+                case "双码":
+                    return (int)$result[$key] % 2 == 0;
+                case "大码":
+                    return (int)$result[$key] >= 25;
+                case "小码":
+                    return (int)$result[$key] <= 24;
+                case "合单":
+                    $number1 = substr($result[$key], 0, 1);
+                    $number2 = substr($result[$key], 1, 1);
+                    return ($number1 + $number2) % 2 != 0;
+                case "合双":
+                    $number1 = substr($result[$key], 0, 1);
+                    $number2 = substr($result[$key], 1, 1);
+                    return ($number1 + $number2) % 2 == 0;
+                case "合大":
+                    $number1 = substr($result[$key], 0, 1);
+                    $number2 = substr($result[$key], 1, 1);
+                    return ($number1 + $number2) >= 7;
+                case "合小":
+                    $number1 = substr($result[$key], 0, 1);
+                    $number2 = substr($result[$key], 1, 1);
+                    return ($number1 + $number2) <= 6;
+                case "尾大":
+                    $number2 = substr($result[$key], 1, 1);
+                    return $number2 >= 5 || $number2 <= 9;
+                case "尾小":
+                    $number2 = substr($result[$key], 1, 1);
+                    return $number2 >= 0 || $number2 <= 4;
+                    break;
+                case "红波":
+                    $numberList = getColorNumber($config, "red");
+                    return in_array($result[$key], $numberList);
+                case "蓝波":
+                    $numberList = getColorNumber($config, "blue");
+                    return in_array($result[$key], $numberList);
+                case "绿波":
+                    $numberList = getColorNumber($config, "green");
+                    return in_array($result[$key], $numberList);
+                default:
+                    return false;
+            }
+        }
+    }
+    return false;
+}
+
+/**
+ * 校验正马特
+ * @param $result   开奖结果
+ * @param $item     ["key"=>"正码特", "value"=>"21", "conf"=>"orthoTema1"]
+ * @param null $config
+ */
+function checkOrthoTema($result, $item, $config = null) {
+    $itemResult = json_decode($item, true);
+    array_pop($result); // 去除最后一个，最后一个是特码
+    $confTab = ["orthoTema1", "orthoTema2", "orthoTema3", "orthoTema4", "orthoTema5", "orthoTema6"];
+    foreach ($confTab as $key => $value) {
+        if ($value == $itemResult['key']) {
+            return $result[$key] == $itemResult['value'];
+        }
+    }
+    return false;
+}
+
+/**
+ * 校验自选不中
+ * @param $result   开奖结果
+ * @param $item     ["key"=>"五不中", "value"=>"1,3,4,5,6"]
+ * @param null $config
+ */
+function checkSelectNotWin($result, $item, $config = null) {
+    $itemResult = json_decode($item, true);
+    // 用户选择的不中的号码
+    $userResult = explode(",", $itemResult['value']);
+    $isWin = true;
+    foreach ($userResult as $key => $value) {
+        if (in_array($value, $result)) {
+            // 如果用户选择的号码在开奖号码，则为不中奖
+            $isWin = false; // false为用户输
+            break;
+        }
+    }
+    return $isWin;
 }
 
 /**

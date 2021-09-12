@@ -47,6 +47,12 @@
     {include file="common/header-game" /}
     
     <div class="game-item">
+        <div class="typeList">
+            <a href="/main/game/everyColor?type={$type}&t=A" class="layui-btn layui-btn-sm layui-btn-normal">A</a>
+            <a href="/main/game/everyColor?type={$type}&t=B" class="layui-btn layui-btn-sm layui-btn-normal">B</a>
+            <a href="/main/game/everyColor?type={$type}&t=C" class="layui-btn layui-btn-sm layui-btn-normal">C</a>
+            <a href="/main/game/everyColor?type={$type}&t=D" class="layui-btn layui-btn-sm layui-btn-normal">D</a>
+        </div>
         <ul>
             <li>
                 <span class="game-item-selected">整合</span>
@@ -245,6 +251,7 @@
     let timeNumber = '{$lotteryInfo.id}'
     let openTime = '{$lotteryInfo.lottery_time}'
     let closeTime = '{$lotteryInfo.end_time}'
+    let gameType = '{$gameType}'
     layui.use(['layer', 'form'], function(){
         let $ = layui.$, layer = layui.layer, form = layui.form;
 
@@ -327,7 +334,8 @@
                             gameId: gameId,
                             "type": type,
                             param: submitData,
-                            'lotteryId': timeNumber
+                            'lotteryId': timeNumber,
+                            'gameType': gameType
                         }
                         saveData(param);
                     })

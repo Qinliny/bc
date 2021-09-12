@@ -125,6 +125,12 @@
                 "menuName": "彩种列表",
                 "link": "/admin/games/gamesList",
                 "hide": false
+            },
+            {
+                "id": "10005-2",
+                "menuName": "彩种排序",
+                "link": "/admin/games/gameSort",
+                "hide": false
             }
         ]
     },
@@ -155,7 +161,7 @@
             {
                 "id": "10006-4",
                 "menuName": "公告管理",
-                "link": "javascript:void(0)",
+                "link": "/admin/notice",
                 "hide": false
             }
         ]

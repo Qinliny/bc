@@ -1,0 +1,119 @@
+{extend name="common/public" /}
+
+{block name="title"}彩种列表{/block}
+
+{block name="content"}
+
+<span class="layui-breadcrumb">
+    <a><cite>首页</cite></a>
+    <a><cite>彩种配置</cite></a>
+    <a href="/admin/games/gamesList">彩种列表</a>
+</span>
+
+<div class="content-body">
+    <div class="layui-card">
+        <div class="layui-card-header">
+        </div>
+        <div class="layui-card-body">
+            <table class="layui-table">
+                <thead>
+                <tr>
+                    <th width="50">序号</th>
+                    <th>彩种名称</th>
+                    <th>排序</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    {foreach $list as $key => $val}
+                <tr>
+                    <td>{$key + 1}</td>
+                    <td>{$val.game_name}</td>
+                    <td>{$val.sort}</td>
+                    <td>
+                        <button type="button" class="layui-btn layui-btn-sm" onclick="setSort({$val.id})">设置排序</button>
+                    </td>
+                </tr>
+                {/foreach}
+                </tr>
+                </tbody>
+            </table>
+            <div id="page"></div>
+        </div>
+    </div>
+    
+    <div id="openBox" style="display: none">
+        <div class="layui-form" style="padding: 15px">
+            <div class="layui-form-item">
+                <label class="layui-form-label">排序值</label>
+                <div class="layui-input-block">
+                    <input type="text" name="sort" required  lay-verify="required"
+                           placeholder="请输入排序值" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="save">立即提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(['layer', 'form', 'laypage'], function(){
+        let $ = layui.$, layer = layui.layer, form = layui.form, laypage = layui.laypage;
+
+        laypage.render({
+            elem: 'page'
+            ,count: {$count}
+            ,limit: {$limit}
+            ,curr: {$page}
+            ,jump: function(obj, first) {
+                if(!first){
+                    window.location.href = "/admin/games/gameSort?page=" + obj.curr + "&limit=" + obj.limit
+                }
+            }
+        });
+        
+        window.setSort = function(id) {
+            var elements = $('#openBox').html();
+            layer.open({
+                title: "设置排序",
+                type: 1,
+                skin: 'layui-layer-demo',
+                closeBtn: 1,
+                area: ['550px', '200px'],
+                anim: 2,
+                shadeClose: true,
+                content: elements,
+                success: function() {
+                    form.on('submit(save)', function(data) {
+                        let loading = layer.load(1, {shade: [0.3,'#000']});
+                        data.field.gameId = id
+                        $.post('/admin/games/setSort', data.field, function(resp){
+                            if (resp.code != 0) {
+                                layer.close(loading);
+                                layer.msg(resp.errors, {icon: 5, shift: 6} );
+                                return false;
+                            } else {
+                                layer.closeAll();
+                                layer.msg("设置成功！", {icon: 1, time: 1500, end: function () {
+                                        window.location.href = '/admin/games/gameSort'
+                                    }})
+                            }
+                        }).error(function(){
+                            layer.closeAll();
+                            layer.msg("服务器出现异常！", {icon: 5, shift: 6} );
+                        })
+                    })
+                }
+            });
+        }
+    })
+</script>
+{/block}

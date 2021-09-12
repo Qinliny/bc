@@ -113,11 +113,18 @@ html, body {
 }
 
 .game-item {
+    position: relative;
     width: 100%;
     height: 36px;
     background: #d87c86;
     box-sizing: border-box;
     padding: 0 210px;
+}
+
+.typeList {
+    position: absolute;
+    left: 15px;
+    top: 3px;
 }
 
 .game-item-selected {
@@ -314,21 +321,21 @@ html, body {
     width: 100%;
 }
 
-.content-item-table > table {
+.content-item-table  table {
     width: 100%;
     line-height: 24px;
     background: #e8caca;
 }
 
-.content-item-table > table > thead {
+.content-item-table  table  thead {
     line-height: 24px;
 }
 
-.content-item-table > table > thead > tr {
+.content-item-table  table  thead  tr {
     line-height: 24px;
 }
 
-.content-item-table > table > thead > tr > th {
+.content-item-table  table  thead  tr  th {
     line-height: 24px;
     border: 1px solid #EAC0BF;
     background: #e8caca;
@@ -337,7 +344,7 @@ html, body {
     font-weight: 500;
 }
 
-.content-item-table > table >tbody > tr > td {
+.content-item-table  table tbody  tr  td {
     height: 30px;
     background: #fff;
     border: 1px solid #daa4a3;
@@ -454,3 +461,44 @@ tbody .numbers {
 .iconCarBg8 { background-color: #ff2600 }
 .iconCarBg9 { background-color: #780b00 }
 .iconCarBg10 { background-color: #07bf00 }
+
+.titels {
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border: 1px solid #e6b3be;
+    background: linear-gradient(
+            180deg
+            ,#fff,#fff 50%,#ffefee 51%,#ffefee);
+    color: #762d08;
+}
+
+.rule_ul {
+    padding-left: 40px;
+    list-style: none;
+    margin: 20px 0px 0px;
+}
+
+.rule_ul li.first {
+    padding-left: 0px;
+    font-size: 14px;
+}
+
+.rule_ul li {
+    padding-left: 0px;
+    font-size: 14px;
+
+}
+
+.rule_ul li {
+    padding-left: 40px;
+    font-size: 12px;
+    line-height: 26px;
+}
+
+
+.redTxtTitle {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: red;
+}

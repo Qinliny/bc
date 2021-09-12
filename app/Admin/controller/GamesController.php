@@ -24,12 +24,13 @@ class GamesController extends BaseController
         $param = $this->request->get();
         $page = isset($param['page']) && $param['page'] > 0 ? $param['page'] : 1;
         $limit = isset($param['limit']) && $param['limit'] > 0 ? $param['limit'] : 15;
+        $type = !empty($param['type']) ? $param['type'] : "A";
         $result = GamesDb::getGameList($page, $limit);
         if ($result === false) {
             abort(500, "获取彩种列表失败");
         }
         return view('games/games_list', ['list'=>$result->items(), 'page'=>$page, 'limit'=>$limit,
-            'count'=>$result->total()]);
+            'count'=>$result->total(), 'type'=>$type]);
     }
 
     // 添加彩种名称
@@ -63,20 +64,22 @@ class GamesController extends BaseController
     // 彩种配置页面
     public function gameConfig() {
         $gameId = $this->request->get('gameId');
+        $type = !empty(request()->get('type')) ? request()->get('type') : "A";
         // 获取对应的配置 返回对应的视图
-        $gameInfo = GamesDb::getGameInfoById((int)$gameId);
+        $gameInfo = GamesDb::findGameInfoById((int)$gameId);
         if ($gameInfo === false) abort(500, "获取彩种数据异常！");
         if (empty($gameInfo)) abort(500, "彩种数据不存在！");
-
-        if (!in_array($gameInfo['game_name'], $this->gameList))
-            abort(500, "当前彩种不存在，请联系开发者");
         // 获取配置
-        $config = returnGameConfig($gameInfo['game_name'], $gameInfo['config']);
+        $configInfo = GamesConfigDb::getGameConfigInfoByGameId($gameId, $type);
+        if ($configInfo === false) {
+            abort(500, "获取配置数据异常！");
+        }
+        $config = returnGameConfig($gameInfo['game_type'], $configInfo['config']);
         // 获取对应的视图
         $configs = Config::get("game.gameList");
         $viewName = "";
         foreach ($configs as $key => $val) {
-            if ($val['type'] == $gameInfo['game_name']) {
+            if ($val['type'] == $gameInfo['game_type']) {
                 $viewName = $val['view'];
                 break;
             }
@@ -84,7 +87,8 @@ class GamesController extends BaseController
         View::assign([
             'title'             =>  $gameInfo['game_name'],
             'config'            =>  $config,
-            'gameId'            =>  $gameInfo['id']
+            'gameId'            =>  $gameInfo['id'],
+            'type'              =>  $type
         ]);
 
         if (empty($viewName)) abort(500, "获取信息失败！");
@@ -94,11 +98,9 @@ class GamesController extends BaseController
     // 保存配置的入口方法
     public function saveGameConfig() {
         $param = $this->request->post();
-        if (in_array($param['type'], $this->gameList)) {
-            $res = $this->saveLotteryConfig($param['typeItem'], $param['config'], $param['gameId']);
-            if ($res != false) {
-                successAjax("配置成功！");
-            }
+        $res = $this->saveLotteryConfig($param['typeItem'], $param['config'], $param['gameId'], $param['gameType']);
+        if ($res != false) {
+            successAjax("配置成功！");
         }
         failedAjax(__LINE__, "配置失败！");
     }
@@ -109,9 +111,9 @@ class GamesController extends BaseController
      * @param $config   具体的配置
      * @param $gameId   当前彩种的ID
      */
-    private function saveLotteryConfig($type, $config, $gameId) {
+    private function saveLotteryConfig($type, $config, $gameId, $gameType) {
         // 获取原来
-        $configInfo = GamesConfigDb::getGameConfigInfoByGameId($gameId);
+        $configInfo = GamesConfigDb::getGameConfigInfoByGameId($gameId, $gameType);
         if ($configInfo === false) abort(500, "获取彩种配置信息失败！");
         $oldConfigInfo = [];
         $isNew = true;
@@ -119,7 +121,8 @@ class GamesController extends BaseController
             $isNew = false;
             $oldConfigInfo = json_decode($configInfo['config'], true);
         }
-        if ($type == "orthoTemaConfig") {
+
+        if ($type == "orthoTemaConfig" || $type == "orthoCode1And6Config") {
             $data = [];
             $i = 1;
             foreach ($config as $key => $value) {
@@ -129,6 +132,7 @@ class GamesController extends BaseController
         } else {
             $data = explodeData($config);
         }
+
         switch ($type) {
             // 六合彩配置等
             case "numberConfig":
@@ -157,6 +161,12 @@ class GamesController extends BaseController
                 break;
             case "orthoTemaConfig":
                 $oldConfigInfo['orthoTemaConfig'] = $data;
+                break;
+            case "orthoCode1And6Config":
+                $oldConfigInfo['orthoCode1And6Config'] = $data;
+                break;
+            case "selectNotWinConfig":
+                $oldConfigInfo['selectNotWinConfig'] = $data;
                 break;
             // 北京赛车、幸运飞艇、三分赛车配置
             case "topOrTwoTotalConfig":
@@ -224,7 +234,7 @@ class GamesController extends BaseController
                 return false;
         }
         // 判断是修改还是新增
-        $res = $isNew ? GamesConfigDb::createGameConfig(json_encode($oldConfigInfo), $gameId):
+        $res = $isNew ? GamesConfigDb::createGameConfig(json_encode($oldConfigInfo), $gameId, $gameType):
             GamesConfigDb::updateGameConfig(json_encode($oldConfigInfo), $configInfo['id']);
         if ($res === false)
             abort(500, "配置失败！");
@@ -235,7 +245,7 @@ class GamesController extends BaseController
     public function delGame() {
         $gameId = $this->request->post('gameId');
         // 获取对应的配置
-        $gameInfo = GamesDb::getGameInfoById((int)$gameId);
+        $gameInfo = GamesDb::findGameInfoById((int)$gameId);
         // 判断数据是否存在
         if ($gameInfo === false) abort(500, "获取彩种数据异常！");
         if (empty($gameInfo)) abort(500, "彩种数据不存在！");
@@ -247,7 +257,7 @@ class GamesController extends BaseController
     // 查询某个彩种的详细配置
     public function findGameInfoById() {
         $gameId = $this->request->post('gameId');
-        $gameInfo = GamesDb::getGameInfoById((int)$gameId);
+        $gameInfo = GamesDb::findGameInfoById((int)$gameId);
         // 判断数据是否存在
         if ($gameInfo === false) abort(500, "获取彩种数据异常！");
         if (empty($gameInfo)) abort(500, "彩种数据不存在！");
@@ -262,10 +272,9 @@ class GamesController extends BaseController
 
     // 修改彩种信息
     public function editGameInfoById() {
-
         $param = $this->request->post();
         $gameId = $param['gameId'];
-        $gameInfo = GamesDb::getGameInfoById((int)$gameId);
+        $gameInfo = GamesDb::findGameInfoById((int)$gameId);
         // 判断数据是否存在
         if ($gameInfo === false) abort(500, "获取彩种数据异常！");
         if (empty($gameInfo)) abort(500, "彩种数据不存在！");
@@ -298,5 +307,32 @@ class GamesController extends BaseController
         }
         $res = GamesDb::editGameInfoById($gameId, $editData);
         $res ? successAjax("修改成功！") : failedAjax(__LINE__, "修改失败！");
+    }
+
+    public function gameSort() {
+        $param = request()->get();
+        $page = isset($param['page']) && $param['page'] > 0 ? $param['page'] : 1;
+        $limit = isset($param['limit']) && $param['limit'] > 0 ? $param['limit'] : 15;
+        $result = GamesDb::getGameList($page, $limit);
+        if ($result === false) {
+            abort(500, "获取彩种列表失败");
+        }
+        return view('games/gameSort', ['list'=>$result->items(), 'count'=>$result->total(), 'page'=>$page, 'limit'=>$limit]);
+    }
+
+    public function setSort() {
+        $param = request()->post();
+        $gameInfo = GamesDb::findGameInfoById((int)$param['gameId']);
+        // 判断数据是否存在
+        if ($gameInfo === false) abort(500, "获取彩种数据异常！");
+        if (empty($gameInfo)) abort(500, "彩种数据不存在！");
+        if (empty($param['sort'])) {
+            failedAjax(500, "请输入排序值！");
+        }
+        if ($param['sort'] > 100 || $param['sort'] < 0) {
+            failedAjax(500, "请输入1-100的排序值！");
+        }
+        GamesDb::editGameInfoById($param['gameId'], ['sort'=>$param['sort']]);
+        successAjax("设置成功！");
     }
 }

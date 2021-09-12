@@ -28,6 +28,8 @@ Route::group('/games', function () {
     Route::post('/delGame', 'Games/delGame');
     Route::post('/findGameInfo', 'Games/findGameInfoById');
     Route::post('/editGameInfo', 'Games/editGameInfoById');
+    Route::get('/gameSort', 'Games/gameSort');
+    Route::post('/setSort', 'Games/setSort');
 })->middleware(\app\Admin\middleware\CheckLoginMiddleware::class);
 
 Route::group('recharge', function () {
@@ -85,4 +87,8 @@ Route::group('/bet', function(){
 
 Route::group('/balanceLog', function () {
     Route::get('/', 'Bet/balanceLog');
+})->middleware(\app\Admin\middleware\CheckLoginMiddleware::class);
+
+Route::group('/notice', function () {
+    Route::get('/', 'Index/notice');
 })->middleware(\app\Admin\middleware\CheckLoginMiddleware::class);

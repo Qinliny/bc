@@ -114,6 +114,8 @@ class Init extends Migrator
             ->addColumn('interval', 'integer', ['null' => false, 'signed' => true, 'comment' => "开奖间隔时间", 'limit' => 11])
             ->addColumn('forbid_time', 'integer', ['null' => false, 'signed' => true, 'comment' => "开奖前多少分钟禁止下注", 'limit' => 11])
             ->addColumn('status', 'integer', ['null' => false, 'signed' => true, 'comment' => "状态：0启用 1禁用", 'limit' => 1, 'default' => 0])
+            ->addColumn('game_type', 'string', ['null' => false, 'signed' => true, 'comment' => "数据什么类型：六合彩、赛车、时时彩", 'limit' => 60])
+            ->addColumn('sort', 'integer', ['null' => false, 'signed' => true, 'comment' => "排序", 'limit' => 11, 'default' => 10])
             ->addColumn('create_time', 'datetime', ['null' => false, 'signed' => true, 'comment' => "创建时间"])
             ->create();
 
@@ -133,6 +135,7 @@ class Init extends Migrator
         $table->addColumn('game_id', 'integer', ['null' => false, 'signed' => true, 'comment' => "彩种ID", 'limit' => 11])
             ->addColumn('config', 'text', ['null' => false, 'signed' => true, 'comment' => "配置信息"])
             ->addColumn('status', 'integer', ['null' => false, 'signed' => true, 'comment' => "状态：0启用 1禁用", 'limit' => 1, 'default' => 0])
+            ->addColumn('type', 'string', ['null' => false, 'signed' => true, 'comment' => "玩法：A、B、C、D", 'limit' => 5])
             ->addColumn('create_time', 'datetime', ['null' => false, 'signed' => true, 'comment' => "添加时间"])
             ->addColumn('update_time', 'datetime', ['null' => false, 'signed' => true, 'comment' => "修改时间"])
             ->create();
@@ -215,6 +218,7 @@ class Init extends Migrator
             ->addColumn('user_id', 'integer', ['null' => false, 'signed' => true, 'comment' => "用户id", 'limit' => 11])
             ->addColumn('game_id', 'integer', ['null' => false, 'signed' => true, 'comment' => "游戏id", 'limit' => 11])
             ->addColumn('lottery_id', 'integer', ['null' => false, 'signed' => true, 'comment' => "期数id", 'limit' => 11])
+            ->addColumn('type', 'string', ['null' => false, 'signed' => true, 'comment' => "玩法：A、B、C、D", 'limit' => 5])
             ->addColumn('config_type', 'string', ['null' => false, 'signed' => true, 'comment' => "对应的配置项，用于结算读取", 'limit' => 50])
             ->addColumn('clear_method', 'string', ['null' => false, 'signed' => true, 'comment' => "校验是否中间的方法名称", 'limit' => 50])
             ->addColumn('content', 'string', ['null' => false, 'signed' => true, 'comment' => "具体的下注内容，json格式"])

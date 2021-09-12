@@ -13,9 +13,19 @@
 <div class="content-body">
     <div class="layui-card">
         <div class="layui-card-header">
-<!--            <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" id="addGames">-->
-<!--                添加彩种-->
-<!--            </button>-->
+            <div class="layui-form" style="padding-top: 5px; width: 30%">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">玩法</label>
+                    <div class="layui-input-block">
+                        <select name="type" lay-filter="selectType">
+                            <option value="A" {if condition="$type == 'A'"}selected{/if}>A</option>
+                            <option value="B" {if condition="$type == 'B'"}selected{/if}>B</option>
+                            <option value="C" {if condition="$type == 'C'"}selected{/if}>C</option>
+                            <option value="D" {if condition="$type == 'D'"}selected{/if}>D</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="layui-card-body">
             <table class="layui-table">
@@ -23,6 +33,7 @@
                 <tr>
                     <th width="50">序号</th>
                     <th>彩种名称</th>
+                    <th>玩法</th>
                     <th>单期最高</th>
                     <th>开奖间隔</th>
                     <th>禁止下注时间</th>
@@ -37,6 +48,7 @@
                 <tr>
                     <td>{$key + 1}</td>
                     <td>{$val.game_name}</td>
+                    <td>{$type} 盘</td>
                     <td>{$val.highest}</td>
                     <td>{$val.interval} 分钟</td>
                     <td>开奖前 {$val.forbid_time} 分钟</td>
@@ -49,7 +61,7 @@
                         {/if}
                     </td>
                     <td>
-                        <a href="/admin/games/config?gameId={$val.id}" type="button" class="layui-btn layui-btn-sm">配置</a>
+                        <a href="/admin/games/config?gameId={$val.id}&type={$type}" type="button" class="layui-btn layui-btn-sm">配置</a>
                         <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" onclick="details({$val.id})">编辑</button>
 <!--                        <button type="button" class="layui-btn layui-btn-danger layui-btn-sm" onclick="del({$val.id})">删除</button>-->
                     </td>
@@ -146,7 +158,7 @@
             ,curr: {$page}
             ,jump: function(obj, first) {
                 if(!first){
-                    window.location.href = "/admin/games/gamesList?page=" + obj.curr + "&limit=" + obj.limit
+                    window.location.href = "/admin/games/gamesList?page=" + obj.curr + "&limit=" + obj.limit + "&type={$type}"
                 }
             }
         });
@@ -166,7 +178,7 @@
                         return false;
                     } else {
                         layer.msg("删除成功！", {icon: 1, time: 1500, end: function () {
-                                window.location.href = '/admin/games/gamesList'
+                                window.location.href = '/admin/games/gamesList?type={$type}'
                             }})
                     }
                 }).error(function(){
@@ -254,6 +266,10 @@
                 form.render()
             })
         })
+
+        form.on('select(selectType)', function(data){
+            window.location.href = '/admin/games/gamesList?type=' + data.value
+        });
     })
 </script>
 {/block}

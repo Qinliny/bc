@@ -26,6 +26,9 @@ Route::get("/result", "Index/getResult")
 Route::get("/todayClose", "Index/todayClose")
     ->middleware(app\Main\middleware\CheckLoginMiddleware::class);
 
+Route::get("/gameRule", "Index/gameRule")
+    ->middleware(app\Main\middleware\CheckLoginMiddleware::class);
+
 Route::get("/history", "Index/historyReport")
     ->middleware(app\Main\middleware\CheckLoginMiddleware::class);
 

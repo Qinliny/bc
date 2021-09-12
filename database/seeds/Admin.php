@@ -32,12 +32,16 @@ class Admin extends Seeder
 
     protected function createGameData($faker) {
         $gameList = [
-            "香港六合彩", "澳门六合彩", "极速六合彩", "北京赛车", "幸运飞艇", "三分赛车", "重庆时时彩"
+            "香港六合彩" => "六合彩", "澳门六合彩" => "六合彩", "极速六合彩" => "六合彩", "台湾六合彩" => "六合彩", "亚洲六合彩" => "六合彩",
+            "北京赛车" => "赛车", "幸运飞艇" => "赛车", "三分赛车" => "赛车",  "PK赛车" => "赛车", "新极速飞艇" => "赛车", "超级飞艇" => "赛车",
+            "闪电飞艇" => "赛车",
+            "重庆时时彩" => "时时彩", "幸运时时彩" => "时时彩", "极速时时彩" => "时时彩", "闪电时时彩" => "时时彩", "腾讯愤愤彩" => "时时彩"
         ];
         $rows = [];
         foreach ($gameList as $key => $value) {
             $rows[] = [
-                'game_name' =>  $value,
+                'game_name' =>  $key,
+                'game_type' =>  $value,
                 'highest'   =>  200000,
                 'interval'   =>  3,
                 'forbid_time'   =>  1,
@@ -54,6 +58,7 @@ class Admin extends Seeder
             $installData = [
                 'game_id'   =>  $i,
                 'config'    =>  $data,
+                'type'      =>  'A',
                 'status'    =>  0,
                 'create_time'   =>  thisTime(),
                 'update_time'   =>  thisTime()

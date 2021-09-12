@@ -17,9 +17,11 @@ class GamesConfigDb
      * @param int $gameId   彩种ID
      * @return array|false|\think\Model|null
      */
-    public static function getGameConfigInfoByGameId(int $gameId) {
+    public static function getGameConfigInfoByGameId(int $gameId, $gameType) {
         try {
-            return Db::table(self::$table)->where('game_id', $gameId)->find();
+            return Db::table(self::$table)->where('game_id', $gameId)
+                ->where('type', $gameType)
+                ->find();
         } catch (Exception $exception) {
             return false;
         }
@@ -31,12 +33,13 @@ class GamesConfigDb
      * @param $gameId   彩种id
      * @return bool     TRUE OR FALSE
      */
-    public static function createGameConfig($config, $gameId) {
+    public static function createGameConfig($config, $gameId, $gameType) {
         try {
             $result = Db::table(self::$table)->insert([
                 'config'    =>  $config,
                 'game_id'   =>  $gameId,
                 'status'    =>  0,
+                'type'      =>  $gameType,
                 'create_time'   =>  thisTime(),
                 'update_time'   =>  thisTime()
             ]);

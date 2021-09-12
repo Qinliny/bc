@@ -10,13 +10,13 @@
     <a><cite>首页</cite></a>
     <a><cite>彩种配置</cite></a>
     <a href="/admin/games/gamesList">彩种列表</a>
-    <a><cite>{$title} - 配置</cite></a>
+    <a><cite>{$title} - {$type}盘配置</cite></a>
 </span>
 
 <div class="content-body">
     <div class="layui-card">
         <div class="layui-card-header">
-            {$title} - 配置
+            {$title} - {$type}盘配置
         </div>
         <div class="layui-card-body">
             <div class="layui-collapse">
@@ -504,6 +504,157 @@
                         </div>
                     </div>
                 </div>
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">正码1-6配置</h2>
+                    <div class="layui-colla-content layui-form">
+            
+                        <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                            <ul class="layui-tab-title">
+                                {for start="1" end="7"}
+                                {if condition="$i == 1"}
+                                <li class="layui-this">正码 {$i}</li>
+                                {else/}
+                                <li>正码 {$i}</li>
+                                {/if}
+                                {/for}
+                            </ul>
+                            <div class="layui-tab-content">
+                                {foreach $config["orthoCode1And6Config"] as $k => $item}
+                                {if condition="$k == 'orthoTema1'"}
+                                <div class="layui-tab-item layui-show">
+                                    <table class="layui-table" lay-size="sm">
+                                        <colgroup>
+                                            <col width="150">
+                                            <col width="250">
+                                            <col width="200">
+                                            <col>
+                                        </colgroup>
+                                        <thead>
+                                        <tr>
+                                            <th>正码</th>
+                                            <th>赔率</th>
+                                            <th>退水</th>
+                                            <th>单注最低</th>
+                                            <th>单注最高</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {foreach $item as $key => $value}
+                                        <input type="hidden" name="{$k}[][{$value.type}][type]" value="{$value.type}">
+                                        <tr>
+                                            <td>{$value.type}</td>
+                                            <td>
+                                                <input type="text" name="{$k}[][{$value.type}][odds]" value="{$value.odds}" placeholder="请输入赔率" autocomplete="off" class="layui-input">
+                                            </td>
+                                            <td>
+                                                <input type="text" name="{$k}[][{$value.type}][return]" value="{$value.return}" placeholder="请输入退水" autocomplete="off" class="layui-input">
+                                            </td>
+                                            <td>
+                                                <input type="text" name="{$k}[][{$value.type}][singleNoteMin]" value="{$value.singleNoteMin}" placeholder="请输入单注最低" autocomplete="off" class="layui-input">
+                                            </td>
+                                            <td>
+                                                <input type="text" name="{$k}[][{$value.type}][singleNoteMax]" value="{$value.singleNoteMax}" placeholder="请输入单注最高" autocomplete="off" class="layui-input">
+                                            </td>
+                                        </tr>
+                                        {/foreach}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {else/}
+                                <div class="layui-tab-item">
+                                    <table class="layui-table" lay-size="sm">
+                                        <colgroup>
+                                            <col width="150">
+                                            <col width="250">
+                                            <col width="200">
+                                            <col>
+                                        </colgroup>
+                                        <thead>
+                                        <tr>
+                                            <th>正码</th>
+                                            <th>赔率</th>
+                                            <th>退水</th>
+                                            <th>单注最低</th>
+                                            <th>单注最高</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {foreach $item as $key => $value}
+                                        <input type="hidden" name="{$k}[][{$value.type}][type]" value="{$value.type}">
+                                        <tr>
+                                            <td>{$value.type}</td>
+                                            <td>
+                                                <input type="text" name="{$k}[][{$value.type}][odds]" value="{$value.odds}" placeholder="请输入赔率" autocomplete="off" class="layui-input">
+                                            </td>
+                                            <td>
+                                                <input type="text" name="{$k}[][{$value.type}][return]" value="{$value.return}" placeholder="请输入退水" autocomplete="off" class="layui-input">
+                                            </td>
+                                            <td>
+                                                <input type="text" name="{$k}[][{$value.type}][singleNoteMin]" value="{$value.singleNoteMin}" placeholder="请输入单注最低" autocomplete="off" class="layui-input">
+                                            </td>
+                                            <td>
+                                                <input type="text" name="{$k}[][{$value.type}][singleNoteMax]" value="{$value.singleNoteMax}" placeholder="请输入单注最高" autocomplete="off" class="layui-input">
+                                            </td>
+                                        </tr>
+                                        {/foreach}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {/if}
+                                {/foreach}
+                            </div>
+                        </div>
+            
+                        <div class="layui-form-item" style="margin-top: 15px">
+                            <button class="layui-btn" lay-submit lay-filter="orthoCode1And6ConfigSubmit">立即提交</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">自选不中配置</h2>
+                    <div class="layui-colla-content layui-form">
+                        <table class="layui-table" lay-size="sm">
+                            <colgroup>
+                                <col width="150">
+                                <col width="250">
+                                <col width="200">
+                                <col>
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>类型</th>
+                                <th>赔率</th>
+                                <th>退水</th>
+                                <th>单注最低</th>
+                                <th>单注最高</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach $config['selectNotWinConfig'] as $key => $value}
+                            <input type="hidden" name="type-{$value.type}" value="{$value.type}">
+                            <tr>
+                                <td>{$value.type}</td>
+                                <td>
+                                    <input type="text" name="odds-{$value.type}" value="{$value.odds}" placeholder="请输入赔率" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="return-{$value.type}" value="{$value.return}" placeholder="请输入退水" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="singleNoteMin-{$value.type}" value="{$value.singleNoteMin}" placeholder="请输入单注最低" autocomplete="off" class="layui-input">
+                                </td>
+                                <td>
+                                    <input type="text" name="singleNoteMax-{$value.type}" value="{$value.singleNoteMax}" placeholder="请输入单注最高" autocomplete="off" class="layui-input">
+                                </td>
+                            </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                        <div class="layui-form-item" style="margin-top: 15px">
+                            <button class="layui-btn" lay-submit lay-filter="selectNotWinConfigSubmit">立即提交</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -513,14 +664,15 @@
 {block name="js"}
 <script>
     var gameId = '{$gameId}';
-    var gameType = '{$title}'
+    var gameName = '{$title}'
+    var gameType = '{$type}'
     layui.use(['layer', 'form', 'laypage', 'element'], function(){
         let $ = layui.$, layer = layui.layer, form = layui.form, laypage = layui.laypage, element = layui.element;
         
         function saveData(type, data) {
             let loading = layer.load(1, {shade: [0.3,'#000']});
             $.post('/admin/games/saveConfig',
-                {type: gameType, "typeItem": type, config: data, gameId: gameId},
+                {gameName: gameName, "typeItem": type, config: data, gameId: gameId, "gameType": gameType},
                 function(resp) {
                     layer.closeAll();
                     if (resp.code != 0) {
@@ -569,6 +721,14 @@
 
         form.on('submit(orthoTemaConfigSubmit)', function(obj) {
             saveData("orthoTemaConfig", obj.field)
+        })
+
+        form.on('submit(orthoCode1And6ConfigSubmit)', function(obj) {
+            saveData("orthoCode1And6Config", obj.field)
+        })
+
+        form.on('submit(selectNotWinConfigSubmit)', function(obj) {
+            saveData("selectNotWinConfig", obj.field)
         })
     })
 </script>

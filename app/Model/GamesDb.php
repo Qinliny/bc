@@ -48,31 +48,18 @@ class GamesDb
         }
     }
 
-    /**
-     * 根据ID获取彩种信息
-     * @param int $gameId   彩种ID
-     * @return array|false|\think\Model|null
-     */
-    public static function getGameInfoById(int $gameId) {
+    public static function findGameInfoById ($gameId) {
         try {
-            $res =  Db::table(self::$table)->alias('a')
-                ->leftJoin(self::$gameConfigTable . " b", 'a.id = b.game_id')
-                ->field("a.*, b.id as configId, b.config")
-                ->where('a.id', $gameId)
-                ->find();
+            $res = Db::table(self::$table)->where('id', $gameId)->find();
             return $res;
         } catch (Exception $exception) {
             return false;
         }
     }
 
-    public static function getGameInfoByName($gameName) {
+    public static function findGameInfoByName ($gameName) {
         try {
-            $res =  Db::table(self::$table)->alias('a')
-                ->leftJoin(self::$gameConfigTable . " b", 'a.id = b.game_id')
-                ->field("a.*, b.id as configId, b.config")
-                ->where('a.game_name', $gameName)
-                ->find();
+            $res = Db::table(self::$table)->where('game_name', $gameName)->find();
             return $res;
         } catch (Exception $exception) {
             return false;

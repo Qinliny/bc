@@ -1,11 +1,18 @@
 <div class="main-header-game">
     <ul>
-        <li {if condition="$type == '香港六合彩'"}class="selected"{/if}><a href="/main/game/sixLottery?type=香港六合彩">香港六合彩</a></li>
-        <li {if condition="$type == '澳门六合彩'"}class="selected"{/if}><a href="/main/game/sixLottery?type=澳门六合彩">澳门六合彩</a></li>
-        <li {if condition="$type == '极速六合彩'"}class="selected"{/if}><a href="/main/game/sixLottery?type=极速六合彩">极速六合彩</a></li>
-        <li {if condition="$type == '北京赛车'"}class="selected"{/if}><a href="/main/game/carLottery?type=北京赛车">北京赛车</a></li>
-        <li {if condition="$type == '幸运飞艇'"}class="selected"{/if}><a href="/main/game/carLottery?type=幸运飞艇">幸运飞艇</a></li>
-        <li {if condition="$type == '三分赛车'"}class="selected"{/if}><a href="/main/game/carLottery?type=三分赛车">三分赛车</a></li>
-        <li {if condition="$type == '重庆时时彩'"}class="selected"{/if}><a href="/main/game/everyColor?type=重庆时时彩">重庆时时彩</a></li>
+        {foreach $gameList as $key => $value}
+        {switch $value.game_type}
+            {case 六合彩}
+            <li {if condition="$type == $value.game_name"}class="selected"{/if}><a href="/main/game/sixLottery?type={$value.game_name}">{$value.game_name}</a></li>
+            {/case}
+            {case 赛车}
+            <li {if condition="$type == $value.game_name"}class="selected"{/if}><a href="/main/game/carLottery?type={$value.game_name}">{$value.game_name}</a></li>
+            {/case}
+            {case 时时彩}
+            <li {if condition="$type == $value.game_name"}class="selected"{/if}><a href="/main/game/everyColor?type={$value.game_name}">{$value.game_name}</a></li>
+            {/case}
+        {/switch}
+        {/foreach}
+        <li><a href="javascript:void(0)">更多游戏</a></li>
     </ul>
 </div>

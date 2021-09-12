@@ -1,0 +1,41 @@
+{extend name="common/public" /}
+
+{block name="title"}公告管理{/block}
+
+{block name="content"}
+<span class="layui-breadcrumb">
+    <a><cite>首页</cite></a>
+    <a><cite>系统设置</cite></a>
+    <a><cite>公告管理</cite></a>
+</span>
+
+<div class="content-body">
+    <div class="layui-card">
+        <div class="layui-card-header">公告列表</div>
+        <div class="layui-card-body">
+            <table class="layui-table">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>公告类型</th>
+                    <th>内容</th>
+                    <th>创建时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <div id="page"></div>
+        </div>
+    </div>
+</div>
+
+<div id="openBox" style="display: none">
+    <div class="layui-form" style="padding: 15px">
+    
+    </div>
+</div>
+
+{/block}
+
+{block name="js"}{/block}

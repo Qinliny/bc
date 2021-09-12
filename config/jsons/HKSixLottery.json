@@ -685,5 +685,164 @@
         "return": "0.13",
         "singleNoteMin": 1,
         "singleNoteMax": 200000
-    }
+    },
+    "orthoCode1And6Config": [
+        {
+            "type": "单码",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "双码",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "大码",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "小码",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "合单",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "合双",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "合大",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "合小",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "尾大",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "尾小",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "红波",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "蓝波",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        },
+        {
+            "type": "绿波",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000
+        }
+    ],
+    "selectNotWinConfig": [
+        {
+            "type": "五不中",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000,
+            "inputNumber": 5
+        },
+        {
+            "type": "六不中",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000,
+            "inputNumber": 6
+        },
+        {
+            "type": "七不中",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000,
+            "inputNumber": 7
+        },
+        {
+            "type": "八不中",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000,
+            "inputNumber": 8
+        },
+        {
+            "type": "九不中",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000,
+            "inputNumber": 9
+        },
+        {
+            "type": "十不中",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000,
+            "inputNumber": 10
+        },
+        {
+            "type": "十一不中",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000,
+            "inputNumber": 11
+        },
+        {
+            "type": "十二不中",
+            "odds": "2.70",
+            "return": "0",
+            "singleNoteMin": 1,
+            "singleNoteMax": 200000,
+            "inputNumber": 12
+        }
+    ]
 }

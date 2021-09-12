@@ -3,6 +3,7 @@
 namespace app\Server;
 
 use app\Model\BalanceLogDb;
+use app\Model\GamesConfigDb;
 use app\Model\GamesDb;
 use app\Model\LotteryDb;
 use app\Model\OrderDb;
@@ -50,35 +51,33 @@ class LotteryWorker extends Server
                     // 判断是否已经预设了开奖的数据
                     $lotteryData = LotteryDb::findLotteryInfoById($lotteryInfo['id']);
                     $result = [];
-                    switch ($value['game_name']) {
-                        case "澳门六合彩":
-                        case "极速六合彩":
-                            // 获取开奖的数据
-                            if (empty($lotteryData['result'])) {
-                                $result = getSixLotteryResult();
+                    switch ($value['game_type']) {
+                        case "六合彩":
+                            if ($value['game_name'] == "香港六合彩") {
+                                // 香港六合彩的另作处理
+                                $result = $this->getSixLotteryResult();
                             } else {
-                                $result = json_decode($lotteryData['result'], true);
+                                // 获取开奖的数据
+                                if (empty($lotteryData['result'])) {
+                                    $result = getSixLotteryResult();
+                                } else {
+                                    $result = json_decode($lotteryData['result'], true);
+                                }
                             }
                             break;
-                        case "北京赛车":
-                        case "幸运飞艇":
-                        case "三分赛车":
+                        case "赛车":
                             if (empty($lotteryData['result'])) {
                                 $result = getCarLotteryResult();
                             } else {
                                 $result = json_decode($lotteryData['result'], true);
                             }
                             break;
-                        case "重庆时时彩":
+                        case "时时彩":
                             if (empty($lotteryData['result'])) {
                                 $result = getEveryColorLResult();
                             } else {
                                 $result = json_decode($lotteryData['result'], true);
                             }
-                            break;
-                        case "香港六合彩":
-                            // 香港六合彩的另作处理
-                            $result = $this->getSixLotteryResult();
                             break;
                     }
 
@@ -173,7 +172,7 @@ class LotteryWorker extends Server
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     private function createLotteryData($gameInfo, $periods = 202101) {
-        $gameInfoData = GamesDb::getGameInfoById($gameInfo['id']);
+        $gameInfoData = GamesDb::findGameInfoById($gameInfo['id']);
         // 获取配置的开奖时间
         $lotteryTime = ((int)$gameInfoData['interval'] * 60) + time();
         // 禁止下注时间
@@ -272,7 +271,7 @@ class LotteryWorker extends Server
             try {
                 $orderInfo = json_decode($value, true);
                 // 获取游戏信息
-                $gameInfo = GamesDb::getGameInfoById((int)$orderInfo['game_id']);
+                $gameInfo = GamesDb::findGameInfoById((int)$orderInfo['game_id']);
                 // 获取这一期游戏的信息
                 $lotteryInfo = LotteryDb::findLotteryInfoById($orderInfo['lottery_id']);
                 // 开奖结果
@@ -280,7 +279,9 @@ class LotteryWorker extends Server
                 // 用户下注信息
                 $buyInfo = $orderInfo['content'];
                 // 获取游戏配置
-                $config = returnGameConfig($gameInfo['game_name'], $gameInfo['config']);
+                $configInfo = GamesConfigDb::getGameConfigInfoByGameId($gameInfo['id'], $orderInfo['game_type']);
+                $config = returnGameConfig($gameInfo['game_type'], $configInfo['config']);
+
                 // 校验是否中奖
                 $lotteryResult = $orderInfo['clear_method']($result, $buyInfo, $config);
                 // 中奖修改订单信息
@@ -291,7 +292,7 @@ class LotteryWorker extends Server
                     foreach ($config[$orderInfo['config_type']] as $key => $conf) {
                         // 连码需要做特殊处理
                         $teshu = [
-                            'andShawConfig', 'joinNumberConfig'
+                            'andShawConfig', 'joinNumberConfig', 'selectNotWinConfig'
                         ];
                         $type = in_array($orderInfo['config_type'], $teshu) ? $buyResult['key'] : $buyResult['value'];
                         if (isset($conf['type']) && $type == $conf['type']) {
@@ -302,6 +303,26 @@ class LotteryWorker extends Server
                         if (isset($conf['number']) && $type == $conf['number']) {
                             $sumMoney = $conf['odds'] * $orderInfo['money'];
                             break;
+                        }
+
+                        // 正码特
+                        if ($orderInfo['config_type'] == "orthoTemaConfig") {
+                            foreach ($conf[$buyResult['conf']] as $childConf) {
+                                if (isset($childConf['number']) && $type == $childConf['number']) {
+                                    $sumMoney = $childConf['odds'] * $orderInfo['money'];
+                                    break;
+                                }
+                            }
+                        }
+
+                        // 正码1-6
+                        if ($orderInfo['config_type'] == "orthoCode1And6Config") {
+                            foreach ($conf[$buyResult['conf']] as $childConf) {
+                                if (isset($childConf['type']) && $type == $childConf['type']) {
+                                    $sumMoney = $childConf['odds'] * $orderInfo['money'];
+                                    break;
+                                }
+                            }
                         }
                     }
                     // 修改订单信息
@@ -318,6 +339,7 @@ class LotteryWorker extends Server
                         'create_time'   =>  thisTime()
                     ]);
                 } else {
+                    // 退水@TODO
                     OrderDb::updateOrderInfoById($orderInfo['id'], ['status'=>1]);
                 }
             } catch (Exception $e) {

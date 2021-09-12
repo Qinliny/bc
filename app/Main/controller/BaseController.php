@@ -28,6 +28,10 @@ class BaseController extends \app\BaseController
         $userData = UserDb::findUserInfoById($this->userId);
         // 获取彩种
         $gamesList = GamesDb::getGameList(1, 100);
-        View::assign(["gameList" => $gamesList, 'userInfo' => $userInfo, 'accountInfo'=>$userData]);
+        $data = $gamesList->items();
+        $last_names = array_column($data,'sort');
+        array_multisort($last_names,SORT_DESC, $data);
+        $gameTop9 = array_slice($data, 0, 9);
+        View::assign(["gameList" => $gameTop9, 'userInfo' => $userInfo, 'accountInfo'=>$userData]);
     }
 }

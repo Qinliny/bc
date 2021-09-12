@@ -23,7 +23,7 @@
                     <p><span>{$lastLotteryInfo.periods}</span>期开奖</p>
                 </div>
                 <div class="lottery-result">
-                    {foreach $lastLotteryInfo['result'] as $key => $val}
+                    {foreach $lastLotteryInfo.result as $key => $val}
                         {foreach $config['numberConfig'] as $k => $v}
                         {if condition="$v.number == $val"}
                             {if condition="$v.color == 'red'"}
@@ -60,6 +60,12 @@
         {include file="common/header-game" /}
         
         <div class="game-item">
+            <div class="typeList">
+                <a href="/main/game/sixLottery?type={$type}&t=A" class="layui-btn layui-btn-sm layui-btn-normal">A</a>
+                <a href="/main/game/sixLottery?type={$type}&t=B" class="layui-btn layui-btn-sm layui-btn-normal">B</a>
+                <a href="/main/game/sixLottery?type={$type}&t=C" class="layui-btn layui-btn-sm layui-btn-normal">C</a>
+                <a href="/main/game/sixLottery?type={$type}&t=D" class="layui-btn layui-btn-sm layui-btn-normal">D</a>
+            </div>
             <ul>
                 <li>
                     <span class="game-item-selected">特码</span>
@@ -81,6 +87,18 @@
                 </li>
                 <li>
                     <span>特头尾</span>
+                </li>
+                <li>
+                    <span>正码</span>
+                </li>
+                <li>
+                    <span>正特码</span>
+                </li>
+                <li>
+                    <span>正码1-6</span>
+                </li>
+                <li>
+                    <span>自选不中</span>
                 </li>
             </ul>
         </div>
@@ -577,6 +595,342 @@
                             </div>
                         </div>
                     </div>
+    
+                    <div class="content-item">
+                        <div class="content-item-header">
+                            <div class="content-item-header-left">
+                                {$type}  -  正码
+                            </div>
+                            <div class="content-item-header-right">
+                                {$lotteryInfo.periods} 期
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                距离封盘：<span class="layui-badge-rim thisCloseTime"></span>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                距离开奖：<span class="layui-badge-rim thisOpenTime"></span>
+                            </div>
+                        </div>
+        
+                        <div class="content-item-table layui-form">
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>号码</th>
+                                    <th>赔率</th>
+                                    <th>金额</th>
+                                    <th>号码</th>
+                                    <th>赔率</th>
+                                    <th>金额</th>
+                                    <th>号码</th>
+                                    <th>赔率</th>
+                                    <th>金额</th>
+                                    <th>号码</th>
+                                    <th>赔率</th>
+                                    <th>金额</th>
+                                    <th>号码</th>
+                                    <th>赔率</th>
+                                    <th>金额</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {foreach $orthoCode as $key => $value}
+                                <tr>
+                                    {foreach $value as $k => $v}
+                                    <td class="number">
+                                        {if condition="$numberList[$key][$k]['color'] == 'red'"}
+                                        <span class="numbers redColor">{$v.number}</span>
+                                        {elseif $numberList[$key][$k]['color'] == 'blue' /}
+                                        <span class="numbers blueColor">{$v.number}</span>
+                                        {else /}
+                                        <span class="numbers greenColor">{$v.number}</span>
+                                        {/if}
+                                    </td>
+                                    <td class="odds">{$v.odds}</td>
+                                    <td class="amount">
+                                        <input type="text" name="number-{$v.number}" placeholder="金额">
+                                    </td>
+                                    {/foreach}
+                                </tr>
+                                {/foreach}
+                                </tbody>
+                            </table>
+                            <div class="layui-form-item" style="margin-top: 20px">
+                                <button class="layui-btn" lay-submit lay-filter="orthoCodeSubmit">立即提交</button>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="content-item">
+                        <div class="content-item-header">
+                            <div class="content-item-header-left">
+                                {$type}  -  正码特
+                            </div>
+                            <div class="content-item-header-right">
+                                {$lotteryInfo.periods} 期
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                距离封盘：<span class="layui-badge-rim thisCloseTime"></span>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                距离开奖：<span class="layui-badge-rim thisOpenTime"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="content-item-table layui-form">
+                            <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                                <ul class="layui-tab-title">
+                                    <li class="layui-this" lay-id="1">正码特一</li>
+                                    <li lay-id="2">正码特二</li>
+                                    <li lay-id="3">正码特三</li>
+                                    <li lay-id="4">正码特四</li>
+                                    <li lay-id="5">正码特五</li>
+                                    <li lay-id="6">正码特六</li>
+                                </ul>
+    
+                                <div class="layui-tab-content">
+                                    {foreach $orthoTema as $ks => $vs}
+                                    {if condition="$ks == 'orthoTema1'"}
+                                    <div class="layui-tab-item layui-show">
+                                        <table>
+                                            <thead>
+                                            <tr>
+                                                <th>号码</th>
+                                                <th>赔率</th>
+                                                <th>金额</th>
+                                                <th>号码</th>
+                                                <th>赔率</th>
+                                                <th>金额</th>
+                                                <th>号码</th>
+                                                <th>赔率</th>
+                                                <th>金额</th>
+                                                <th>号码</th>
+                                                <th>赔率</th>
+                                                <th>金额</th>
+                                                <th>号码</th>
+                                                <th>赔率</th>
+                                                <th>金额</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {foreach $vs as $key => $value}
+                                            <tr>
+                                                {foreach $value as $k => $v}
+                                                <td class="number">
+                                                    {if condition="$numberList[$key][$k]['color'] == 'red'"}
+                                                    <span class="numbers redColor">{$v.number}</span>
+                                                    {elseif $numberList[$key][$k]['color'] == 'blue' /}
+                                                    <span class="numbers blueColor">{$v.number}</span>
+                                                    {else /}
+                                                    <span class="numbers greenColor">{$v.number}</span>
+                                                    {/if}
+                                                </td>
+                                                <td class="odds">{$v.odds}</td>
+                                                <td class="amount">
+                                                    <input type="text" name="number-{$v.number}-{$ks}" placeholder="金额">
+                                                </td>
+                                                {/foreach}
+                                            </tr>
+                                            {/foreach}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    {else/}
+                                    <div class="layui-tab-item">
+                                        <table>
+                                            <thead>
+                                            <tr>
+                                                <th>号码</th>
+                                                <th>赔率</th>
+                                                <th>金额</th>
+                                                <th>号码</th>
+                                                <th>赔率</th>
+                                                <th>金额</th>
+                                                <th>号码</th>
+                                                <th>赔率</th>
+                                                <th>金额</th>
+                                                <th>号码</th>
+                                                <th>赔率</th>
+                                                <th>金额</th>
+                                                <th>号码</th>
+                                                <th>赔率</th>
+                                                <th>金额</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {foreach $vs as $key => $value}
+                                            <tr>
+                                                {foreach $value as $k => $v}
+                                                <td class="number">
+                                                    {if condition="$numberList[$key][$k]['color'] == 'red'"}
+                                                    <span class="numbers redColor">{$v.number}</span>
+                                                    {elseif $numberList[$key][$k]['color'] == 'blue' /}
+                                                    <span class="numbers blueColor">{$v.number}</span>
+                                                    {else /}
+                                                    <span class="numbers greenColor">{$v.number}</span>
+                                                    {/if}
+                                                </td>
+                                                <td class="odds">{$v.odds}</td>
+                                                <td class="amount">
+                                                    <input type="text" name="number-{$v.number}-{$ks}" placeholder="金额">
+                                                </td>
+                                                {/foreach}
+                                            </tr>
+                                            {/foreach}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    {/if}
+                                    {/foreach}
+                                </div>
+                            </div>
+                            
+                            <div class="layui-form-item" style="margin-top: 20px">
+                                <button class="layui-btn" lay-submit lay-filter="orthoTemaSubmit">立即提交</button>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="content-item">
+                        <div class="content-item-header">
+                            <div class="content-item-header-left">
+                                {$type}  -  正码1-6
+                            </div>
+                            <div class="content-item-header-right">
+                                {$lotteryInfo.periods} 期
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                距离封盘：<span class="layui-badge-rim thisCloseTime"></span>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                距离开奖：<span class="layui-badge-rim thisOpenTime"></span>
+                            </div>
+                        </div>
+        
+                        <div class="content-item-table layui-form">
+                            <div style="display: flex">
+                                {foreach $orthoCode1And6 as $ks => $vs}
+                                <div class="items" style="margin-right: 5px;">
+                                    {switch $ks}
+                                        {case orthoTema1}<div class="titels">正码一</div>{/case}
+                                        {case orthoTema2}<div class="titels">正码二</div>{/case}
+                                        {case orthoTema3}<div class="titels">正码三</div>{/case}
+                                        {case orthoTema4}<div class="titels">正码四</div>{/case}
+                                        {case orthoTema5}<div class="titels">正码五</div>{/case}
+                                        {case orthoTema6}<div class="titels">正码六</div>{/case}
+                                    {/switch}
+                                    <table>
+                                        <thead>
+                                        <tr>
+                                            <th>类型</th>
+                                            <th>赔率</th>
+                                            <th style="width: 35%;">金额</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {foreach $vs as $key => $v}
+                                        <tr>
+                                            <td class="name">{$v.type}</td>
+                                            <td class="odds">{$v.odds}</td>
+                                            <td class="amount">
+                                                <input type="text" name="orthoCode1And6-{$v.type}-{$ks}" placeholder="金额">
+                                            </td>
+                                        </tr>
+                                        {/foreach}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {/foreach}
+                            </div>
+                            <div class="layui-form-item" style="margin-top: 20px">
+                                <button class="layui-btn" lay-submit lay-filter="orthoCode1And6Submit">立即提交</button>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="content-item">
+                        <div class="content-item-header">
+                            <div class="content-item-header-left">
+                                {$type}  -  自选不中
+                            </div>
+                            <div class="content-item-header-right">
+                                {$lotteryInfo.periods} 期
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                距离封盘：<span class="layui-badge-rim thisCloseTime"></span>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                距离开奖：<span class="layui-badge-rim thisOpenTime"></span>
+                            </div>
+                        </div>
+                        <div class="layui-form">
+                            <div class="content-item-table">
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        {foreach $config['selectNotWinConfig'] as $key => $val}
+                                        <th>
+                                            <input type="radio" name="type" value="{$val.inputNumber}" joinType="{$val.type}" lay-filter="type">
+                                        </th>
+                                        {/foreach}
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        {foreach $config['selectNotWinConfig'] as $key => $val}
+                                        <td class="name">{$val.type}</td>
+                                        {/foreach}
+                                    </tr>
+                                    <tr>
+                                        {foreach $config['selectNotWinConfig'] as $key => $val}
+                                        <td class="odds">{$val.odds}</td>
+                                        {/foreach}
+                                    </tr>
+                                    </tbody>
+                                </table>
+            
+                            </div>
+            
+                            <div class="content-item-table">
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th>号码</th>
+                                        <th>勾选</th>
+                                        <th>号码</th>
+                                        <th>勾选</th>
+                                        <th>号码</th>
+                                        <th>勾选</th>
+                                        <th>号码</th>
+                                        <th>勾选</th>
+                                        <th>号码</th>
+                                        <th>勾选</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {foreach $numberList as $key => $value}
+                                    <tr>
+                                        {foreach $value as $k => $v}
+                                        <td class="number">
+                                            {if condition="$v.color == 'red'"}
+                                            <span class="numbers redColor">{$v.number}</span>
+                                            {elseif $v.color == 'blue' /}
+                                            <span class="numbers blueColor">{$v.number}</span>
+                                            {else /}
+                                            <span class="numbers greenColor">{$v.number}</span>
+                                            {/if}
+                                        </td>
+                                        <td class="odds">
+                                            <input type="checkbox"  name="numbers" value="{$v.number}" lay-filter="numbers" lay-skin="primary">
+                                        </td>
+                                        {/foreach}
+                                    </tr>
+                                    {/foreach}
+                                    </tbody>
+                                </table>
+                            </div>
+            
+                            <div class="layui-form-item" style="margin-top: 20px;display: flex">
+                                <label class="layui-form-label">下注金额：</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="money" placeholder="下注金额" autocomplete="off" class="layui-input">
+                                </div>
+                                <button class="layui-btn" lay-submit lay-filter="selectNotWinSubmit">立即提交</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -612,9 +966,15 @@
     let timeNumber = '{$lotteryInfo.id}'
     let openTime = '{$lotteryInfo.lottery_time}'
     let closeTime = '{$lotteryInfo.end_time}'
+    let gameType = '{$gameType}'
     layui.use(['layer', 'form', 'element'], function() {
         let $ = layui.$, layer = layui.layer, form = layui.form, element = layui.element;
+        let tabOrthoCode1And6 = 1;
         let submitData = [];
+
+        element.on('tab(docDemoTabBrief)', function(){
+            tabOrthoCode1And6 = this.getAttribute('lay-id');
+        });
 
         $('.game-item>ul>li').each(function(index, value) {
             $(value).on('click', function(){
@@ -659,6 +1019,9 @@
                     let param = {}
                     param.type = type[1]
                     param.money = data[item]
+                    if (type[2]) {
+                        param.conf = type[2]
+                    }
                     submitParam.push(param)
                 }
             }
@@ -696,7 +1059,8 @@
                             gameId: gameId,
                             "type": type,
                             param: submitData,
-                            'lotteryId': timeNumber
+                            'lotteryId': timeNumber,
+                            'gameType': gameType
                         }
                         saveData(param);
                     })
@@ -792,8 +1156,8 @@
             $('input[name="numbers"]').each(function(index, value) {
                 $(value).attr('checked', false)
                 inputNumberList = [];
-                form.render();
             })
+            form.render();
         });
 
         form.on('checkbox(numbers)', function(data){
@@ -938,6 +1302,116 @@
                     "</tr>>"
             })
             openElement(elements, "headAndEnd");
+        })
+
+        form.on('submit(orthoCodeSubmit)', function(obj) {
+            let data = affirmOrder(obj.field)
+            if (data.length == 0) {
+                layer.msg("请下注后再提交！")
+                return false;
+            }
+            let elements = ""
+            $.each(data, function(index, value){
+                let number = parseInt(index) + 1
+                elements += "<tr>" +
+                    "<td>" + number + "</td>" +
+                    "<td>正码</td>" +
+                    "<td>" + value.type + "</td>" +
+                    "<td>" + value.money + "</td>" +
+                    "<td><button number='"+index+"' class=\"layui-btn layui-btn-sm layui-btn-danger delDetail\">删除</button></td>" +
+                    "</tr>>"
+            })
+            openElement(elements, "orthoCode");
+        })
+
+        form.on('submit(orthoTemaSubmit)', function(obj) {
+            let data = affirmOrder(obj.field)
+            if (data.length == 0) {
+                layer.msg("请下注后再提交！")
+                return false;
+            }
+            let elements = ""
+            let conf = {
+                "orthoTema1": "正马特一", "orthoTema2": "正马特二", "orthoTema3": "正马特三", "orthoTema4": "正马特四",
+                "orthoTema5": "正马特五", "orthoTema6": "正马特六",
+            }
+            $.each(data, function(index, value){
+                let number = parseInt(index) + 1
+                elements += "<tr>" +
+                    "<td>" + number + "</td>" +
+                    "<td>正码特</td>" +
+                    "<td>" + conf[value.conf] + "：" + value.type + "</td>" +
+                    "<td>" + value.money + "</td>" +
+                    "<td><button number='"+index+"' class=\"layui-btn layui-btn-sm layui-btn-danger delDetail\">删除</button></td>" +
+                    "</tr>>"
+            })
+            openElement(elements, "orthoTema");
+        })
+
+        form.on('submit(orthoCode1And6Submit)', function(obj) {
+            let data = affirmOrder(obj.field)
+            console.log(data)
+            if (data.length == 0) {
+                layer.msg("请下注后再提交！")
+                return false;
+            }
+            let elements = ""
+            let conf = {
+                "orthoTema1": "正马特一", "orthoTema2": "正马特二", "orthoTema3": "正马特三", "orthoTema4": "正马特四",
+                "orthoTema5": "正马特五", "orthoTema6": "正马特六",
+            }
+            $.each(data, function(index, value){
+                let number = parseInt(index) + 1
+                elements += "<tr>" +
+                    "<td>" + number + "</td>" +
+                    "<td>正码特1-6</td>" +
+                    "<td>" + conf[value.conf] + "：" + value.type + "</td>" +
+                    "<td>" + value.money + "</td>" +
+                    "<td><button number='"+index+"' class=\"layui-btn layui-btn-sm layui-btn-danger delDetail\">删除</button></td>" +
+                    "</tr>>"
+            })
+            openElement(elements, "orthoCode1And6");
+        })
+
+        form.on('submit(selectNotWinSubmit)', function(obj){
+            if (inputNumber === null) {
+                layer.msg("请选择自选不中类型！")
+                return false;
+            }
+
+            if (inputNumberList.length != inputNumber) {
+                layer.msg("请勾选自选不中号码！")
+                return false;
+            }
+            if (obj.field.money == "") {
+                layer.msg("请输入下注金额！")
+                return false;
+            }
+
+            let data = affirmOrder(obj.field)
+            if (data.length == 0) {
+                layer.msg("请下注后再提交！")
+                return false;
+            }
+            let param = {}
+            param.type = joinType
+            param.money = obj.field.money
+            param.value = inputNumberList
+            let result = [];
+            result.push(param)
+            let elements = ""
+            submitData = result
+            $.each(result, function(index, value){
+                let number = parseInt(index) + 1
+                elements += "<tr>" +
+                    "<td>" + number + "</td>" +
+                    "<td>自选不中</td>" +
+                    "<td>"  + value.type + "：" + value.value.join(",") + "</td>" +
+                    "<td>" + value.money + "</td>" +
+                    "<td><button number='"+index+"' class=\"layui-btn layui-btn-sm layui-btn-danger delDetail\">删除</button></td>" +
+                    "</tr>>"
+            })
+           openElement(elements, "selectNotWin");
         })
     });
 </script>
