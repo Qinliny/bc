@@ -5,6 +5,7 @@ namespace app\Main\controller;
 use app\Model\GamesConfigDb;
 use app\Model\GamesDb;
 use app\Model\LotteryDb;
+use app\Model\Notice;
 use app\Model\OrderDb;
 use app\Model\UserDb;
 use think\facade\Config;
@@ -103,11 +104,13 @@ class GameController extends BaseController
         if (!empty($lastLotteryInfo)) {
             $lastLotteryInfo['result'] = json_decode($lastLotteryInfo['result'],  true);
         }
+
+        $noticeList = Notice::getNoticeList(1, 15);
         return view('games/hkSixLottery', ['numberList'=>$numberList, 'gameInfo'=>$gameInfo,
             'config'=>$config, 'colorNumber'=>$colorNumber, 'chineseZodiac'=>$chineseZodiac,
             'lotteryInfo'=>$lotteryInfo, 'type'=>$type, 'lastLotteryInfo'=>$lastLotteryInfo,'twoFace'=>$twoFace,
             'headAndEnd'=>$headAndEnd, 'orthoCode'=>$orthoCode, 'orthoTema' => $orthoTema, 'orthoCode1And6'=>$orthoCode1And6,
-            'gameType' => $gameType]);
+            'gameType' => $gameType, 'noticeList' => $noticeList->items()]);
     }
 
     // 北京赛车等下注页面

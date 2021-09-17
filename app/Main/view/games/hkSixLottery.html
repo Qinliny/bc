@@ -957,6 +957,31 @@
             </div>
         </div>
     </div>
+
+    <div class="openNotice" style="display: none">
+        <div style="padding: 15px">
+            <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                <ul class="layui-tab-title">
+                    {foreach $noticeList as $key => $value}
+                    {if condition="$key == 0"}
+                    <li class="layui-this">{$value.type}</li>
+                    {else/}
+                    <li>{$value.type}</li>
+                    {/if}
+                    {/foreach}
+                </ul>
+                <div class="layui-tab-content">
+                    {foreach $noticeList as $key => $value}
+                    {if condition="$key == 0"}
+                    <div class="layui-tab-item layui-show">{$value.content}</div>
+                    {else/}
+                    <div class="layui-tab-item">{$value.content}</div>
+                    {/if}
+                    {/foreach}
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
 
@@ -971,6 +996,24 @@
         let $ = layui.$, layer = layui.layer, form = layui.form, element = layui.element;
         let tabOrthoCode1And6 = 1;
         let submitData = [];
+        
+        let isNotice = window.localStorage.getItem('isNotice')
+        if (isNotice == null) {
+            layer.open({
+                title: "公告",
+                type: 1,
+                skin: 'layui-layer-demo',
+                closeBtn: 1,
+                anim: 2,
+                shadeClose: true,
+                area: ['600px', '400px'],
+                content: $('.openNotice').html(),
+                success: function(){
+                    element.init();
+                    window.localStorage.setItem('isNotice', true)
+                }
+            });
+        }
 
         element.on('tab(docDemoTabBrief)', function(){
             tabOrthoCode1And6 = this.getAttribute('lay-id');

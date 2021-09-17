@@ -11,7 +11,9 @@
 
 <div class="content-body">
     <div class="layui-card">
-        <div class="layui-card-header">公告列表</div>
+        <div class="layui-card-header">
+            <a href="/admin/notice/create" class="layui-btn">添加公告</a>
+        </div>
         <div class="layui-card-body">
             <table class="layui-table">
                 <thead>
@@ -20,9 +22,19 @@
                     <th>公告类型</th>
                     <th>内容</th>
                     <th>创建时间</th>
+<!--                    <th>操作</th>-->
                 </tr>
                 </thead>
                 <tbody>
+                {foreach $list as $key => $val}
+                <tr>
+                    <td>{$key+1}</td>
+                    <td>{$val.type}</td>
+                    <td>{$val.content}</td>
+                    <td>{$val.create_time}</td>
+<!--                    <td>}</td>-->
+                </tr>
+                {/foreach}
                 </tbody>
             </table>
             <div id="page"></div>

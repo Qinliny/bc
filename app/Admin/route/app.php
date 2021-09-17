@@ -91,4 +91,6 @@ Route::group('/balanceLog', function () {
 
 Route::group('/notice', function () {
     Route::get('/', 'Index/notice');
+    Route::get('/create', 'Index/createNotice');
+    Route::post('/saveNotice', 'Index/saveNotice');
 })->middleware(\app\Admin\middleware\CheckLoginMiddleware::class);

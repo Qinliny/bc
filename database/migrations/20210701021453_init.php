@@ -50,6 +50,8 @@ class Init extends Migrator
         $this->user_auth();
         // 资金变动表
         $this->balance_log();
+        // 公告
+        $this->notice();
     }
 
 
@@ -293,6 +295,21 @@ class Init extends Migrator
             ->addColumn('balance', 'decimal', ['null' => false, 'comment' => "原始余额"])
             ->addColumn('is_increase', 'integer', ['null' => true,'default' => 1,'comment' => "增加或者减少 1增 0减", 'limit'=>2])
             ->addColumn('remark', 'string', ['null' => false,'limit'=>255,'comment' => "备注"])
+            ->addColumn('create_time', 'datetime', ['null' => true, 'signed' => true, 'comment' => "创建时间"])
+            ->create();
+        return $table;
+    }
+
+    public function notice() {
+        $table = $this->table('balance_log', [
+            'engine' => 'InnoDB',
+            'collation' => 'utf8_general_ci',
+            'comment' => '公告表',
+            'id' => 'id',
+            'primary_key' => ['id']
+        ]);
+        $table->addColumn('type', 'string', ['null' => false, 'comment' => "公告类型"])
+            ->addColumn('content', 'string', ['null' => false, 'comment' => "公告内容"])
             ->addColumn('create_time', 'datetime', ['null' => true, 'signed' => true, 'comment' => "创建时间"])
             ->create();
         return $table;

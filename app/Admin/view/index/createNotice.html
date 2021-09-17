@@ -1,0 +1,67 @@
+{extend name="common/public" /}
+
+{block name="title"}添加公告{/block}
+
+{block name="content"}
+<span class="layui-breadcrumb">
+    <a><cite>首页</cite></a>
+    <a><cite>系统设置</cite></a>
+    <a><cite>公告列表</cite></a>
+    <a><cite>添加公告</cite></a>
+</span>
+
+<div class="content-body">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div class="layui-form" lay-filter="createForm">
+                
+                <div class="layui-form-item">
+                    <label class="layui-form-label">公告类型</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="title"
+                               value="{$data.title | default=''}"
+                               required  lay-verify="required"
+                               placeholder="请输入类型" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">公告内容</label>
+                    <div class="layui-input-block">
+                        <textarea name="content" placeholder="请输入内容" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="create">立即提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(['layer', 'form', 'laypage'], function() {
+        let $ = layui.$, layer = layui.layer, form = layui.form;
+        form.on('submit(create)', function(obj) {
+            let loading = layer.load(1, {shade: [0.3,'#000']});
+            $.post('/admin/notice/saveNotice', obj.field, function(resp) {
+                layer.close(loading)
+                if (resp.code != 0) {
+                    layer.msg(resp.errors, {icon: 5});
+                    return false
+                }
+                layer.msg(resp.message, {icon: 1, time: 1000, end: function () {
+                        window.location.href = '/admin/notice'
+                    }});
+            }).error(function() {
+                layer.close(loading)
+                layer.msg("服务器出现异常", {icon: 5});
+            })
+        })
+    })
+</script>
+{/block}

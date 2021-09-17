@@ -93,6 +93,7 @@ html, body {
 }
 
 .main-header-game ul > li {
+    position: relative;
     height: 100%;
     width: 127px;
     text-align: center;
@@ -501,4 +502,47 @@ tbody .numbers {
     margin-top: 10px;
     margin-bottom: 10px;
     color: red;
+}
+
+#more {
+    position: relative;
+    height: 100%;
+    width: 127px;
+    text-align: center;
+    line-height: 38px;
+}
+
+#more a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    font-size: 13px;
+    color: #ffffff;
+}
+
+.openMoreGame {
+    display: none;
+    position: absolute;
+    left: -293px;
+    width: 420px;
+    background: #cccccc;
+    z-index: 99999;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.openMoreGameList {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.openMoreGameList span {
+    height: 38px;
+    width: 33.333%;
+    box-sizing: border-box;
+    padding: 0 10px;
+    margin: 10px 0;
+}
+.openMoreGameList span > a {
+    background: #d67a84;
 }
