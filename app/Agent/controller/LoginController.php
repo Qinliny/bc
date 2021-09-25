@@ -42,8 +42,7 @@ class LoginController extends BaseController
         // 校验验证码
         if (!captcha_check($param['verifyCode'])) failedAjax(__LINE__, "验证码不正确！");
         $userInfo = UserDb::findUserByaAccount($param['username']);
-
-        if ($userInfo['type'] == 1 || $userInfo['type'] == 2) {
+        if (!in_array($userInfo['type'], [1, 2])) {
             failedAjax(__LINE__, '您不是代理，无法登录该平台。');
         }
         if (!password_verify($param['password'], $userInfo['pwd'])) {

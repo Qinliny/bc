@@ -97,10 +97,8 @@ class UserDb
             throw new \Exception('账号已存在', 1);
         }
         $params['pwd'] = password_hash($params['pwd'], PASSWORD_DEFAULT);
-        $params['coin_pwd'] = password_hash($params['coin_pwd'], PASSWORD_DEFAULT);
         $params['type'] = 2;
         $params['coin'] = 0;
-        $params['fcoin'] = 0;
         $params['register_time'] = date('Y-m-d H:i:s');
         $params['register_ip'] = request()->ip();;
 
@@ -126,6 +124,7 @@ class UserDb
         if (!empty($params['username'])) {
             $where[] = ['nickname', 'like', '%' . $params['username'] . '%'];
         }
+
         $where[] = ['type', '=', 0];
         $where[] = ['is_del', '=', 0];
         $where[] = ['parent_id', '=', $params['agentId']];

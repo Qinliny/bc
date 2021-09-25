@@ -120,6 +120,7 @@ class UserManageController extends BaseController
             $where[] = ['u.enable', '=', $params['enable']];
         }
         $where[] = ['u.is_del', '=', 0];
+        $where[] = ['u.type', '=', 0];
 
         $users = Db::table('user')
             ->alias('u')

@@ -26,6 +26,9 @@
                     <a href="javascript:void(0)" class="layui-btn" onclick="reload()">搜索</a>
                 </div>
             </form>
+            <script type='text/html' id="toolbar">
+                <a class="layui-btn layui-btn-sm" onclick="openAgencyDialog()">新增下级用户</a>
+            </script>
             <!--表格-->
             <table id="table" lay-filter="table"></table>
             <!--            工具栏-->
@@ -50,10 +53,9 @@
             $ = layui.$,
             layer = layui.layer,
             table = layui.table;
-
+        
         tableInst = table.render({
             elem: '#table',
-            height: 320,
             id: "tableInst",
             url: '/agent/Members/load',
             loading: true,
@@ -65,25 +67,22 @@
                 , first: false //不显示首页
                 , last: false //不显示尾页
             },
+            toolbar: "#toolbar",
             cols: [[
-                {field: 'id', title: 'id', width: 70},
-                {field: 'name', title: '账号', width: 130},
-                {field: 'true_name', title: '真实姓名', width: 100},
-                {field: 'id_card', title: '身份证号', width: 180},
-                {field: 'add_time', title: '申请时间', width: 160},
+                {field: 'id', title: 'id'},
+                {field: 'account', title: '账号'},
+                {field: 'name', title: '真实姓名'},
+                {field: 'nickname', title: '昵称'},
                 {
-                    field: 'status', title: '状态', width: 100, templet(data) {
-                        if (data.status == 0) {
-                            return '待审核';
-                        } else if (data.status == 1) {
-                            return '已通过';
-                        } else {
-                            return '已驳回';
-                        }
+                    field: 'enable', title: '账户状态', templet: function (data) {
+                        return data.enable ? "已启用" : "已禁用";
                     }
                 },
-                {field: 'process_time', title: '处理时间', width: 160},
-                {fixed: 'right', title: '操作', width: 200, toolbar: "#tools"}
+                {field: 'phone', title: '手机号码'},
+                {field: 'coin', title: '当前余额'},
+                {field: 'email', title: '个人邮箱'},
+                {field: 'qq', title: '个人QQ'},
+                {fixed: 'right', title: '操作', width: 300, toolbar: "#tools"}
             ]]
         })
     })
